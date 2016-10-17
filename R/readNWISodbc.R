@@ -49,8 +49,6 @@
 #' @importFrom reshape2 dcast
 #' @importFrom dplyr left_join
 #' @importFrom lubridate yday
-#' @export
-
 readNWISodbc <- function(DSN,
                          env.db = "01",
                          qa.db = "02",
@@ -333,22 +331,22 @@ readNWISodbc <- function(DSN,
   
   ###Make dataframe as record number and pcode. MUST HAVE ALL UNIQUE PCODE NAMES
   ##Remove duplicate results from data table
-  DataTable1 <- subset(Results, !(DQI_CD %in% c("Q","X")))
-  DataTable1 <- DataTable1[!(duplicated(DataTable1[c("RECORD_NO","PARM_CD")])),]
-  DataTable1 <- reshape2::dcast(DataTable1, RECORD_NO ~ PARM_CD,value.var = "Val_qual")
+  #DataTable1 <- subset(Results, !(DQI_CD %in% c("Q","X")))
+  #DataTable1 <- DataTable1[!(duplicated(DataTable1[c("RECORD_NO","PARM_CD")])),]
+  #DataTable1 <- reshape2::dcast(DataTable1, RECORD_NO ~ PARM_CD,value.var = "Val_qual")
   #rename pcodes to parm names
-  parmNames <- as.data.frame(names(DataTable1),stringsAsFactors=FALSE)
-  names(parmNames) <- "PARM_CD"
-  parmNames <- dplyr::left_join(parmNames,unique(Results[c("PARM_CD","PARM_NM")]),by="PARM_CD")
-  names(DataTable1) <- c("RECORD_NO", na.omit(parmNames$PARM_NM))
+  #parmNames <- as.data.frame(names(DataTable1),stringsAsFactors=FALSE)
+  #names(parmNames) <- "PARM_CD"
+  #parmNames <- dplyr::left_join(parmNames,unique(Results[c("PARM_CD","PARM_NM")]),by="PARM_CD")
+  #names(DataTable1) <- c("RECORD_NO", na.omit(parmNames$PARM_NM))
   
   #fill in record number meta data (station ID, name, date, time, etc)
-  DataTable1 <- dplyr::left_join(DataTable1,Sample_meta, by="RECORD_NO")
+  #DataTable1 <- dplyr::left_join(DataTable1,Sample_meta, by="RECORD_NO")
   
   #reorder columns so meta data is at front
-  parmcols <- seq(from =2, to =ncol(DataTable1)-ncol(Sample_meta)+1)
-  metacols <- seq(from = ncol(DataTable1)-(ncol(Sample_meta)-2), to =ncol(DataTable1))
-  DataTable1 <- DataTable1[c(1,metacols[1:7],parmcols,metacols[8:length(metacols)])]
+  #parmcols <- seq(from =2, to =ncol(DataTable1)-ncol(Sample_meta)+1)
+  #metacols <- seq(from = ncol(DataTable1)-(ncol(Sample_meta)-2), to =ncol(DataTable1))
+  #DataTable1 <- DataTable1[c(1,metacols[1:7],parmcols,metacols[8:length(metacols)])]
   PlotTable1 <- dplyr::left_join(Results,Sample_meta,by="RECORD_NO")
   
   ##################
@@ -562,21 +560,21 @@ readNWISodbc <- function(DSN,
     {
       ###Make dataframe as record number and pcode. MUST HAVE ALL UNIQUE PCODE NAMES
       ##Remove duplicate results from data table
-      DataTable2 <- subset(Results, !(DQI_CD %in% c("Q","X")))
-      DataTable2 <- DataTable2[!(duplicated(DataTable2[c("RECORD_NO","PARM_CD")])),]
-      DataTable2 <- reshape2::dcast(DataTable2, RECORD_NO ~ PARM_CD,value.var = "Val_qual")
-      #rename pcodes to parm names
-      parmNames <- data.frame(PARM_CD = names(DataTable2),stringsAsFactors=FALSE)
-      parmNames <- dplyr::left_join(parmNames,unique(Results[c("PARM_CD","PARM_NM")]),by="PARM_CD")
-      names(DataTable2) <- c("RECORD_NO", na.omit(parmNames$PARM_NM))
+      # DataTable2 <- subset(Results, !(DQI_CD %in% c("Q","X")))
+      # DataTable2 <- DataTable2[!(duplicated(DataTable2[c("RECORD_NO","PARM_CD")])),]
+      # DataTable2 <- reshape2::dcast(DataTable2, RECORD_NO ~ PARM_CD,value.var = "Val_qual")
+      # #rename pcodes to parm names
+      # parmNames <- data.frame(PARM_CD = names(DataTable2),stringsAsFactors=FALSE)
+      # parmNames <- dplyr::left_join(parmNames,unique(Results[c("PARM_CD","PARM_NM")]),by="PARM_CD")
+      # names(DataTable2) <- c("RECORD_NO", na.omit(parmNames$PARM_NM))
       
       #fill in record number meta data (station ID, name, date, time, etc)
-      DataTable2 <- dplyr::left_join(DataTable2,Sample_meta, by="RECORD_NO")
+      #DataTable2 <- dplyr::left_join(DataTable2,Sample_meta, by="RECORD_NO")
       
       #reorder columns so meta data is at front
-      parmcols <- seq(from =2, to =ncol(DataTable2)-ncol(Sample_meta)+1)
-      metacols <- seq(from = ncol(DataTable2)-(ncol(Sample_meta)-2), to =ncol(DataTable2))
-      DataTable2 <- DataTable2[c(1,metacols[1:7],parmcols,metacols[8:length(metacols)])]
+      #parmcols <- seq(from =2, to =ncol(DataTable2)-ncol(Sample_meta)+1)
+      #metacols <- seq(from = ncol(DataTable2)-(ncol(Sample_meta)-2), to =ncol(DataTable2))
+      #DataTable2 <- DataTable2[c(1,metacols[1:7],parmcols,metacols[8:length(metacols)])]
       PlotTable2 <- dplyr::left_join(Results,Sample_meta,by="RECORD_NO")
     }else{}
     
@@ -585,10 +583,10 @@ readNWISodbc <- function(DSN,
   ###Check that data was pulled from Database 2
   if(exists("DataTable2"))
   {
-    DataTable <- dplyr::bind_rows(DataTable1,DataTable2)
+    #DataTable <- dplyr::bind_rows(DataTable1,DataTable2)
     PlotTable <- dplyr::bind_rows(PlotTable1,PlotTable2)
   } else{
-    DataTable <- DataTable1
+    #DataTable <- DataTable1
     PlotTable <-PlotTable1
   }
   
@@ -616,9 +614,9 @@ readNWISodbc <- function(DSN,
                                            daylight = PlotTable$SAMPLE_START_LOCAL_TM_FG)
   
   
-  DataTable$SAMPLE_START_DT <- convertTime(datetime = DataTable$SAMPLE_START_DT,
-                                           timezone = DataTable$SAMPLE_START_TZ_CD,
-                                           daylight = DataTable$SAMPLE_START_LOCAL_TM_FG)
+  # DataTable$SAMPLE_START_DT <- convertTime(datetime = DataTable$SAMPLE_START_DT,
+  #                                          timezone = DataTable$SAMPLE_START_TZ_CD,
+  #                                          daylight = DataTable$SAMPLE_START_LOCAL_TM_FG)
   #RESULT_CR
   PlotTable$RESULT_CR <- convertTime(datetime = PlotTable$RESULT_CR,
                                      timezone = PlotTable$SAMPLE_START_TZ_CD,
@@ -645,9 +643,9 @@ readNWISodbc <- function(DSN,
                                          daylight = PlotTable$SAMPLE_START_LOCAL_TM_FG)
   
   
-  DataTable$SAMPLE_END_DT <- convertTime(datetime = DataTable$SAMPLE_END_DT,
-                                         timezone = DataTable$SAMPLE_START_TZ_CD,
-                                         daylight = DataTable$SAMPLE_START_LOCAL_TM_FG)
+  # DataTable$SAMPLE_END_DT <- convertTime(datetime = DataTable$SAMPLE_END_DT,
+  #                                        timezone = DataTable$SAMPLE_START_TZ_CD,
+  #                                        daylight = DataTable$SAMPLE_START_LOCAL_TM_FG)
   
   ###Get month for seasonal plots and reorder factor levels to match water-year order
   PlotTable$SAMPLE_MONTH <-  factor(format(PlotTable$SAMPLE_START_DT,"%b"),levels=c("Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"))
@@ -669,7 +667,7 @@ readNWISodbc <- function(DSN,
   ###Remove trailing spaces on site IDs
   
   PlotTable$SITE_NO <- gsub(" ","",PlotTable$SITE_NO)
-  DataTable$SITE_NO <- gsub(" ","",DataTable$SITE_NO)
+  #DataTable$SITE_NO <- gsub(" ","",DataTable$SITE_NO)
   
   ###Reorder columns
   PlotTable <- PlotTable[c("RECORD_NO" ,"SITE_NO","STATION_NM","SAMPLE_START_DT","SAMPLE_END_DT","MEDIUM_CD","PROJECT_CD",
@@ -696,6 +694,6 @@ readNWISodbc <- function(DSN,
   ###Remove reviewed and rejected results
   PlotTable <- subset(PlotTable,!(DQI_CD %in% c("Q","X"))) 
   
-  return(list(DataTable=DataTable,PlotTable=PlotTable))
+  return(list(PlotTable=PlotTable))
   
 }
