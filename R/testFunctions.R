@@ -14,3 +14,8 @@ source("R/sandSiltBreak.R")
 sandSiltBreak(x)
 source("R/checkSamPurp.R")
 checkSamPurp(x)
+source("R/sampleEDI.R")
+EDIlist <- sampleEDI(x)
+missingEDI <- EDIlist[[1]]
+lowEDIvert <- EDIlist[[2]]
+hiEDIvert <- EDIlist[[3]]
