@@ -1,7 +1,7 @@
 # function to test EDI sample collected correctly. Number of sampling verticles 4-9.
 # function to test EWI sample collected correctly. Number of verticles between 10 and 20
 
-sampleEI <- function(x, method, lowVert, highVert){
+sampleVertCheck <- function(x, method, lowVert, highVert){
   #select EI sample methods
   EI <- x[x$PARM_CD == "82398", ] %>%
     filter(RESULT_VA == method)
