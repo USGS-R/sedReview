@@ -1,10 +1,10 @@
 # x is plotData from NWISodbc data pull
 sedOutliers <- function(x){
   # extract SSC (80154) SSL (80155) and LOI (00496/00535)
-  SSC <- x[x$PARM_CD == 80154, ]
-  SSL <- x[x$PARM_CD == 80155, ]
-  bedLOI <- x[x$PARM_CD == 00496, ]
-  watLOI <- x[x$PARM_CD == 00535, ]
+  SSC <- x[x$PARM_CD == "80154", ]
+  SSL <- x[x$PARM_CD == "80155", ]
+  bedLOI <- x[x$PARM_CD == "00496", ]
+  watLOI <- x[x$PARM_CD == "00535", ]
   
   # quantiles
   quantiles <- data.frame(quantile = seq(0, 1, 0.1))
