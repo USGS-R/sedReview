@@ -14,8 +14,14 @@ source("R/sandSiltBreak.R")
 sandSiltBreak(x)
 source("R/checkSamPurp.R")
 checkSamPurp(x)
-source("R/sampleEDI.R")
-EDIlist <- sampleEDI(x)
+source("R/sampleEI.R")
+# EDI samples
+EDIlist <- sampleEI(x, 20, 4, 9)
 missingEDI <- EDIlist[[1]]
 lowEDIvert <- EDIlist[[2]]
 hiEDIvert <- EDIlist[[3]]
+# EWI samples
+EWIlist <- sampleEI(x, 10, 10, 20)
+missingEWI <- EWIlist[[1]]
+lowEWIvert <- EWIlist[[2]]
+hiEWIvert <- EWIlist[[3]]
