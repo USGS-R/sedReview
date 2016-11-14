@@ -4,10 +4,9 @@ library(lubridate)
 library(dplyr)
 library(dataRetrieval)
 source("R/converTime.R")
-source("R/readNWISodbc.R")
-qwdata <- readNWISodbc(DSN = "NWISCO", STAIDS = staid)
+source("R/nwisODBC.R")
+qwdata <- nwisODBC(DSN = "nwisco", env.db = "01", qa.db = "02", STAIDS = staid)
 x <- qwdata$PlotTable
-siteINFO <- readNWISsite(staid)
 # for testing function calls
 source("R/sedOutliers.R")
 sedOutliers(x)

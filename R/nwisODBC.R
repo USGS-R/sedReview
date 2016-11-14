@@ -49,7 +49,7 @@
 #' @importFrom reshape2 dcast
 #' @importFrom dplyr left_join
 #' @importFrom lubridate yday
-readNWISodbc <- function(DSN,
+nwisODBC <- function(DSN,
                          env.db = "01",
                          qa.db = "02",
                          STAIDS ,
@@ -581,7 +581,7 @@ readNWISodbc <- function(DSN,
     }
   } else{}
   ###Check that data was pulled from Database 2
-  if(exists("DataTable2"))
+  if(exists("PlotTable2"))
   {
     #DataTable <- dplyr::bind_rows(DataTable1,DataTable2)
     PlotTable <- dplyr::bind_rows(PlotTable1,PlotTable2)
@@ -659,7 +659,7 @@ readNWISodbc <- function(DSN,
   PlotTable$REMARK_CD <- as.character(PlotTable$REMARK_CD)
   
   ###limit medium codes in plot table
-  PlotTable <- subset(PlotTable, MEDIUM_CD %in% c("WS ","WG ","OA ","WSQ","WGQ","OAQ"))
+  #PlotTable <- subset(PlotTable, MEDIUM_CD %in% c("WS ","WG ","OA ","WSQ","WGQ","OAQ"))
   
   ###Add in day of year to PlotTable
   PlotTable$DOY <- yday(PlotTable$SAMPLE_START_DT)
