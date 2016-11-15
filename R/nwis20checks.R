@@ -65,3 +65,17 @@ check2045$check_20.45[check2045$MEDIUM_CD != "OAQ" & check2045$SAMP_TYPE_CD == "
 check2045$check_20.45[check2045$MEDIUM_CD != "OAQ" & check2045$SAMP_TYPE_CD == "3"] <- paste("flag samp_type_cd=",
                                                                                              check2045$SAMP_TYPE_CD[check2045$MEDIUM_CD != "OAQ" 
                                                                                                                     & check2045$SAMP_TYPE_CD == "3"])
+### NWIS check 20.61 - Missing sample purpose (P71999)
+sampPurp <- subset(x, PARM_CD == "71999")
+sampPurp <- unique(sampPurp$RECORD_NO)
+missingPurp <- subset(x, !(RECORD_NO %in% sampPurp))
+missingPurp <- missingPurp[missingPurp$SAMPLE_START_DT > as.Date("2001-09-30"),]
+missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose")
+
+### NWIS check 20.62 - SW or GW sample missing sampler-type (P84164)
+sampTyp <- subset(x, PARM_CD == 84164)
+sampTyp <- unique(sampTyp$RECORD_NO)
+missingTyp <- subset(x, !(RECORD_NO %in% sampTyp) & MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ"))
+missingTyp <- missingTyp[missingTyp$SAMPLE_START_DT > as.Date("2001-09-30"),]
+missingTyp$check_20.62 <- paste("flag missing P84164 (Sampler Type)")
+
