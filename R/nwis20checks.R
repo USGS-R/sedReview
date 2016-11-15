@@ -68,14 +68,23 @@ check2045$check_20.45[check2045$MEDIUM_CD != "OAQ" & check2045$SAMP_TYPE_CD == "
 ### NWIS check 20.61 - Missing sample purpose (P71999)
 sampPurp <- subset(x, PARM_CD == "71999")
 sampPurp <- unique(sampPurp$RECORD_NO)
-missingPurp <- subset(x, !(RECORD_NO %in% sampPurp))
-missingPurp <- missingPurp[missingPurp$SAMPLE_START_DT > as.Date("2001-09-30"),]
+missingPurp <- subset(x, !(RECORD_NO %in% sampPurp) & SAMPLE_START_DT > as.Date("2001-09-30"))
 missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose")
 
 ### NWIS check 20.62 - SW or GW sample missing sampler-type (P84164)
-sampTyp <- subset(x, PARM_CD == 84164)
+sampTyp <- subset(x, PARM_CD == "84164")
 sampTyp <- unique(sampTyp$RECORD_NO)
-missingTyp <- subset(x, !(RECORD_NO %in% sampTyp) & MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ"))
-missingTyp <- missingTyp[missingTyp$SAMPLE_START_DT > as.Date("2001-09-30"),]
+missingTyp <- subset(x, !(RECORD_NO %in% sampTyp) & MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ") & SAMPLE_START_DT > as.Date("2001-09-30"))
 missingTyp$check_20.62 <- paste("flag missing P84164 (Sampler Type)")
 
+### NWIS check 20.63 - SW or GW sample missing sampling-method (P82398)
+sampMeth <- subset(x, PARM_CD == "82398")
+sampMeth <- unique(sampMeth$RECORD_NO)
+missingMeth <- subset(x, !(RECORD_NO %in% sampMeth) & MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ") & SAMPLE_START_DT > as.Date("2001-09-30"))
+missingMeth$check_20.63 <- paste("flag missing P82398 (Sampling Method)")
+
+### NWIS check 20.64 - ENV sample missing Type-of-QA associated with sample (P99111)
+typeQA <- subset(x, PARM_CD == "99111")
+typeQA <- unique(typeQA$RECORD_NO)
+missingTypQA <- subset(x, !(RECORD_NO %in% typeQA) & MEDIUM_CD %in% ENVlist & SAMPLE_START_DT > as.Date("2001-09-30"))
+missingTypQA$check_20.64 <- paste("flag missing P99111 (Type-of-QA)")
