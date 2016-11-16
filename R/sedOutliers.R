@@ -1,5 +1,5 @@
 # x is plotData from NWISodbc data pull
-sedOutliers <- function(x, lowThreshold, highThreshold){
+sedOutliers <- function(x, lowThreshold, highThreshold, returnAll = FALSE){
   # extract SSC (80154) SSL (80155) and LOI (00496/00535)
   sedMedium <- c("WS ", "SS ", "SB ", "WSQ", "SSQ", "SBQ")
   x$flag <- NA
@@ -44,9 +44,26 @@ sedOutliers <- function(x, lowThreshold, highThreshold){
   names(bedLOI)[names(bedLOI) == "flag"] <- "bedLOI_flag"
   names(watLOI)[names(watLOI) == "flag"] <- "watLOI_flag"
   
+  # list of flagged samples
+  ### data frame of all samples with flags
+  flaggedSamples <- unique(x[c("RECORD_NO",
+                               "SITE_NO",
+                               "STATION_NM",
+                               "SAMPLE_START_DT",
+                               "MEDIUM_CD")])
+  # append flags
+  flaggedSamples <- dplyr::left_join(flaggedSamples, SSC[c("RECORD_NO", "SSC_flag")], by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, SSL[c("RECORD_NO", "SSL_flag")], by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, bedLOI[c("RECORD_NO", "bedLOI_flag")], by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, watLOI[c("RECORD_NO", "watLOI_flag")], by = "RECORD_NO")
+  if(returnAll == FALSE)
+  {
+    flaggedSamples <- flaggedSamples[is.na(flaggedSamples$SSC_flag)==FALSE | 
+                                       is.na(flaggedSamples$SSL_flag)==FALSE |
+                                       is.na(flaggedSamples$bedLOI_flag)==FALSE |
+                                       is.na(flaggedSamples$watLOI_flag)==FALSE, ]
+  }
   
-  
-  
-  return(quantiles)
+  return(flaggedSamples)
 }
 

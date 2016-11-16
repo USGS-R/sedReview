@@ -15,13 +15,14 @@ source("R/sampleVertCheck.R")
 sampleVertFlags <- sampleVertCheck(x)
 source("R/nwis20checks.R")
 nwis20Flags <- nwis20check(x)
+source("R/sedOutliers.R")
+sedOutlierFlags <- sedOutliers(x, 0.1, 0.9)
+source("R/checkSamPurp.R")
+sampPurpFlags <- checkSamPurp(x)
 
 
 # these ones need revamping:
-source("R/sedOutliers.R")
-sedOutliers(x)
 source("R/sandSiltBreak.R")
 sandSiltBreak(x)
-source("R/checkSamPurp.R")
-checkSamPurp(x)
+
 
