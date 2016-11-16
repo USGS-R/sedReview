@@ -8,7 +8,6 @@ checkSamPurp <- function(x, returnAll = FALSE){
   names(sampPurp) <- c("SamplePurpose", "count")
   sampPurp$SamplePurpose <- as.character(sampPurp$SamplePurpose)
   # most common samp purpose
-  mainPurp <- max(sampPurp$count)
   mainPurp <- sampPurp$SamplePurpose[sampPurp$count %in% max(sampPurp$count)]
   
   # flag sample purposes other than most common
