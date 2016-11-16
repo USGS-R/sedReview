@@ -7,6 +7,9 @@ source("R/converTime.R")
 source("R/nwisODBC.R")
 qwdata <- nwisODBC(DSN = "nwisco", env.db = "01", qa.db = "02", STAIDS = staid)
 x <- qwdata$PlotTable
+
+
+
 # for testing function calls
 source("R/sampleVertCheck.R")
 sampleVertFlags <- sampleVertCheck(x)
