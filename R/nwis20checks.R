@@ -1,90 +1,141 @@
+nwis20check <- function(x, returnAll = FALSE)
+{
+  ### NWIS check 20.41 - unexpected medium code for bed sediment Pcode(s)
+  # Need pcodes, not in LIMS anymore sch2420 <- 
+  
+  #list of schedule 2501 Pcodes
+  sch2501list <- c("49319","49332","49338","49275","49339","49322","49320","49316",
+                   "49349","49324","49331","49335","49341","49342","49343","49344",
+                   "49345","49348","49325","49327","49329","49347","49318","49326",
+                   "49328","49330","49346","49460","49459","99853","99824","49351","49321","49317","49350")
+  sch2501 <- subset(x, PARM_CD %in% sch2501list)
+  #flag samples with incorrect medium
+  sch2501$check_20.41_sch2501[sch2501$MEDIUM_CD != "SB " & sch2501$MEDIUM_CD != "SBQ"] <- paste("flag medium_cd=", 
+                                                                                                sch2501$MEDIUM_CD[sch2501$MEDIUM_CD != "SB " & sch2501$MEDIUM_CD != "SBQ"])
+  sch2501 <- unique(sch2501[c("RECORD_NO", "check_20.41_sch2501")])
+  #list of schedule 2502 Pcodes
+  sch2502list <- c("49438","49439","49403","49441","49442","49404","49398","49410",
+                   "49388","49391","49405","49415","49416","49417","49418","49395",
+                   "49406","49396","49407","49467","49948","49279","49435","49420",
+                   "49421","49419","49454","49422","49455","49423","49411","49429",
+                   "49428","49430","49434","49437","49443","49436","49389","49458",
+                   "49468","49408","49397","49457","49401","49456","49426","49427",
+                   "49424","49449","49450","49381","49382","49461","49452","49383",
+                   "49384","49466","49399","49343","49448","49489","49453","49390",
+                   "49400","49394","49431","49433","49402","49444","49280","49451",
+                   "49460","49446","49425","49409","49393","49413","49387","49392","99854","99825","49278")
+  sch2502 <- subset(x, PARM_CD %in% sch2502list)
+  sch2502$check_20.41_sch2502[sch2502$MEDIUM_CD != "SB " & sch2502$MEDIUM_CD != "SBQ"] <- paste("flag medium_cd=",
+                                                                                                sch2502$MEDIUM_CD[sch2502$MEDIUM_CD != "SB " & sch2502$MEDIUM_CD != "SBQ"])
+  sch2502 <- unique(sch2502[c("RECORD_NO", "check_20.41_sch2502")])
+  
+  ### NWIS check 20.42 - Medium code conflicts with site type
+  #need readNWISodbc to pull the site type information from nwis
+  
+  ### NWIS check 20.43 - ENV sample with QC-Blank pcodes
+  #list of ENV sample codes
+  ENVlist <- c("WS ","WG ","WW ","WI ","WA ","WM ","WL ","WF ",
+               "WU ","WE ","WD ","WT ","WB ","WH ","WC ","WP ",
+               "SS ","SB ","ST ","SC ","SU ","SO ","SL ","SF ",
+               "SD ","BA ","BP ","BH ","BY ","BE ","BI ","BD ",
+               "AA ","AS ","OB ")
+  blankPcodes <- subset(x, PARM_CD %in% c("99100", "99101", "99102"))
+  blankPcodes$check_20.43[blankPcodes$MEDIUM_CD %in% ENVlist] <- paste("flag medium_cd=", 
+                                                                       blankPcodes$MEDIUM_CD[blankPcodes$MEDIUM_CD %in% ENVlist])
+  blankPcodes <- unique(blankPcodes[c("RECORD_NO", "check_20.43")])
+  
+  ### NWIS check 20.46 - ENV sample with QC-spike pcodes
+  spikePcodes <- subset(x, PARM_CD %in% c("99106", "99107", "99108"))
+  spikePcodes$check_20.46[spikePcodes$MEDIUM_CD %in% ENVlist] <- paste("flag medium_cd=", 
+                                                                       spikePcodes$MEDIUM_CD[spikePcodes$MEDIUM_CD %in% ENVlist])
+  spikePcodes <- unique(spikePcodes[c("RECORD_NO", "check_20.46")])
+  
+  ### NWIS check 20.47 - ENV sample with QC-reference-material or spike lot pcodes
+  qcrefPcodes <- subset(x, PARM_CD %in% c("99103", "99104", "99150", "99151", "99152", "99153", "99154"))
+  qcrefPcodes$check_20.47[qcrefPcodes$MEDIUM_CD %in% ENVlist] <- paste("flag medium_cd=", 
+                                                                       qcrefPcodes$MEDIUM_CD[qcrefPcodes$MEDIUM_CD %in% ENVlist])
+  qcrefPcodes <- unique(qcrefPcodes[c("RECORD_NO", "check_20.47")])
+  
+  ### NWIS check 20.44 - ENV sample with non-ENV sample type
+  ENVsampType <- c("A", "H", "5", "7", "9")
+  nonENVsampType <- c("1", "2", "3", "4", "6", "8", "B", "K")
+  check2044 <- subset(x, MEDIUM_CD %in% ENVlist)
+  check2044$check_20.44[check2044$SAMP_TYPE_CD %in% nonENVsampType] <- paste("flag samp_type_cd=",
+                                                                             check2044$SAMP_TYPE_CD[check2044$SAMP_TYPE_CD %in% nonENVsampType])
+  check2044 <- unique(check2044[c("RECORD_NO", "check_20.44")])
+  
+  ### NWIS check 20.45 - QC sample with illogical sample type
+  check2045 <- subset(x, MEDIUM_CD %in% c("OAQ", "WSQ", "WGQ"))
+  check2045$check_20.45[check2045$SAMP_TYPE_CD == 9] <- paste("flag samp_type_cd=", check2045$SAMP_TYPE_CD[check2045$SAMP_TYPE_CD == 9])
+  check2045$check_20.45[check2045$MEDIUM_CD != "OAQ" & check2045$SAMP_TYPE_CD == "2"] <- paste("flag samp_type_cd=",
+                                                                                               check2045$SAMP_TYPE_CD[check2045$MEDIUM_CD != "OAQ" 
+                                                                                                                      & check2045$SAMP_TYPE_CD == "2"])
+  check2045$check_20.45[check2045$MEDIUM_CD != "OAQ" & check2045$SAMP_TYPE_CD == "3"] <- paste("flag samp_type_cd=",
+                                                                                               check2045$SAMP_TYPE_CD[check2045$MEDIUM_CD != "OAQ" 
+                                                                                                                      & check2045$SAMP_TYPE_CD == "3"])
+  check2045 <- unique(check2045[c("RECORD_NO", "check_20.45")])
+  
+  ### NWIS check 20.61 - Missing sample purpose (P71999)
+  sampPurp <- subset(x, PARM_CD == "71999")
+  sampPurp <- unique(sampPurp$RECORD_NO)
+  missingPurp <- subset(x, !(RECORD_NO %in% sampPurp) & SAMPLE_START_DT > as.Date("2001-09-30"))
+  missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose")
+  missingPurp <- unique(missingPurp[c("RECORD_NO", "check_20.61")])
+  
+  ### NWIS check 20.62 - SW or GW sample missing sampler-type (P84164)
+  sampTyp <- subset(x, PARM_CD == "84164")
+  sampTyp <- unique(sampTyp$RECORD_NO)
+  missingTyp <- subset(x, !(RECORD_NO %in% sampTyp) & MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ") & SAMPLE_START_DT > as.Date("2001-09-30"))
+  missingTyp$check_20.62 <- paste("flag missing P84164 (Sampler Type)")
+  missingTyp <- unique(missingTyp[c("RECORD_NO", "check_20.62")])
+  
+  ### NWIS check 20.63 - SW or GW sample missing sampling-method (P82398)
+  sampMeth <- subset(x, PARM_CD == "82398")
+  sampMeth <- unique(sampMeth$RECORD_NO)
+  missingMeth <- subset(x, !(RECORD_NO %in% sampMeth) & MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ") & SAMPLE_START_DT > as.Date("2001-09-30"))
+  missingMeth$check_20.63 <- paste("flag missing P82398 (Sampling Method)")
+  missingMeth <- unique(missingMeth[c("RECORD_NO", "check_20.63")])
+  
+  ### NWIS check 20.64 - ENV sample missing Type-of-QA associated with sample (P99111)
+  typeQA <- subset(x, PARM_CD == "99111")
+  typeQA <- unique(typeQA$RECORD_NO)
+  missingTypQA <- subset(x, !(RECORD_NO %in% typeQA) & MEDIUM_CD %in% ENVlist & SAMPLE_START_DT > as.Date("2001-09-30"))
+  missingTypQA$check_20.64 <- paste("flag missing P99111 (Type-of-QA)")
+  missingTypQA <- unique(missingTypQA[c("RECORD_NO", "check_20.64")])
+  
+  ### data frame of all samples with flags
+  flaggedSamples <- unique(x[c("RECORD_NO",
+                               "SITE_NO",
+                               "STATION_NM",
+                               "SAMPLE_START_DT",
+                               "MEDIUM_CD")])
+  flaggedSamples <- dplyr::left_join(flaggedSamples, sch2501, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, sch2502, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, blankPcodes, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, spikePcodes, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, qcrefPcodes, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, check2044, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, check2045, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, missingPurp, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, missingTyp, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, missingMeth, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, missingTypQA, by = "RECORD_NO")
+  flaggedSamples <- unique(flaggedSamples)
+  
+  if(returnAll == FALSE)
+  {
+    flaggedSamples <- flaggedSamples[is.na(flaggedSamples$check_20.41_sch2501)==FALSE | 
+                                       is.na(flaggedSamples$check_20.41_sch2502)==FALSE |
+                                       is.na(flaggedSamples$check_20.43)==FALSE |
+                                       is.na(flaggedSamples$check_20.46)==FALSE |
+                                       is.na(flaggedSamples$check_20.47)==FALSE |
+                                       is.na(flaggedSamples$check_20.44)==FALSE |
+                                       is.na(flaggedSamples$check_20.45)==FALSE |
+                                       is.na(flaggedSamples$check_20.61)==FALSE |
+                                       is.na(flaggedSamples$check_20.62)==FALSE |
+                                       is.na(flaggedSamples$check_20.63)==FALSE |
+                                       is.na(flaggedSamples$check_20.64)==FALSE, ]
+  }
+  return(flaggedSamples)
+}
 
-### NWIS check 20.41 - unexpected medium code for bed sediment Pcode(s)
-# Need pcodes, not in LIMS anymore sch2420 <- 
-
-#list of schedule 2501 Pcodes
-sch2501list <- c("49319","49332","49338","49275","49339","49322","49320","49316",
-                 "49349","49324","49331","49335","49341","49342","49343","49344",
-                 "49345","49348","49325","49327","49329","49347","49318","49326",
-                 "49328","49330","49346","49460","49459","99853","99824","49351","49321","49317","49350")
-sch2501 <- subset(x, PARM_CD %in% sch2501list)
-#flag samples with incorrect medium
-sch2501$check_20.41_sch2501[sch2501$MEDIUM_CD != "SB " & sch2501$MEDIUM_CD != "SBQ"] <- paste("flag medium_cd=", 
-                                                                                              sch2501$MEDIUM_CD[sch2501$MEDIUM_CD != "SB " & sch2501$MEDIUM_CD != "SBQ"])
-#list of schedule 2502 Pcodes
-sch2502list <- c("49438","49439","49403","49441","49442","49404","49398","49410",
-                 "49388","49391","49405","49415","49416","49417","49418","49395",
-                 "49406","49396","49407","49467","49948","49279","49435","49420",
-                 "49421","49419","49454","49422","49455","49423","49411","49429",
-                 "49428","49430","49434","49437","49443","49436","49389","49458",
-                 "49468","49408","49397","49457","49401","49456","49426","49427",
-                 "49424","49449","49450","49381","49382","49461","49452","49383",
-                 "49384","49466","49399","49343","49448","49489","49453","49390",
-                 "49400","49394","49431","49433","49402","49444","49280","49451",
-                 "49460","49446","49425","49409","49393","49413","49387","49392","99854","99825","49278")
-sch2502 <- subset(x, PARM_CD %in% sch2502list)
-sch2502$check_20.41_sch2502[sch2502$MEDIUM_CD != "SB " & sch2502$MEDIUM_CD != "SBQ"] <- paste("flag medium_cd=",
-                                                                                              sch2502$MEDIUM_CD[sch2502$MEDIUM_CD != "SB " & sch2502$MEDIUM_CD != "SBQ"])
-
-
-### NWIS check 20.42 - Medium code conflicts with site type
-#need readNWISodbc to pull the site type information from nwis
-
-### NWIS check 20.43 - ENV sample with QC-Blank pcodes
-#list of ENV sample codes
-ENVlist <- c("WS ","WG ","WW ","WI ","WA ","WM ","WL ","WF ",
-             "WU ","WE ","WD ","WT ","WB ","WH ","WC ","WP ",
-             "SS ","SB ","ST ","SC ","SU ","SO ","SL ","SF ",
-             "SD ","BA ","BP ","BH ","BY ","BE ","BI ","BD ",
-             "AA ","AS ","OB ")
-blankPcodes <- subset(x, PARM_CD %in% c("99100", "99101", "99102"))
-blankPcodes$check_20.43[blankPcodes$MEDIUM_CD %in% ENVlist] <- paste("flag medium_cd=", 
-                                                                                  blankPcodes$MEDIUM_CD[blankPcodes$MEDIUM_CD %in% ENVlist])
-
-### NWIS check 20.46 - ENV sample with QC-spike pcodes
-spikePcodes <- subset(x, PARM_CD %in% c("99106", "99107", "99108"))
-spikePcodes$check_20.46[spikePcodes$MEDIUM_CD %in% ENVlist] <- paste("flag medium_cd=", 
-                                                                                  spikePcodes$MEDIUM_CD[spikePcodes$MEDIUM_CD %in% ENVlist])
-
-### NWIS check 20.47 - ENV sample with QC-reference-material or spike lot pcodes
-qcrefPcodes <- subset(x, PARM_CD %in% c("99103", "99104", "99150", "99151", "99152", "99153", "99154"))
-qcrefPcodes$check_20.47[qcrefPcodes$MEDIUM_CD %in% ENVlist] <- paste("flag medium_cd=", 
-                                                                                  qcrefPcodes$MEDIUM_CD[qcrefPcodes$MEDIUM_CD %in% ENVlist])
-### NWIS check 20.44 - ENV sample with non-ENV sample type
-ENVsampType <- c("A", "H", "5", "7", "9")
-nonENVsampType <- c("1", "2", "3", "4", "6", "8", "B", "K")
-check2044 <- subset(x, MEDIUM_CD %in% ENVlist)
-check2044$check_20.44[check2044$SAMP_TYPE_CD %in% nonENVsampType] <- paste("flag samp_type_cd=",
-                                                                           check2044$SAMP_TYPE_CD[check2044$SAMP_TYPE_CD %in% nonENVsampType])
-### NWIS check 20.45 - QC sample with illogical sample type
-check2045 <- subset(x, MEDIUM_CD %in% c("OAQ", "WSQ", "WGQ"))
-check2045$check_20.45[check2045$SAMP_TYPE_CD == 9] <- paste("flag samp_type_cd=", check2045$SAMP_TYPE_CD[check2045$SAMP_TYPE_CD == 9])
-check2045$check_20.45[check2045$MEDIUM_CD != "OAQ" & check2045$SAMP_TYPE_CD == "2"] <- paste("flag samp_type_cd=",
-                                                                                             check2045$SAMP_TYPE_CD[check2045$MEDIUM_CD != "OAQ" 
-                                                                                                                    & check2045$SAMP_TYPE_CD == "2"])
-check2045$check_20.45[check2045$MEDIUM_CD != "OAQ" & check2045$SAMP_TYPE_CD == "3"] <- paste("flag samp_type_cd=",
-                                                                                             check2045$SAMP_TYPE_CD[check2045$MEDIUM_CD != "OAQ" 
-                                                                                                                    & check2045$SAMP_TYPE_CD == "3"])
-### NWIS check 20.61 - Missing sample purpose (P71999)
-sampPurp <- subset(x, PARM_CD == "71999")
-sampPurp <- unique(sampPurp$RECORD_NO)
-missingPurp <- subset(x, !(RECORD_NO %in% sampPurp) & SAMPLE_START_DT > as.Date("2001-09-30"))
-missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose")
-
-### NWIS check 20.62 - SW or GW sample missing sampler-type (P84164)
-sampTyp <- subset(x, PARM_CD == "84164")
-sampTyp <- unique(sampTyp$RECORD_NO)
-missingTyp <- subset(x, !(RECORD_NO %in% sampTyp) & MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ") & SAMPLE_START_DT > as.Date("2001-09-30"))
-missingTyp$check_20.62 <- paste("flag missing P84164 (Sampler Type)")
-
-### NWIS check 20.63 - SW or GW sample missing sampling-method (P82398)
-sampMeth <- subset(x, PARM_CD == "82398")
-sampMeth <- unique(sampMeth$RECORD_NO)
-missingMeth <- subset(x, !(RECORD_NO %in% sampMeth) & MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ") & SAMPLE_START_DT > as.Date("2001-09-30"))
-missingMeth$check_20.63 <- paste("flag missing P82398 (Sampling Method)")
-
-### NWIS check 20.64 - ENV sample missing Type-of-QA associated with sample (P99111)
-typeQA <- subset(x, PARM_CD == "99111")
-typeQA <- unique(typeQA$RECORD_NO)
-missingTypQA <- subset(x, !(RECORD_NO %in% typeQA) & MEDIUM_CD %in% ENVlist & SAMPLE_START_DT > as.Date("2001-09-30"))
-missingTypQA$check_20.64 <- paste("flag missing P99111 (Type-of-QA)")
