@@ -30,9 +30,9 @@ nwisODBC(DSN, env.db = "01", qa.db = "02", STAIDS, dl.parms = "All",
 \item{resultAsText}{Output results as character instead of numeric. Used for literal output of results from NWIS that are no affected by class coerrcion, such as dropping zeros after decimal point. Default is False.}
 }
 \value{
-Returns a list containing two dataframes: PlotTable and DataTable. 
-PlotTable contains all data pulled from NWIS along with all assosciated metadata in by-result format. 
-DataTable contains all data pulled from NWIS in wide (sample-result) format, an easier format for import into spreadsheet programs.
+Returns a list containing two dataframes: longTable and wideTable. 
+longTable contains all data pulled from NWIS along with all assosciated metadata in by-result format. 
+wideTable contains all data pulled from NWIS in wide (sample-result) format, an easier format for import into spreadsheet programs.
 Dataframe names will be changed to more appropriate values in future package updates.
 }
 \description{
@@ -59,7 +59,7 @@ population/community = "POP"
 \examples{
 \dontrun{
 #Will not run unless connected to NWISCO
-qw.data <- readNWISodbc(DSN="NWISCO",
+qw.data <- nwisODBC(DSN="NWISCO",
                              env.db = "01",
                              qa.db = "02",
                              STAIDS = c("06733000","09067005"),
