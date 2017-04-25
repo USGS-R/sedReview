@@ -24,12 +24,16 @@ getSedOutliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll
   ## suspended sediment load
   SSL <- x[x$PARM_CD == "80155", ]
   SSL <- unique(SSL[c("RECORD_NO", "PARM_CD", "RESULT_VA", "flag")])
-  ## bed sample loss on ignition
+  ## bed sediment loss on ignition
   bedLOI <- x[x$PARM_CD == "00496", ]
   bedLOI <- unique(bedLOI[c("RECORD_NO", "PARM_CD", "RESULT_VA", "flag")])
-  ## water sample loss on ignition
+  ## suspended sediment loss on ignition
   watLOI <- x[x$PARM_CD == "00535", ]
   watLOI <- unique(watLOI[c("RECORD_NO", "PARM_CD", "RESULT_VA", "flag")])
+  
+  ## Sand/Silt break (P70331 Suspended sediment, sieve diamter, percent smaller than 0.0625mm)
+  ssbreak <- x[x$PARM_CD == "70331", ]
+  ssbreak <- unique(ssbreak[c("RECORD_NO", "PARM_CD", "RESULT_VA", "flag")])
   
   ## closure function for determining outliers from thresholds
   f <- function(d)
@@ -52,12 +56,14 @@ getSedOutliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll
   SSL <- f(SSL)
   bedLOI <- f(bedLOI)
   watLOI <- f(watLOI)
+  ssbreak <- f(ssbreak)
   
   # rename flag column
   names(SSC)[names(SSC) == "flag"] <- "SSC_flag"
   names(SSL)[names(SSL) == "flag"] <- "SSL_flag"
-  names(bedLOI)[names(bedLOI) == "flag"] <- "bedLOI_flag"
-  names(watLOI)[names(watLOI) == "flag"] <- "watLOI_flag"
+  names(bedLOI)[names(bedLOI) == "flag"] <- "bedSedLOI_flag"
+  names(watLOI)[names(watLOI) == "flag"] <- "susSedLOI_flag"
+  names(ssbreak)[names(ssbreak) == "flag"] <- "SandSiltBreak_flag"
   
   # list of flagged samples
   ### data frame of all samples with flags
@@ -69,14 +75,16 @@ getSedOutliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll
   # append flags
   flaggedSamples <- dplyr::left_join(flaggedSamples, SSC[c("RECORD_NO", "SSC_flag")], by = "RECORD_NO")
   flaggedSamples <- dplyr::left_join(flaggedSamples, SSL[c("RECORD_NO", "SSL_flag")], by = "RECORD_NO")
-  flaggedSamples <- dplyr::left_join(flaggedSamples, bedLOI[c("RECORD_NO", "bedLOI_flag")], by = "RECORD_NO")
-  flaggedSamples <- dplyr::left_join(flaggedSamples, watLOI[c("RECORD_NO", "watLOI_flag")], by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, bedLOI[c("RECORD_NO", "bedSedLOI_flag")], by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, watLOI[c("RECORD_NO", "susSedLOI_flag")], by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, ssbreak[c("RECORD_NO", "SandSiltBreak_flag")], by = "RECORD_NO")
   if(returnAll == FALSE)
   {
     flaggedSamples <- flaggedSamples[is.na(flaggedSamples$SSC_flag)==FALSE | 
                                        is.na(flaggedSamples$SSL_flag)==FALSE |
-                                       is.na(flaggedSamples$bedLOI_flag)==FALSE |
-                                       is.na(flaggedSamples$watLOI_flag)==FALSE, ]
+                                       is.na(flaggedSamples$bedSedLOI_flag)==FALSE |
+                                       is.na(flaggedSamples$susSedLOI_flag)==FALSE |
+                                       is.na(flaggedSamples$SandSiltBreak_flag)==FALSE, ]
   }
   
   return(flaggedSamples)
