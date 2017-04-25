@@ -1,10 +1,25 @@
+#' chemCheck
+#' Function to flag samples if basic chemistry is unreasonable
+#' @param qw.data A qw.data list generated from readNWISodbc
+#' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
+#' @details Performs chemical checks for expected ranges of O2, pH, Sc, and chargebalance. Definitions of checks can be found at http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check30-sql.html
+#' @examples 
+#' data("exampleData",package="sedReview")
+#' x <- exampleData$PlotTable
+#' sedOut <- findOutliers(x)
+#' 
+#' @importFrom dplyr left_join
+#' @export
+#' @return A dataframe containing all samples with applicable flags
+
 # x is plotData from NWISodbc data pull
-sedOutliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll = FALSE){
+getSedOutliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll = FALSE){
   # extract SSC (80154) SSL (80155) and LOI (00496/00535)
   sedMedium <- c("WS ", "SS ", "SB ", "WSQ", "SSQ", "SBQ")
   x$flag <- NA
   
-  SSC <- subset(x, PARM_CD == "80154" & MEDIUM_CD %in% sedMedium)
+  SSC <- x[x$PARM_CD == "80154" & x$MEDIUM_CD %in% sedMedium,]
+  
   SSC <- unique(SSC[c("RECORD_NO", "PARM_CD", "RESULT_VA", "flag")])
   
   SSL <- x[x$PARM_CD == "80155", ]
