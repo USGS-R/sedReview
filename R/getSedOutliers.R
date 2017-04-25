@@ -1,12 +1,12 @@
-#' chemCheck
-#' Function to flag samples if basic chemistry is unreasonable
+#' getSedOUtliers
+#' @description Function to flag sediment outliers
 #' @param qw.data A qw.data list generated from readNWISodbc
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
-#' @details Performs chemical checks for expected ranges of O2, pH, Sc, and chargebalance. Definitions of checks can be found at http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check30-sql.html
+#' @details 
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData$PlotTable
-#' sedOut <- findOutliers(x)
+#' sedOutlierFlags <- getSedOutliers(x)
 #' 
 #' @importFrom dplyr left_join
 #' @export
@@ -15,23 +15,23 @@
 # x is plotData from NWISodbc data pull
 getSedOutliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll = FALSE){
   # extract SSC (80154) SSL (80155) and LOI (00496/00535)
+  ## medium codes containing sediment parameters
   sedMedium <- c("WS ", "SS ", "SB ", "WSQ", "SSQ", "SBQ")
   x$flag <- NA
-  
+  ## suspended sediment concentration
   SSC <- x[x$PARM_CD == "80154" & x$MEDIUM_CD %in% sedMedium,]
-  
   SSC <- unique(SSC[c("RECORD_NO", "PARM_CD", "RESULT_VA", "flag")])
-  
+  ## suspended sediment load
   SSL <- x[x$PARM_CD == "80155", ]
   SSL <- unique(SSL[c("RECORD_NO", "PARM_CD", "RESULT_VA", "flag")])
-  
+  ## bed sample loss on ignition
   bedLOI <- x[x$PARM_CD == "00496", ]
   bedLOI <- unique(bedLOI[c("RECORD_NO", "PARM_CD", "RESULT_VA", "flag")])
-  
+  ## water sample loss on ignition
   watLOI <- x[x$PARM_CD == "00535", ]
   watLOI <- unique(watLOI[c("RECORD_NO", "PARM_CD", "RESULT_VA", "flag")])
   
-  # closure function for outliers
+  ## closure function for determining outliers from thresholds
   f <- function(d)
   {
     if(nrow(d)>0)

@@ -1,7 +1,21 @@
-# function to test EDI sample collected correctly. Number of sampling verticals 4-9.
-# function to test EWI sample collected correctly. Number of verticals between 10 and 20
 
-sampleVertCheck <- function(x, returnAll = FALSE){
+#' checkSamVert
+#' @description Function to check if number of verticals in EDI/EWI samples is correct
+#' @param qw.data A qw.data list generated from readNWISodbc
+#' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
+#' @details function to test EDI sample collected correctly. Number of sampling verticals 4-9.
+#' @details function to test EWI sample collected correctly. Number of verticals between 10 and 20.
+#' @examples 
+#' data("exampleData",package="sedReview")
+#' x <- exampleData$PlotTable
+#' sampleVertFlags <- checkSamVert(x)
+#' 
+#' @importFrom dplyr left_join
+#' @export
+#' @return A dataframe containing all samples with applicable flags
+
+# x is plotData from NWISodbc data pull
+checkSamVert <- function(x, returnAll = FALSE){
   
   # Select all EDI and EWI samples
   EDI <- x[x$PARM_CD == "82398", ]
