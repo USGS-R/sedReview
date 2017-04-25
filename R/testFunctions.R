@@ -4,25 +4,25 @@ library(lubridate)
 library(dplyr)
 library(dataRetrieval)
 source("R/converTime.R")
-source("R/readNWISodbc.R")
-qwdata <- readNWISodbc(DSN = "NWISCO", STAIDS = staid)
+source("R/nwisODBC.R")
+qwdata <- nwisODBC(DSN = "nwisco", env.db = "01", qa.db = "02", STAIDS = staid)
 x <- qwdata$PlotTable
-siteINFO <- readNWISsite(staid)
+
+
+
 # for testing function calls
+source("R/sampleVertCheck.R")
+sampleVertFlags <- sampleVertCheck(x)
+source("R/nwis20checks.R")
+nwis20Flags <- nwis20check(x)
 source("R/sedOutliers.R")
-sedOutliers(x)
+sedOutlierFlags <- sedOutliers(x, 0.1, 0.9)
+source("R/checkSamPurp.R")
+sampPurpFlags <- checkSamPurp(x)
+
+
+# these ones need revamping:
 source("R/sandSiltBreak.R")
 sandSiltBreak(x)
-source("R/checkSamPurp.R")
-checkSamPurp(x)
-source("R/sampleVertCheck.R")
-# EDI samples
-EDIlist <- sampleEI(x, 20, 4, 9)
-missingEDI <- EDIlist[[1]]
-lowEDIvert <- EDIlist[[2]]
-hiEDIvert <- EDIlist[[3]]
-# EWI samples
-EWIlist <- sampleEI(x, 10, 10, 20)
-missingEWI <- EWIlist[[1]]
-lowEWIvert <- EWIlist[[2]]
-hiEWIvert <- EWIlist[[3]]
+
+
