@@ -28,8 +28,8 @@ checkSamVert <- function(x, returnAll = FALSE){
   verts <- verts[c("RECORD_NO", "RESULT_VA")]
   verts <- unique(verts[c("RECORD_NO", "RESULT_VA")])
   #join number of verticals to EWI/EDI dataframes
-  EWI <- left_join(EWI, verts, by = "RECORD_NO")
-  EDI <- left_join(EDI, verts, by = "RECORD_NO")
+  EWI <- dplyr::left_join(EWI, verts, by = "RECORD_NO")
+  EDI <- dplyr::left_join(EDI, verts, by = "RECORD_NO")
   
   # set flags
   EWI$EWIvertflag[is.na(EWI$RESULT_VA)==TRUE] <- paste("flag # EWI verticals missing")
