@@ -1,6 +1,6 @@
 #' checkSamPurp
 #' @description Function to flag uncommon sample purpose
-#' @param qw.data A qw.data list generated from readNWISodbc
+#' @param x A list generated from \code{getLocalNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @details 
 #' @examples 

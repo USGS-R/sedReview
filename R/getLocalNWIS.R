@@ -50,7 +50,7 @@
 #' @importFrom dplyr left_join
 #' @importFrom lubridate yday
 #' @export
-nwisODBC <- function(DSN,
+getLocalNWIS <- function(DSN,
                      env.db = "01",
                      qa.db = "02",
                      STAIDS ,
