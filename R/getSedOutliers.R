@@ -13,7 +13,7 @@
 #' @return A dataframe containing all samples with applicable flags
 
 # x is plotData from NWISodbc data pull
-sedOutliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll = FALSE){
+getSedOutliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll = FALSE){
   # extract SSC (80154) SSL (80155) and LOI (00496/00535)
   sedMedium <- c("WS ", "SS ", "SB ", "WSQ", "SSQ", "SBQ")
   x$flag <- NA
