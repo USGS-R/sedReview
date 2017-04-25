@@ -1,4 +1,19 @@
-nwis20check <- function(x, returnAll = FALSE)
+#' checkNWIS20
+#' @description Function to perform NWIS 20.xx checks
+#' @param qw.data A qw.data list generated from readNWISodbc
+#' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
+#' @details 
+#' @examples 
+#' data("exampleData",package="sedReview")
+#' x <- exampleData$PlotTable
+#' nwis20flags <- checkNWIS20(x)
+#' 
+#' @importFrom dplyr left_join
+#' @export
+#' @return A dataframe containing all samples with applicable flags
+
+# x is plotData from NWISodbc data pull
+checkNWIS20 <- function(x, returnAll = FALSE)
 {
   ### NWIS check 20.41 - unexpected medium code for bed sediment Pcode(s)
   # Need pcodes, not in LIMS anymore sch2420 <- 
