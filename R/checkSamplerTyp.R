@@ -22,10 +22,10 @@ checkSamplerTyp <- function(x, returnAll = FALSE){
   sampTyp <- as.data.frame(table(sampler$RESULT_VA))
   names(sampTyp) <- c("SamplerType", "count")
   sampTyp$SamplerType <- as.character(sampTyp$SamplerType)
-  # most common samp purpose
+  # most common sampler type
   mainType <- sampTyp$SamplerType[sampTyp$count %in% max(sampTyp$count)]
   
-  # flag sample purposes other than most common
+  # flag sampler types other than most common
   sampler$sampTypFlag[sampler$RESULT_VA != mainType] <- paste("flag uncommon sampler type")
   
   # list of flagged samples
