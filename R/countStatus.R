@@ -5,13 +5,15 @@
 #' @param bySite Logical. Count by site if \code{TRUE} or for all sites if \code{FALSE}
 #' @return A data.frame tabular summary of counts of sample status (DQI_CD) by parameter
 #' @examples
-#' data("exampleData",package="sedReview")
-#' x <- exampleData$longTable
-#' countStatus(x,bySite = TRUE)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
 #' @export
-countMethodsBySite <- function(x, bySite = TRUE) {
+#' 
+
+# data("exampleData",package="sedReview")
+# x <- exampleData$longTable
+# countStatus(x,bySite = TRUE)
+countStatus <- function(x, bySite = TRUE) {
   
   
 }
