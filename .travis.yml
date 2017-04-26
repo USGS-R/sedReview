@@ -5,7 +5,7 @@ cache: packages
 r_packages:
  - covr
 
- script: ./travis-tool.sh run_tests
+script: ./travis-tool.sh run_tests
 
 after_success:
   - Rscript -e 'covr::coveralls()'
