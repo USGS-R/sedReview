@@ -1,41 +1,32 @@
-# Sample .travis.yml for R projects.
-#
-# See README.md for instructions, or for more configuration options,
-# see the wiki:
-#   https://github.com/craigcitro/r-travis/wiki
+# Defines the options for building the project on linux with Travis-CI
+# For more configuration options, see the wiki:
+# https://github.com/craigcitro/r-travis/wiki/Porting-to-native-R-support-in-Travis
 
 language: r
 cache: packages
-dist: trusty
+sudo: false
+warnings_are_errors: false
 
-matrix:
-  include:
-    - os: linux
-      r: release
-    - os: linux
-      r: devel
-      env: R_CODECOV=true
+r_build_args: --no-build-vignettes --no-manual --no-multiarch
+r_check_args: --no-build-vignettes --no-manual
 
-addons:
-  apt:
-    packages:
-    - libcurl4-openssl-dev
+repos:
+  CRAN: https://cran.rstudio.com
+  GRAN: https://owi.usgs.gov/R
 
-env:
-   global:
-     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
-     - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
-     - NOT_CRAN="true"
-     - _R_CHECK_FORCE_SUGGESTS_=false
-     
-warnings_are_errors: true
+before_script:
+  - Rscript -e "install.packages('knitr')"
+  - Rscript -e "install.packages('rmarkdown')"
 
 r_github_packages:
   - jimhester/covr
 
 after_success:
-  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::coveralls()'; fi
-  
+  - Rscript -e 'covr::coveralls()'
+
+after_failure:
+  - ./travis-tool.sh dump_logs
+
 notifications:
   email:
     on_success: change
