@@ -15,7 +15,7 @@
 checkSamPurp <- function(x, returnAll = FALSE){
   # sample purposes
   purp <- x[x$PARM_CD == "71999", ]
-  purp <- unique(purp[c("RECORD_NO", "RESULT_VA")])
+  purp <- unique(purp[c("RECORD_NO", "PARM_CD", "PARM_NM", "RESULT_VA")])
   
   # table of unique sample purposes
   sampPurp <- as.data.frame(table(purp$RESULT_VA))
@@ -35,7 +35,7 @@ checkSamPurp <- function(x, returnAll = FALSE){
                                "SAMPLE_START_DT",
                                "MEDIUM_CD")])
   # append flags
-  flaggedSamples <- dplyr::left_join(flaggedSamples, purp[c("RECORD_NO", "sampPurpFlag")], by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, purp[c("RECORD_NO", "PARM_CD", "PARM_NM", "RESULT_VA", "sampPurpFlag")], by = "RECORD_NO")
   if(returnAll == FALSE)
   {
     flaggedSamples <- flaggedSamples[is.na(flaggedSamples$sampPurpFlag)==FALSE, ]

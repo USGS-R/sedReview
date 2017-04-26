@@ -1,4 +1,3 @@
-
 #' checkSamVert
 #' @description Function to check if number of verticals in EDI/EWI samples is correct
 #' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}

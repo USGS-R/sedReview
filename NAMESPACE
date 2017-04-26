@@ -2,6 +2,7 @@
 
 export(checkNWIS20)
 export(checkQ)
+export(checkOSW2001_03)
 export(checkSamPurp)
 export(checkSamVert)
 export(checkSamplerTyp)
