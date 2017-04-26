@@ -4,6 +4,10 @@ cache: packages
   
 r_packages:
  - covr
+ 
+warnings_are_errors: false
+
+cran: http://cran.rstudio.com
 
 script: ./travis-tool.sh run_tests
 
