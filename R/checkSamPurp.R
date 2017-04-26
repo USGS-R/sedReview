@@ -1,10 +1,10 @@
 #' checkSamPurp
 #' @description Function to flag uncommon sample purpose
-#' @param x A list generated from \code{getLocalNWIS}
-#' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
+#' @param x A datafrom generated from getLocalNWIS
+#' @param returnAll logical, return dataframe containing all results or only return flagged samples. Default is FALSE
 #' @examples 
 #' data("exampleData",package="sedReview")
-#' x <- exampleData$PlotTable
+#' x <- exampleData$longTable
 #' samplePurpFlags <- checkSamPurp(x)
 #' 
 #' @importFrom dplyr left_join
