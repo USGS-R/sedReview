@@ -7,7 +7,7 @@
 countBySite(x)
 }
 \arguments{
-\item{x}{A list generated from \code{getLocalNWIS}}
+\item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
 }
 \value{
 A data.frame tabular summary of counts of samples by site and method
@@ -16,6 +16,7 @@ A data.frame tabular summary of counts of samples by site and method
 Returns counts of samples by site, sampling method, and sampler type. See details
 }
 \examples{
-x <- data("exampleData",package="sedReview")
+data("exampleData",package="sedReview")
+x <- exampleData$longTable
 countBySite(x)
 }

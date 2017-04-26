@@ -7,7 +7,7 @@
 checkSamPurp(x, returnAll = FALSE)
 }
 \arguments{
-\item{x}{A list generated from \code{getLocalNWIS}}
+\item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
 
 \item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE}
 }
@@ -19,7 +19,7 @@ Function to flag uncommon sample purpose
 }
 \examples{
 data("exampleData",package="sedReview")
-x <- exampleData$PlotTable
+x <- exampleData$longTable
 samplePurpFlags <- checkSamPurp(x)
 
 }
