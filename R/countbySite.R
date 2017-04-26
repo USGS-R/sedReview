@@ -1,27 +1,16 @@
-# Master queries:
-#   Ability to retrieve total number of samples and names of sites sampled for:
-#   SSC (80154)
-# Bedload (80225)
-# Bedload mass (91145)
-# Ability to retrieve counts (number of samples) on sample method code, particularly:
-#   If SSC (80154) value is present:
-#   Sample method code (82398) = 10, 20, or 60 (provide counts for each code)
-# Sampler type (84164) = 3060, 3070, 3071 (provide counts for each code)
-# If bedload (80225) value is present:
-#   Sample method code (82398) = 1000, 1010, 1020 (provide counts for each code)
-
-#' countBySite
+#' countMethodsBySite
 #' 
 #' @description Returns counts of samples by site, sampling method, and sampler type. See details
-#' @param x A list generated from \code{getLocalNWIS}
+#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
 #' @return A data.frame tabular summary of counts of samples by site and method
 #' @examples
-#' x <- data("exampleData",package="sedReview")
-#' countBySite(x)
+#' data("exampleData",package="sedReview")
+#' x <- exampleData$longTable
+#' countMethodsBySite(x)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
 #' @export
-countBySite <- function(x) {
+countMethodsBySite <- function(x) {
   
   #Get only required columns
   x <- x[c("RECORD_NO","SITE_NO","STATION_NM","PARM_CD","METH_CD","RESULT_VA")]

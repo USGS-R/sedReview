@@ -3,15 +3,23 @@ Type: Package
 Title: Package for review of discrete water-quality sediment data stored in the USGS NWIS system
 Version: 0.1
 Date: 2017-04-25
-Authors: c( person("Joe", "Mills", role = c("aut","cre"),email = "tmills@usgs.gov"),person("Colin","Penn", role = c("aut","cre"),email = "cpenn@usgs.gov""))
+Authors@R: as.person(c(
+    "T. Joe Mills <tmills@usgs.gov> [aut, cre]", 
+    "Collin Penn <cpenn@usgs.gov> [aut]",
+    "Molly Wood <mwood@usgs.gov> [aut]")
+    )
 Depends:
     R (>= 3.3)
 Imports:
     lubridate,
     dplyr,
-    RODBC
+    RODBC,
+    reshape2
 Suggests:
-    testthat
+    xtable,
+    knitr,
+    testthat,
+    rmarkdown
 Description: Contains various functions useful for reviewing discrete water-quality sediment data.
 License: CC0
 LazyLoad: yes
