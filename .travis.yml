@@ -13,7 +13,7 @@ cran: http://cran.rstudio.com
 script: ./travis-tool.sh run_tests
 
 after_success:
-  - Rscript -e 'covr::coveralls()'
+  - R -e 'covr::coveralls()'
 
 after_failure:
   - ./travis-tool.sh dump_logs
