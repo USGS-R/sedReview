@@ -10,17 +10,17 @@
 # If bedload (80225) value is present:
 #   Sample method code (82398) = 1000, 1010, 1020 (provide counts for each code)
 
-#' countSamplesbySite
+#' countBySite
 #' 
 #' @description Returns counts of samples by site, sampling method, and sampler type. See details
 #' @param x A list generated from \code{getLocalNWIS}
 #' @return A data.frame tabular summary of counts of samples by site and method
 #' @examples
 #' x <- data("exampleData",package="sedReview")
-#' countSamplesbySite(x)
+#' countBySite(x)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
-countSamplesbySite <- function(x) {
+countBySite <- function(x) {
   
   #Get only required columns
   x <- x[c("RECORD_NO","SITE_NO","STATION_NM","PARM_CD","METH_CD","RESULT_VA")]
@@ -40,18 +40,18 @@ countSamplesbySite <- function(x) {
   sscData <- x[x$PARM_CD %in% c("80154","82398"),]
   
   ##Group-wise filter of records that contain both SSC data (80154) AND a sampling method (82398)
-  sscData <- filter(group_by(sscData,RECORD_NO),
+  sscData <- dplyr::filter(dplyr::group_by(sscData,RECORD_NO),
                  all(c("80154","82398") %in% PARM_CD)
   )
   
   ##Ungroup the data for full filter
-  sscData <- ungroup(sscData)
+  sscData <- dplyr::ungroup(sscData)
   
   ##Filter to just the sampling method result
   sscData <- sscData[sscData$PARM_CD == "82398",]
   
   ##summarize counts grouped by site
-  sumByMethod_SSC <- summarise(group_by(sscData,SITE_NO),
+  sumByMethod_SSC <- dplyr::summarise(dplyr::group_by(sscData,SITE_NO),
                            SSC_method_10 = length(RESULT_VA[RESULT_VA == 10]),
                            SSC_method_20 = length(RESULT_VA[RESULT_VA == 20]),
                            SSC_method_60 = length(RESULT_VA[RESULT_VA == 60])
@@ -73,18 +73,18 @@ countSamplesbySite <- function(x) {
   sscData <- x[x$PARM_CD %in% c("80154","84164"),]
   
   ##Group-wise filter of records that contain both SSC data (80154) AND a sampler type (84164)
-  sscData <- filter(group_by(sscData,RECORD_NO),
+  sscData <- dplyr::filter(dplyr::group_by(sscData,RECORD_NO),
                     all(c("80154","84164") %in% PARM_CD)
   )
   
   ##Ungroup the data for full filter
-  sscData <- ungroup(sscData)
+  sscData <- dplyr::ungroup(sscData)
   
   ##Filter to just the sampler type result
   sscData <- sscData[sscData$PARM_CD == "84164",]
   
   ##summarize counts grouped by site
-  sumBySampler_SSC <- summarise(group_by(sscData,SITE_NO),
+  sumBySampler_SSC <- dplyr::summarise(dplyr::group_by(sscData,SITE_NO),
                            SSC_sampler_3060 = length(RESULT_VA[RESULT_VA == 3060]),
                            SSC_sampler_3070 = length(RESULT_VA[RESULT_VA == 3070]),
                            SSC_sampler_3071 = length(RESULT_VA[RESULT_VA == 3071])
@@ -106,18 +106,18 @@ countSamplesbySite <- function(x) {
   bedloadData <- x[x$PARM_CD %in% c("80225","82398"),]
   
   ##Group-wise filter of records that contain both SSC data (80225) AND a sampling method (82398)
-  bedloadData <- filter(group_by(bedloadData,RECORD_NO),
+  bedloadData <- dplyr::filter(dplyr::group_by(bedloadData,RECORD_NO),
                     all(c("80225","82398") %in% PARM_CD)
   )
   
   ##Ungroup the data for full filter
-  bedloadData <- ungroup(bedloadData)
+  bedloadData <- dplyr::ungroup(bedloadData)
   
   ##Filter to just the sampling method result
   bedloadData <- bedloadData[bedloadData$PARM_CD == "82398",]
   
   ##summarize counts grouped by site
-  sumByMethod_bedload <- summarise(group_by(bedloadData,SITE_NO),
+  sumByMethod_bedload <- dplyr::summarise(dplyr::group_by(bedloadData,SITE_NO),
                            bedload_method_1000 = length(RESULT_VA[RESULT_VA == 1000]),
                            bedload_method_1010 = length(RESULT_VA[RESULT_VA == 1010]),
                            bedload_method_1020 = length(RESULT_VA[RESULT_VA == 1020])
