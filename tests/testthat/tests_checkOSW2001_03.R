@@ -5,5 +5,5 @@ test_that("Return values check", {
   load("data/checkOSW2001_03Out.rda")
   longTable <- exampleData$longTable
   checkOSW2001_03OutTest <- checkOSW2001_03(longTable)
-  expect_equal(checkOSW2001_03Out, chechOSW2001_03OutTest)
+  expect_equal(checkOSW2001_03Out, checkOSW2001_03OutTest)
 })
