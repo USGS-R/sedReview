@@ -19,8 +19,7 @@ Suggests:
     xtable,
     knitr,
     testthat,
-    rmarkdown,
-    coveralls
+    rmarkdown
 Description: Contains various functions useful for reviewing discrete water-quality sediment data.
 License: CC0
 LazyLoad: yes
