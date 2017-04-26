@@ -2,7 +2,6 @@
 #' @description Function to flag uncommon sampler type
 #' @param qw.data A qw.data list generated from readNWISodbc
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
-#' @details 
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData$PlotTable
