@@ -15,7 +15,13 @@
 checkNWIS20 <- function(x, returnAll = FALSE)
 {
   ### NWIS check 20.41 - unexpected medium code for bed sediment Pcode(s)
-  # Need pcodes, not in LIMS anymore sch2420 <- 
+  # list of schedule 2420 Pcodes - note schedule 2420 not in LIMS anymore, older schedule
+  sch2420list <- c("34950", "34970", "49267", "49269", "49266")
+  sch2420 <- x[x$PARM_CD %in% sch2420list,]
+  # flag samples with incorrect medium
+  sch2420$check_20.41_sch2420[!(sch2420$MEDIUM_CD %in% c("SB ", "SBQ", "SC ", "SCQ"))] <- paste("flag medium_cd=", 
+                                                                                              sch2420[!(sch2420$MEDIUM_CD %in% c("SB ", "SBQ", "SC ", "SCQ"))])
+  sch2420 <- unique(sch2420[c("RECORD_NO", "check_20.41_sch2420")])
   
   # list of schedule 2501 Pcodes
   sch2501list <- c("49319","49332","49338","49275","49339","49322","49320","49316",
@@ -24,8 +30,8 @@ checkNWIS20 <- function(x, returnAll = FALSE)
                    "49328","49330","49346","49460","49459","99853","99824","49351","49321","49317","49350")
   sch2501 <- x[x$PARM_CD %in% sch2501list,]
   # flag samples with incorrect medium
-  sch2501$check_20.41_sch2501[sch2501$MEDIUM_CD != "SB " & sch2501$MEDIUM_CD != "SBQ"] <- paste("flag medium_cd=", 
-                                                                                                sch2501$MEDIUM_CD[sch2501$MEDIUM_CD != "SB " & sch2501$MEDIUM_CD != "SBQ"])
+  sch2501$check_20.41_sch2501[!(sch2501$MEDIUM_CD %in% c("SB ", "SBQ"))] <- paste("flag medium_cd=", 
+                                                                                                sch2501$MEDIUM_CD[!(sch2501$MEDIUM_CD %in% c("SB ", "SBQ"))])
   sch2501 <- unique(sch2501[c("RECORD_NO", "check_20.41_sch2501")])
   # list of schedule 2502 Pcodes
   sch2502list <- c("49438","49439","49403","49441","49442","49404","49398","49410",
@@ -39,12 +45,23 @@ checkNWIS20 <- function(x, returnAll = FALSE)
                    "49400","49394","49431","49433","49402","49444","49280","49451",
                    "49460","49446","49425","49409","49393","49413","49387","49392","99854","99825","49278")
   sch2502 <- x[x$PARM_CD %in% sch2502list,]
-  sch2502$check_20.41_sch2502[sch2502$MEDIUM_CD != "SB " & sch2502$MEDIUM_CD != "SBQ"] <- paste("flag medium_cd=",
-                                                                                                sch2502$MEDIUM_CD[sch2502$MEDIUM_CD != "SB " & sch2502$MEDIUM_CD != "SBQ"])
+  sch2502$check_20.41_sch2502[!(sch2502$MEDIUM_CD %in% c("SB ", "SBQ"))] <- paste("flag medium_cd=",
+                                                                                                sch2502$MEDIUM_CD[!(sch2502$MEDIUM_CD %in% c("SB ", "SBQ"))])
   sch2502 <- unique(sch2502[c("RECORD_NO", "check_20.41_sch2502")])
   
   ### NWIS check 20.42 - Medium code conflicts with site type
-  # need readNWISodbc to pull the site type information from nwis
+  # list of mediums for each site type
+  STlist <- c("SS ","SSQ","WS ","WSQ","WI ","WIQ","SB ","SBQ","BA ","BAQ","BP ","BPQ","SO ","SOQ","BE ","BEQ",
+              "BD ","BDQ","BY ","BYQ","BH ","BHQ","BI ","BIQ","WW ","WWQ","AA ","AAQ","WT ","WTQ","WH ","WHQ","OA ","OAQ")
+  GWSBlist <- c("WG ","WGQ","AS ","ASQ","SO ","SOQ","SC ","SCQ","WI ","WIQ","WH ","WHQ","WT ","WTQ","OA ","OAQ")
+  # extract and compare medium code with site types
+  siteType <- x[,c("RECORD_NO", "MEDIUM_CD","SITE_TP_CD")]
+  siteType <- unique(siteType[c("RECORD_NO", "MEDIUM_CD", "SITE_TP_CD")])
+  siteType$check_20.42[siteType$SITE_TP_CD == "ST" & !(siteType$MEDIUM_CD %in% STlist)] <- 
+    paste("flag medium_cd conflicts with site_tp_cd")
+  siteType$check_20.42[siteType$SITE_TP_CD %in% c("GW","SB") & !(siteType$MEDIUM_CD %in% GWSBlist)] <- 
+    paste("flag medium_cd conflicts with site_tp_cd")
+  siteType <- siteType[,c("RECORD_NO", "check_20.42")]
   
   ### NWIS check 20.43 - ENV sample with QC-Blank pcodes
   # list of ENV sample codes
@@ -123,8 +140,10 @@ checkNWIS20 <- function(x, returnAll = FALSE)
                                "STATION_NM",
                                "SAMPLE_START_DT",
                                "MEDIUM_CD")])
+  flaggedSamples <- dplyr::left_join(flaggedSamples, sch2420, by = "RECORD_NO")
   flaggedSamples <- dplyr::left_join(flaggedSamples, sch2501, by = "RECORD_NO")
   flaggedSamples <- dplyr::left_join(flaggedSamples, sch2502, by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, siteType, by = "RECORD_NO")
   flaggedSamples <- dplyr::left_join(flaggedSamples, blankPcodes, by = "RECORD_NO")
   flaggedSamples <- dplyr::left_join(flaggedSamples, spikePcodes, by = "RECORD_NO")
   flaggedSamples <- dplyr::left_join(flaggedSamples, qcrefPcodes, by = "RECORD_NO")
@@ -138,8 +157,10 @@ checkNWIS20 <- function(x, returnAll = FALSE)
   
   if(returnAll == FALSE)
   {
-    flaggedSamples <- flaggedSamples[is.na(flaggedSamples$check_20.41_sch2501)==FALSE | 
+    flaggedSamples <- flaggedSamples[is.na(flaggedSamples$check_20.41_sch2420)==FALSE |
+                                       is.na(flaggedSamples$check_20.41_sch2501)==FALSE | 
                                        is.na(flaggedSamples$check_20.41_sch2502)==FALSE |
+                                       is.na(flaggedSamples$check_20.42)==FALSE |
                                        is.na(flaggedSamples$check_20.43)==FALSE |
                                        is.na(flaggedSamples$check_20.46)==FALSE |
                                        is.na(flaggedSamples$check_20.47)==FALSE |

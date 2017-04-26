@@ -3,6 +3,7 @@
 #' @description Function to check if number of verticals in EDI/EWI samples is correct
 #' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
+
 #' @details function to test EDI sample collected correctly. Number of sampling verticals 4-9.
 #' @details function to test EWI sample collected correctly. Number of verticals between 10 and 20.
 #' @examples 
