@@ -11,6 +11,7 @@ Imports:
     dplyr,
     RODBC
 Suggests:
+    testthat
 Description: Contains various functions useful for reviewing discrete water-quality sediment data.
 License: CC0
 LazyLoad: yes

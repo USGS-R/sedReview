@@ -20,6 +20,7 @@
 #' countBySite(x)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
+#' @export
 countBySite <- function(x) {
   
   #Get only required columns
