@@ -26,3 +26,21 @@ checkOSW2001_03 <- function(x, returnAll = FALSE){
   TSS <- dplyr::left_join(TSS, SSC, by = "RECORD_NO")
   TSS$OSW2001_03Flag[is.na(TSS$RESULT_VA)==FALSE & is.na(TSS$RESULT_VA_SSC)==TRUE] <- paste("flag TSS without SSC")
   
+  # list of flagged samples
+  ### data frame of all samples with flags
+  flaggedSamples <- unique(x[c("RECORD_NO",
+                               "SITE_NO",
+                               "STATION_NM",
+                               "SAMPLE_START_DT",
+                               "MEDIUM_CD")])
+  # append flags
+  flaggedSamples <- dplyr::left_join(flaggedSamples, TSS[c("RECORD_NO", "OSW2001_03Flag")], by = "RECORD_NO")
+  if(returnAll == FALSE)
+  {
+    flaggedSamples <- flaggedSamples[is.na(flaggedSamples$OSW2001_03Flag)==FALSE, ]
+  }
+  
+  
+  return(flaggedSamples)
+}
+
