@@ -4,6 +4,7 @@ cache: packages
   
 r_packages:
  - covr
+ - testthat
  
 warnings_are_errors: false
 

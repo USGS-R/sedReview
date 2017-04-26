@@ -5,7 +5,7 @@ test_that("Return values check", {
   data("exampleData",package="sedReview")
   load("data/countBySiteOut.rda")
   longTable <- exampleData$longTable
-  countBySiteOutTest <- countBySite(longTable)
+  countBySiteOutTest <- countMethodsBySite(longTable)
   expect_equal(countBySiteOut,countBySiteOutTest)
 })
 
