@@ -3,6 +3,8 @@
 export(checkNWIS20)
 export(checkSamPurp)
 export(checkSamVert)
+export(checkSamplerTyp)
+export(countBySite)
 export(getLocalNWIS)
 export(getSedOutliers)
 import(RODBC)
