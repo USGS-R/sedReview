@@ -13,7 +13,8 @@ Depends:
 Imports:
     lubridate,
     dplyr,
-    reshape2
+    reshape2,
+    RODBC
 Suggests:
     xtable,
     knitr,

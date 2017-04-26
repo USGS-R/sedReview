@@ -4,7 +4,8 @@
 
 language: r
 cache: packages
-sudo: false
+sudo: true
+dist: trusty
 warnings_are_errors: false
 
 r_build_args: --no-build-vignettes --no-manual --no-multiarch
