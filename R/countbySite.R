@@ -13,10 +13,11 @@
 #' countBySite
 #' 
 #' @description Returns counts of samples by site, sampling method, and sampler type. See details
-#' @param x A list generated from \code{getLocalNWIS}
+#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
 #' @return A data.frame tabular summary of counts of samples by site and method
 #' @examples
-#' x <- data("exampleData",package="sedReview")
+#' data("exampleData",package="sedReview")
+#' x <- exampleData$longTable
 #' countBySite(x)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise

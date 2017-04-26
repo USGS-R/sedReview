@@ -7,9 +7,9 @@
 checkSamplerTyp(x, returnAll = FALSE)
 }
 \arguments{
-\item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE}
+\item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
 
-\item{qw.data}{A qw.data list generated from readNWISodbc}
+\item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE}
 }
 \value{
 A dataframe containing all samples with applicable flags
@@ -19,7 +19,7 @@ Function to flag uncommon sampler type
 }
 \examples{
 data("exampleData",package="sedReview")
-x <- exampleData$PlotTable
+x <- exampleData$longTable
 samplerTypFlags <- checkSamplerTyp(x)
 
 }

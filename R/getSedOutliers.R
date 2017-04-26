@@ -1,10 +1,10 @@
 #' getSedOUtliers
 #' @description Function to flag sediment outliers
-#' @param qw.data A qw.data list generated from readNWISodbc
+#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @examples 
 #' data("exampleData",package="sedReview")
-#' x <- exampleData$PlotTable
+#' x <- exampleData$longTable
 #' sedOutlierFlags <- getSedOutliers(x)
 #' 
 #' @importFrom dplyr left_join

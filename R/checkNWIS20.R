@@ -1,10 +1,10 @@
 #' checkNWIS20
 #' @description Function to perform NWIS 20.xx checks
-#' @param qw.data A qw.data list generated from readNWISodbc
+#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @examples 
 #' data("exampleData",package="sedReview")
-#' x <- exampleData$PlotTable
+#' x <- exampleData$longTable
 #' nwis20flags <- checkNWIS20(x)
 #' 
 #' @importFrom dplyr left_join
