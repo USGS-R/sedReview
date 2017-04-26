@@ -17,3 +17,8 @@ A data.frame tabular summary of counts of sample status (DQI_CD) by parameter
 \description{
 Returns counts of sample status (DQI_CD) by parameter for each site or for multiple sites together
 }
+\examples{
+data("exampleData",package="sedReview")
+x <- exampleData$longTable
+countStatus(x,bySite = TRUE)
+}

@@ -45,7 +45,6 @@
 #'                              end.date = "2015-10-27",
 #'                              projectCd = NULL)
 #'                              }
-#' @import RODBC
 #' @importFrom reshape2 dcast
 #' @importFrom dplyr left_join
 #' @importFrom lubridate yday
