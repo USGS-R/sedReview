@@ -59,20 +59,18 @@ checkCalcBagIE <- function(x, returnAll = FALSE){
                    is.na(bagSamp$P00010_00011_waterTemp)==TRUE] <- paste("flag missing bag IE test results")
   
   ### Calculate bag intake efficiency according to OSW Tech Memo 2013.03
-  # if duration, volume, velocity and diameter are available procede with calculation
-  if(is.na(bagSamp$P72217_Dur)==FALSE & is.na(bagSamp$P72218_Vol)==FALSE &
-     is.na(bagSamp$P72196_Vel)==FALSE & is.na(bagSamp$P72220_Dia)==FALSE){
-    # assign K value based on indexed nozzle diameter
-    if(bagSamp$P72220_Dia == 3){K <- 0.1841}
-    if(bagSamp$P72220_Dia == 4){K <- 0.1036}
-    if(bagSamp$P72220_Dia == 5){K <- 0.0663}
-    # calculate intake efficieny
-    bagSamp$calcIE <- K * (bagSamp$P72218_Vol/bagSampP72217_Dur) / bagSamp$P72196
-    # flag intake efficiency where 0.75<IE<1.25
-    bagSamp$calcIEflag[bagSamp$calcIE < 0.75] <- paste("flag low calc IE")
-    bagSamp$calcIEflag[bagSamp$calcIE > 1.25] <- paste("flag high calc IE")
-  }else{}
-  
+  ## if duration, volume, velocity and diameter are available calculate intake efficiency
+  # assign K value based on indexed nozzle diameter
+  bagSamp$K[bagSamp$P72220_Dia == 3] <- 0.1841
+  bagSamp$K[bagSamp$P72220_Dia == 4] <- 0.1036
+  bagSamp$K[bagSamp$P72220_Dia == 5] <- 0.0663
+  # calculate intake efficieny
+  bagSamp$calcIE <- bagSamp$K * (bagSamp$P72218_Vol/bagSamp$P72217_Dur) / bagSamp$P72196
+  # flag intake efficiency where 0.75<IE<1.25
+  bagSamp$calcIEflag[bagSamp$calcIE < 0.75] <- paste("flag low calc IE")
+  bagSamp$calcIEflag[bagSamp$calcIE > 1.25] <- paste("flag high calc IE")
+  bagSamp$calcIEflag[is.na(bagSamp$calcIE)==TRUE] <- paste("flag missing bag IE test results")
+
   # list of flagged samples
   ### data frame of all samples with flags
   flaggedSamples <- unique(x[c("RECORD_NO",
