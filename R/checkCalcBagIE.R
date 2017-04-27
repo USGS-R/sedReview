@@ -1,6 +1,6 @@
 
 
-checkBagIE <- function(x, returnAll = FALSE){
+checkCalcBagIE <- function(x, returnAll = FALSE){
   ### Find records where sampler type code (P84164) has bag sampler value (3055,3056,3057,3058)
   bagSamp <- x[x$PARM_CD == "84164" & x$RESULT_VA %in% c(3055,3056,3057,3058), ]
   bagSamp <- unique(bagSamp[c("RECORD_NO", "PARM_CD", "PARM_NM", "RESULT_VA")])
