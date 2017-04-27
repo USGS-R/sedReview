@@ -1,21 +1,21 @@
-# checkCalcBagIE
-# @description Function to check and flag bag intake efficiency parameters, and calculate and flag the bag efficiency
-# @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
-# @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
-# @details checks and calculated bag intake efficiency under OSW Tech Memo 2013.03
-# @details P72217 - Duration sampler collected water, seconds
-# @details P72218 - Sample volume to compute isokinetic transit rate, milliliters
-# @details P72196 - Velocity to compute isokinetic transit rate, feet per second
-# @details P72219 - Sampler nozzle material, code: Plastic=2, TFE=3
-# @details P72220 - Sampler nozzle diameter, code: 3/16"=3, 1/4"=4, 5/16"=5
-# @examples 
-# data("exampleData",package="sedReview")
-# x <- exampleData$longTable
-# bagIEflags <- checkCalcBagIE(x)
-# 
-# @importFrom dplyr left_join
-# @export
-# @return A dataframe containing all samples with applicable flags
+#' checkCalcBagIE
+#' @description Function to check and flag bag intake efficiency parameters, and calculate and flag the bag efficiency
+#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
+#' @details checks and calculated bag intake efficiency under OSW Tech Memo 2013.03
+#' @details P72217 - Duration sampler collected water, seconds
+#' @details P72218 - Sample volume to compute isokinetic transit rate, milliliters
+#' @details P72196 - Velocity to compute isokinetic transit rate, feet per second
+#' @details P72219 - Sampler nozzle material, code: Plastic=2, TFE=3
+#' @details P72220 - Sampler nozzle diameter, code: 3/16"=3, 1/4"=4, 5/16"=5
+#' @examples 
+#' data("exampleData",package="sedReview")
+#' x <- exampleData$longTable
+#' bagIEflags <- checkCalcBagIE(x)
+#' 
+#' @importFrom dplyr left_join
+#' @export
+#' @return A dataframe containing all samples with applicable flags
 
 checkCalcBagIE <- function(x, returnAll = FALSE){
   ### Find records where sampler type code (P84164) has bag sampler value (3055,3056,3057,3058)
