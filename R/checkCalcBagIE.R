@@ -15,10 +15,10 @@ checkCalcBagIE <- function(x, returnAll = FALSE){
   # 72196 - Velocity to compute isokinetic transit rate, feet per second
   velocity <- x[x$PARM_CD == "72196" & x$RECORD_NO %in% bagSamp$RECORD_NO,]
   velocity <- unique(velocity[c("RECORD_NO", "RESULT_VA")])
-  # 72219 - Sampler nozzle material, code
+  # 72219 - Sampler nozzle material, code: Plastic=2, TFE=3
   nozzle <- x[x$PARM_CD == "72219" & x$RECORD_NO %in% bagSamp$RECORD_NO,]
   nozzle <- unique(nozzle[c("RECORD_NO", "RESULT_VA")])
-  # 72220 - Sampler nozzle diameter, code
+  # 72220 - Sampler nozzle diameter, code: 3/16"=3, 1/4"=4, 5/16"=5
   diameter <- x[x$PARM_CD == "72220" & x$RECORD_NO %in% bagSamp$RECORD_NO,]
   diameter <- unique(diameter[c("RECORD_NO", "RESULT_VA")])
   # 00010 or 00011 - water temp
@@ -40,6 +40,22 @@ checkCalcBagIE <- function(x, returnAll = FALSE){
                    is.na(bagSamp$P72219_Nozz)==TRUE |
                    is.na(bagSamp$P72220_Dia)==TRUE |
                    is.na(bagSamp$P00010_00011_waterTemp)==TRUE] <- paste("flag missing bag IE test results")
+  
+  ### Calculate bag intake efficiency according to OSW Tech Memo 2013.03
+  # if duration, volume, velocity and diameter are available procede with calculation
+  if(is.na(bagSamp$P72217_Dur)==FALSE & is.na(bagSamp$P72218_Vol)==FALSE &
+     is.na(bagSamp$P72196_Vel)==FALSE & is.na(bagSamp$P72220_Dia)==FALSE){
+    # assign K value based on indexed nozzle diameter
+    if(bagSamp$P72220_Dia == 3){K <- 0.1841}
+    if(bagSamp$P72220_Dia == 4){K <- 0.1036}
+    if(bagSamp$P72220_Dia == 5){K <- 0.0663}
+    # calculate intake efficieny
+    bagSamp$calcIE <- K * (bagSamp$P72218_Vol/bagSampP72217_Dur) / bagSamp$P72196
+    # flag intake efficiency where 0.75<IE<1.25
+    bagSamp$calcIEflag[bagSamp$calcIE < 0.75] <- paste("flag low calc IE")
+    bagSamp$calcIEflag[bagSamp$calcIE > 1.25] <- paste("flag high calc IE")
+
+  }else{}
   
   # list of flagged samples
   ### data frame of all samples with flags
