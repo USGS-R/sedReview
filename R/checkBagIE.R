@@ -2,7 +2,7 @@
 
 checkBagIE <- function(x, returnAll = FALSE){
   ### Find records where sampler type code (P84164) has bag sampler value (3055,3056,3057,3058)
-  bagSamp <- x[x$PARM_CD == "84164" & x$RESULT_VA %in% c(3055,3056,3057,3058,3054), ]
+  bagSamp <- x[x$PARM_CD == "84164" & x$RESULT_VA %in% c(3055,3056,3057,3058), ]
   bagSamp <- unique(bagSamp[c("RECORD_NO", "PARM_CD", "PARM_NM", "RESULT_VA")])
   
   ### Pull intake efficiency test results Pcodes
@@ -40,6 +40,22 @@ checkBagIE <- function(x, returnAll = FALSE){
                    is.na(bagSamp$P72219_Nozz)==TRUE |
                    is.na(bagSamp$P72220_Dia)==TRUE |
                    is.na(bagSamp$P00010_00011_waterTemp)==TRUE] <- paste("flag missing bag IE test results")
-
+  
+  # list of flagged samples
+  ### data frame of all samples with flags
+  flaggedSamples <- unique(x[c("RECORD_NO",
+                               "SITE_NO",
+                               "STATION_NM",
+                               "SAMPLE_START_DT",
+                               "MEDIUM_CD")])
+  # append flags
+  flaggedSamples <- dplyr::left_join(flaggedSamples, bagSamp, by = "RECORD_NO")
+  if(returnAll == FALSE)
+  {
+    flaggedSamples <- flaggedSamples[is.na(flaggedSamples$IEflag)==FALSE, ]
+  }
+  
+  
+  return(flaggedSamples)
 }
 
