@@ -25,10 +25,21 @@ checkBagIE <- function(x, returnAll = FALSE){
   waterTemp <- x[x$PARM_CD %in% c("00010","00011") & x$RECORD_NO %in% bagSamp$RECORD_NO,]
   waterTemp <- unique(waterTemp[c("RECORD_NO", "RESULT_VA")])
   
-  ### append IE test results to bag sampler records
+  ### append IE test results to bag sampler records and flag those with missing results
   bagSamp <- dplyr::left_join(bagSamp, duration, by = "RECORD_NO")
   bagSamp <- dplyr::left_join(bagSamp, volume, by = "RECORD_NO")
-  
-  
+  bagSamp <- dplyr::left_join(bagSamp, velocity, by = "RECORD_NO")
+  bagSamp <- dplyr::left_join(bagSamp, nozzle, by = "RECORD_NO")
+  bagSamp <- dplyr::left_join(bagSamp, diameter, by = "RECORD_NO")
+  bagSamp <- dplyr::left_join(bagSamp, waterTemp, by = "RECORD_NO")
+  names(bagSamp) <- c("RECORD_NO", "PARM_CD", "PARM_NM", "RESULT_VA",
+                      "P72217_Dur", "P72218_Vol", "P72196_Vel", "P72219_Nozz", "P72220_Dia", "P00010_00011_waterTemp")
+  bagSamp$IEflag[is.na(bagSamp$P72217_Dur)==TRUE |
+                   is.na(bagSamp$P72218_Vol)==TRUE |
+                   is.na(bagSamp$P72196_Vel)==TRUE |
+                   is.na(bagSamp$P72219_Nozz)==TRUE |
+                   is.na(bagSamp$P72220_Dia)==TRUE |
+                   is.na(bagSamp$P00010_00011_waterTemp)==TRUE] <- paste("flag missing bag IE test results")
+
 }
 
