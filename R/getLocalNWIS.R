@@ -625,9 +625,12 @@ getLocalNWIS <- function(DSN,
   ###Remove trailing spaces on site IDs
   
   longTable$SITE_NO <- gsub(" ","",longTable$SITE_NO)
-
+  
+  ###Make a unique ID
+  longTable$UID <- paste(longTable$SITE_NO,longTable$RECORD_NO,sep="_")
+  
   ###Reorder columns
-  longTable <- longTable[c("RECORD_NO" ,"SITE_NO","STATION_NM","SAMPLE_START_DT","SAMPLE_END_DT","MEDIUM_CD","PROJECT_CD",
+  longTable <- longTable[c("UID","RECORD_NO" ,"SITE_NO","STATION_NM","SAMPLE_START_DT","SAMPLE_END_DT","MEDIUM_CD","PROJECT_CD",
                            "PARM_CD","PARM_NM","METH_CD","RESULT_VA","REMARK_CD","VAL_QUAL_CD","RPT_LEV_VA","DQI_CD", 
                            "DEC_LAT_VA","DEC_LONG_VA",
                            "SAMPLE_CM_TX","SAMPLE_CM_CR","SAMPLE_CM_CN","SAMPLE_CM_MD","SAMPLE_CM_MN",
