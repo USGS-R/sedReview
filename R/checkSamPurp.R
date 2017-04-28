@@ -2,6 +2,8 @@
 #' @description Function to flag uncommon sample purpose
 #' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
+#' @details Function determines most common sample purpose for all retrieved records and flags all sample purposes other than the most common.
+#' @details There are of course valid reasons to have different sample purposes, this is just a check.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData$longTable
@@ -15,7 +17,7 @@
 checkSamPurp <- function(x, returnAll = FALSE){
   # sample purposes
   purp <- x[x$PARM_CD == "71999", ]
-  purp <- unique(purp[c("RECORD_NO", "PARM_CD", "PARM_NM", "RESULT_VA")])
+  purp <- unique(purp[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA")])
   
   # table of unique sample purposes
   sampPurp <- as.data.frame(table(purp$RESULT_VA))
@@ -25,17 +27,18 @@ checkSamPurp <- function(x, returnAll = FALSE){
   mainPurp <- sampPurp$SamplePurpose[sampPurp$count %in% max(sampPurp$count)]
   
   # flag sample purposes other than most common
-  purp$sampPurpFlag[purp$RESULT_VA != mainPurp] <- paste("flag uncommon sample purpose")
+  purp$sampPurpFlag[purp$RESULT_VA != mainPurp] <- paste("flag uncommon sample purpose ", purp$RESULT_VA[purp$RESULT_VA != mainPurp])
   
   # list of flagged samples
   ### data frame of all samples with flags
-  flaggedSamples <- unique(x[c("RECORD_NO",
+  flaggedSamples <- unique(x[c("UID",
+                               "RECORD_NO",
                                "SITE_NO",
                                "STATION_NM",
                                "SAMPLE_START_DT",
                                "MEDIUM_CD")])
   # append flags
-  flaggedSamples <- dplyr::left_join(flaggedSamples, purp[c("RECORD_NO", "PARM_CD", "PARM_NM", "RESULT_VA", "sampPurpFlag")], by = "RECORD_NO")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, purp[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA", "sampPurpFlag")], by = "UID")
   if(returnAll == FALSE)
   {
     flaggedSamples <- flaggedSamples[is.na(flaggedSamples$sampPurpFlag)==FALSE, ]
