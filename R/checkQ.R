@@ -30,5 +30,9 @@ checkQ <- function(x, returnAll = FALSE) {
   
   Qsum <- dplyr::left_join(sedRecords,qRecords,by=c("UID"))
   
+  if(returnAll == FALSE) {
+    Qsum <- Qsum[Qsum$hasQ == FALSE,]
+  }
+  
   return(Qsum)
 }

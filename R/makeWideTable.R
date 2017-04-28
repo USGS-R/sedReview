@@ -45,7 +45,7 @@ makeWideTable <- function(x) {
   #reorder columns so meta data is at front
   parmcols <- seq(from =2, to =ncol(wideTable)-ncol(metaData)+1)
   metacols <- seq(from = ncol(wideTable)-(ncol(metaData)-2), to =ncol(wideTable))
-  wideTable <- wideTable[c(1,metacols[1:8],parmcols,metacols[9:length(metacols)])]
+  wideTable <- wideTable[c(1,metacols[1:9],parmcols,metacols[10:length(metacols)])]
   
   return(wideTable)
 }
