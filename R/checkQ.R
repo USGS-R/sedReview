@@ -15,20 +15,20 @@
 
 
 checkQ <- function(x, returnAll = FALSE) {
-  x <- x[c("RECORD_NO","SITE_NO","SAMPLE_START_DT","SAMPLE_END_DT", "MEDIUM_CD","PARM_CD","DQI_CD","RESULT_VA")]
+  x <- x[c("UID","RECORD_NO","SITE_NO","STATION_NM","SAMPLE_START_DT","SAMPLE_END_DT", "MEDIUM_CD","PARM_CD","DQI_CD","RESULT_VA")]
   x <- unique(x)
   
   sedRecords <- x[x$PARM_CD %in% c("80254","80154","80155","80225","00496","00535"),]
   qRecords <- x[x$PARM_CD %in%  c("00060", "00061", "30208", "30209", "50042", "72137", "72243", "99060", "99061"),]
   
 
-  sedRecords <- reshape2::dcast(sedRecords,SITE_NO+RECORD_NO~PARM_CD,value.var="RESULT_VA")
-  qRecords <- reshape2::dcast(qRecords,SITE_NO+RECORD_NO~PARM_CD,value.var="RESULT_VA")
+  sedRecords <- reshape2::dcast(sedRecords,UID+RECORD_NO+SITE_NO+STATION_NM+SAMPLE_START_DT+MEDIUM_CD~PARM_CD,value.var="RESULT_VA")
+  qRecords <- reshape2::dcast(qRecords,UID~PARM_CD,value.var="UID")
   
   
   sedRecords$hasQ <- ifelse(sedRecords$RECORD_NO %in% qRecords$RECORD_NO,TRUE,FALSE)
   
-  Qsum <- dplyr::left_join(sedRecords,qRecords,by=c("SITE_NO","RECORD_NO"))
+  Qsum <- dplyr::left_join(sedRecords,qRecords,by=c("UID"))
   
   return(Qsum)
 }
