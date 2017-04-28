@@ -27,7 +27,7 @@ checkSamPurp <- function(x, returnAll = FALSE){
   mainPurp <- sampPurp$SamplePurpose[sampPurp$count %in% max(sampPurp$count)]
   
   # flag sample purposes other than most common
-  purp$sampPurpFlag[purp$RESULT_VA != mainPurp] <- paste("flag uncommon sample purpose")
+  purp$sampPurpFlag[purp$RESULT_VA != mainPurp] <- paste("flag uncommon sample purpose ", purp$RESULT_VA[purp$RESULT_VA != mainPurp])
   
   # list of flagged samples
   ### data frame of all samples with flags
