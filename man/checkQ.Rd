@@ -4,10 +4,12 @@
 \alias{checkQ}
 \title{checkQ}
 \usage{
-checkQ(x, bySite = TRUE)
+checkQ(x, returnAll = FALSE)
 }
 \arguments{
 \item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
+
+\item{returnAll}{Logical. Return dataframe containing all samples if \code{TRUE} or only return samples missing discharge if \code{FALSE}. Defualt is \code{FALSE}}
 }
 \value{
 A data.frame of samples, what sediment data are available, and then a flag for missing discharge along with what discharge parameter are present
