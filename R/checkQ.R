@@ -23,10 +23,10 @@ checkQ <- function(x, returnAll = FALSE) {
   
 
   sedRecords <- reshape2::dcast(sedRecords,UID+RECORD_NO+SITE_NO+STATION_NM+SAMPLE_START_DT+MEDIUM_CD~PARM_CD,value.var="RESULT_VA")
-  qRecords <- reshape2::dcast(qRecords,UID~PARM_CD,value.var="UID")
+  qRecords <- reshape2::dcast(qRecords,UID~PARM_CD,value.var="RESULT_VA")
   
   
-  sedRecords$hasQ <- ifelse(sedRecords$RECORD_NO %in% qRecords$RECORD_NO,TRUE,FALSE)
+  sedRecords$hasQ <- ifelse(sedRecords$UID %in% qRecords$UID,TRUE,FALSE)
   
   Qsum <- dplyr::left_join(sedRecords,qRecords,by=c("UID"))
   

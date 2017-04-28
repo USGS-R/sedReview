@@ -15,7 +15,7 @@
 
 
 countStatus <- function(x, bySite = TRUE) {
-  x <- x[c("RECORD_NO","SITE_NO","PARM_CD","DQI_CD","RESULT_VA")]
+  x <- x[c("UID","RECORD_NO","SITE_NO","STATION_NM","SAMPLE_START_DT","MEDIUM_CD","PARM_CD","DQI_CD","RESULT_VA")]
   x <- unique(x)
   
   if(bySite == TRUE){

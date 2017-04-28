@@ -13,7 +13,7 @@
 countMethodsBySite <- function(x) {
   
   #Get only required columns
-  x <- x[c("RECORD_NO","SITE_NO","STATION_NM","PARM_CD","METH_CD","RESULT_VA")]
+  x <- x[c("UID","RECORD_NO","SITE_NO","STATION_NM","PARM_CD","METH_CD","RESULT_VA")]
   x <- unique(x)
   
   #Do basic summary of counts by site
@@ -63,7 +63,7 @@ countMethodsBySite <- function(x) {
   sscData <- x[x$PARM_CD %in% c("80154","84164"),]
   
   ##Group-wise filter of records that contain both SSC data (80154) AND a sampler type (84164)
-  sscData <- dplyr::filter(dplyr::group_by(sscData,RECORD_NO),
+  sscData <- dplyr::filter(dplyr::group_by(sscData,UID),
                     all(c("80154","84164") %in% PARM_CD)
   )
   
@@ -96,7 +96,7 @@ countMethodsBySite <- function(x) {
   bedloadData <- x[x$PARM_CD %in% c("80225","82398"),]
   
   ##Group-wise filter of records that contain both SSC data (80225) AND a sampling method (82398)
-  bedloadData <- dplyr::filter(dplyr::group_by(bedloadData,RECORD_NO),
+  bedloadData <- dplyr::filter(dplyr::group_by(bedloadData,UID),
                     all(c("80225","82398") %in% PARM_CD)
   )
   
