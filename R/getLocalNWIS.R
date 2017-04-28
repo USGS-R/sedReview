@@ -51,7 +51,7 @@
 #' @export
 getLocalNWIS <- function(DSN,
                      env.db = "01",
-                     qa.db = "02",
+                     #qa.db = "02",
                      STAIDS ,
                      dl.parms = "All",
                      parm.group.check = TRUE,
@@ -333,231 +333,235 @@ getLocalNWIS <- function(DSN,
   
   
   longTable1 <- dplyr::left_join(Results,Sample_meta,by="RECORD_NO")
-  longTable1 <- dplyr::left_join(longTable1,siteType, by = "SITE_NO")
   
-  ##################
-  ###QA Database####
-  ##################
-  # First get the site info--need column SITE_ID
-  Query <- paste("select * from ", DSN, ".SITEFILE_",qa.db," where site_no IN (", STAID.list, ")", sep="")
-  QASiteFile <- RODBC::sqlQuery(Chan1, Query, as.is=T)
+  ########################
+  #######Change this back to longTable1 if need DB01
+  ########################
+  longTable <- dplyr::left_join(longTable1,siteType, by = "SITE_NO")
   
-  if(length(grep("table or view does not exist",QASiteFile)) > 0)
-  {
-    stop("Incorrect database number entered for qa.db")
-  }
-  
-  ##Make unique AgencyCd/sitefile key
-  QASiteFile$agencySTAID <- gsub(" ","",paste0(SiteFile$AGENCY_CD,SiteFile$SITE_NO))
-  
-  ##Subset SiteFile to unique agency code site ID pair
-  QASiteFile <- SiteFile[SiteFile$agencySTAID %in% gsub(" ","",uniqueSTAIDS),]
-  QAsiteType <- QASiteFile[c("SITE_NO","SITE_TP_CD")]
-  
-  
-  #get the record numbers
-  Query <- paste("select * from ", DSN, ".QW_SAMPLE_",qa.db," where site_no IN (", STAID.list, ")", sep="")
-  QASamples <- RODBC::sqlQuery(Chan1, Query, as.is=T)
-  
-  ##Make unique AgencyCd/sitefile key
-  Samples$agencySTAID <- gsub(" ","",paste0(Samples$AGENCY_CD,Samples$SITE_NO))
-  
-  ##Subset Samples to unique agency code site ID pair
-  Samples <- Samples[Samples$agencySTAID %in% gsub(" ","",uniqueSTAIDS),]
-  
-  
-  if(nrow(SiteFile) == 0 & nrow(QASiteFile) == 0){
-    print("Site does not exist in sitefile, check site number input")
-    stop("Site does not exist in environmantal or QA database sitefile, check site number input")
-  }
-  
-  
-  ##Check if samples were pulled and quit if no
-  if(nrow(Samples) == 0 & nrow(QASamples) == 0) {
-    #print("No samples exist in your local NWIS database for site number specified, check data criteria")
-    stop("No samples exist in your local environmantal or QA NWIS database for site number specified, check data criteria")
-  }
-  
-  ###Rename to SiteFile and Samples variable names, QA distinction was coded in later and this 
-  ###Makes it so I do not have to change the code below
-  
-  SiteFile <- QASiteFile
-  Samples <- QASamples
-  
-  
-  if(nrow(SiteFile) > 0 & nrow(Samples) > 0)
-  {
-    #Subset records to date range, times are in GMT, which is the universal NWIS time so that you can have a consistant date-range accross timezones.
-    #Time is corrected to local sample timezone before plotting
-    Samples$SAMPLE_START_DT <- as.POSIXct(Samples$SAMPLE_START_DT, tz="GMT")
-    if(!is.na(begin.date) && !is.na(end.date)) {
-      Samples <- Samples[Samples$SAMPLE_START_DT >= begin.date & Samples$SAMPLE_START_DT <= end.date,]
-      
-      if(nrow(Samples) == 0) {
-        print("No samples exist in your local NWIS database for the date range specified, check data criteria")
-        stop("No samples exist in your local NWIS database for the date range specified, check data criteria")
-      }
-      
-    }else {} 
-    
-    if(!is.null(projectCd))
-    {
-      Samples <- Samples[Samples$PROJECT_CD %in% projectCd,]
-      if(nrow(Samples) == 0) {
-        print("No samples exist in your local NWIS database for the project code specified, check data criteria")
-        stop("No samples exist in your local NWIS database for the project code specified, check data criteria")
-      }
-    } else{}
-    
-    ###Check for samples. If no samples then skip QA database
-    if(nrow(Samples) > 0)
-    {
-      
-      #get the QWResult file using the record numbers
-      ##SQL is limited to 1000 entries in querry
-      ##Get the number of 1000 bins in querry
-      breaks <- ceiling(length(Samples$RECORD_NO)/1000)
-      
-      ##Run SQL queries
-      for(i in 1:breaks)
-      {
-        j <- i-1
-        ###Get the 1st 1000
-        if(i == 1)
-        {
-          ####Get the results
-          records.list <- paste("'", Samples$RECORD_NO[1:1000], "'", sep="", collapse=",")
-          Query <- paste("select * from ", DSN, ".QW_RESULT_",qa.db," where record_no IN (", records.list, ")", sep="")
-          Results <- RODBC::sqlQuery(Chan1, Query, as.is=T)
-          ####Get result level commments
-          Query <- paste("select * from ", DSN, ".QW_RESULT_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
-          resultComments <- RODBC::sqlQuery(Chan1, Query, as.is=T)
-          ####Get sample level comments
-          Query <- paste("select * from ", DSN, ".QW_SAMPLE_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
-          sampleComments <- RODBC::sqlQuery(Chan1, Query, as.is=T)
-          ####Get qualifier codes
-          Query <- paste("select * from ", DSN, ".QW_VAL_QUAL_",qa.db," where record_no IN (", records.list, ")", sep="")
-          resultQualifiers <- RODBC::sqlQuery(Chan1, Query, as.is=T)
-        } else if(i > 1 & (j*1000+1000) < length(Samples$RECORD_NO))
-          ###Get the middle ones
-        {
-          j <- j * 1000+1
-          records.list <- paste("'", Samples$RECORD_NO[j:(j+999)], "'", sep="", collapse=",")
-          Query <- paste("select * from ", DSN, ".QW_RESULT_",qa.db," where record_no IN (", records.list, ")", sep="")
-          Results <- rbind(Results,RODBC::sqlQuery(Chan1, Query, as.is=T))
-          Query <- paste("select * from ", DSN, ".QW_RESULT_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
-          resultComments <- rbind(resultComments,RODBC::sqlQuery(Chan1, Query, as.is=T))
-          Query <- paste("select * from ", DSN, ".QW_SAMPLE_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
-          sampleComments <- rbind(sampleComments,RODBC::sqlQuery(Chan1, Query, as.is=T))
-          Query <- paste("select * from ", DSN, ".QW_VAL_QUAL_",qa.db," where record_no IN (", records.list, ")", sep="")
-          resultQualifiers <- rbind(resultQualifiers,RODBC::sqlQuery(Chan1, Query, as.is=T))
-        } else if (i > 1 && (j*1000+1000) > length(Samples$RECORD_NO))
-        {
-          ###Get the last ones
-          j <- j * 1000+1
-          records.list <- paste("'", Samples$RECORD_NO[j:length(Samples$RECORD_NO)], "'", sep="", collapse=",")
-          Query <- paste("select * from ", DSN, ".QW_RESULT_",qa.db," where record_no IN (", records.list, ")", sep="")
-          Results <- rbind(Results,RODBC::sqlQuery(Chan1, Query, as.is=T))
-          Query <- paste("select * from ", DSN, ".QW_RESULT_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
-          resultComments <- rbind(resultComments,RODBC::sqlQuery(Chan1, Query, as.is=T))
-          Query <- paste("select * from ", DSN, ".QW_SAMPLE_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
-          sampleComments <- rbind(sampleComments,RODBC::sqlQuery(Chan1, Query, as.is=T))
-          Query <- paste("select * from ", DSN, ".QW_VAL_QUAL_",qa.db," where record_no IN (", records.list, ")", sep="")
-          resultQualifiers <- rbind(resultQualifiers,RODBC::sqlQuery(Chan1, Query, as.is=T))
-        } else{}
-      }
-      ###Join comments to results
-      Results <- dplyr::left_join(Results,sampleComments,by="RECORD_NO")
-      Results <- dplyr::left_join(Results,resultComments,by=c("RECORD_NO","PARM_CD"))
-      Results <- dplyr::left_join(Results,resultQualifiers,by=c("RECORD_NO","PARM_CD"))
-      
-      Results$Val_qual <- paste(Results$RESULT_VA,Results$REMARK_CD, sep = " ")
-      Results$Val_qual <- gsub("NA","",Results$Val_qual)
-      
-      #Get list of parm names
-      #SQL is limited to 1000 entries in querry
-      ##Get the number of 1000 bins in querry
-      breaks <- ceiling(length(unique(Results$PARM_CD))/1000)
-      
-      ##Run SQL queries
-      for(i in 1:breaks)
-      {
-        j <- i-1
-        ###Get the 1st 1000
-        if(i == 1)
-        {
-          parms.list <- paste("'", unique(Results$PARM_CD)[1:1000], "'", sep="", collapse=",")
-          Query <- paste("select * from ", DSN, ".PARM where PARM_CD IN (", parms.list, ")", sep="")
-          parms <- RODBC::sqlQuery(Chan1, Query, as.is=T)
-        } else if(i > 1 && (j*1000+1000) < length(unique(Results$PARM_CD)))
-          ###Get the middle ones
-        {
-          j <- j * 1000+1
-          parms.list <- paste("'", unique(Results$PARM_CD)[j:(j+999)], "'", sep="", collapse=",")
-          Query <- paste("select * from ", DSN, ".PARM where PARM_CD IN (", parms.list, ")", sep="")
-          parms <- rbind(parms,RODBC::sqlQuery(Chan1, Query, as.is=T))
-        } else if (i > 1 && (j*1000+1000) > length(unique(Results$PARM_CD)))
-        {
-          ###Get the last ones
-          j <- j * 1000+1
-          parms.list <- paste("'", unique(Results$PARM_CD)[j:length(unique(Results$PARM_CD))], "'", sep="", collapse=",")
-          Query <- paste("select * from ", DSN, ".PARM where PARM_CD IN (", parms.list, ")", sep="")
-          parms <- rbind(parms,RODBC::sqlQuery(Chan1, Query, as.is=T))
-        } else{}
-      }
-      parms <- parms[c("PARM_CD","PARM_SEQ_GRP_CD","PARM_DS","PARM_NM","PARM_SEQ_NU")]
-      
-      
-      
-      #############################################################################
-      RODBC::odbcClose(Chan1)###End of ODBC connection
-      #############################################################################
-      
-      #station names and dates
-      name_num <- SiteFile[c("SITE_NO","STATION_NM")]
-      Sample_meta <- dplyr::left_join(Samples, name_num,by="SITE_NO")
-      Sample_meta$RECORD_NO <- paste(Sample_meta$RECORD_NO,qa.db,sep="_")
-      
-      Sample_meta <- Sample_meta[c("RECORD_NO","SITE_NO","STATION_NM","SAMPLE_START_DT","SAMPLE_END_DT","MEDIUM_CD",
-                                   "SAMP_TYPE_CD","AGENCY_CD","PROJECT_CD","AQFR_CD","LAB_NO","HYD_EVENT_CD",
-                                   "SAMPLE_CR","SAMPLE_CN","SAMPLE_MD","SAMPLE_MN",
-                                   "SAMPLE_START_SG","SAMPLE_START_TZ_CD","SAMPLE_START_LOCAL_TM_FG",
-                                   "SAMPLE_END_SG","SAMPLE_END_TZ_CD","SAMPLE_END_LOCAL_TM_FG","SAMPLE_ID",
-                                   "TM_DATUM_RLBLTY_CD","ANL_STAT_CD","HYD_COND_CD",
-                                   "TU_ID","BODY_PART_ID","COLL_ENT_CD","SIDNO_PARTY_CD")]
-      
-      
-      #join tables so parm names are together
-      Results<- dplyr::left_join(Results,parms,by="PARM_CD")
-      
-      #Paste database number ot record number to make unique
-      Results$RECORD_NO <- paste(Results$RECORD_NO, qa.db,sep="_")
-      
-      #Subset results to selected parmeters
-      if (parm.group.check == TRUE) 
-      {
-        if(!("All" %in% dl.parms))
-        {
-          Results <- Results[Results$PARM_SEQ_GRP_CD %in% dl.parms,]
-        } else{} 
-      } else {Results <- Results[Results$PARM_CD %in% dl.parms,]}
-      
-      #Make dataframe as record number and pcode. MUST HAVE ALL UNIQUE PCODE NAMES
-      if(nrow(Results) != 0)
-      {
-        longTable2 <- dplyr::left_join(Results,Sample_meta,by="RECORD_NO")
-        longTable2 <- dplyr::left_join(longTable2,QAsiteType,by="SITE_NO")
-      }else{}
-      
-    }
-  } else{}
-  ###Check that data was pulled from Database 2
-  if(exists("longTable2"))
-  {
-    longTable <- dplyr::bind_rows(longTable1,longTable2)
-  } else{
-    longTable <-longTable1
-  }
+  # ##################
+  # ###QA Database####
+  # ##################
+  # # First get the site info--need column SITE_ID
+  # Query <- paste("select * from ", DSN, ".SITEFILE_",qa.db," where site_no IN (", STAID.list, ")", sep="")
+  # QASiteFile <- RODBC::sqlQuery(Chan1, Query, as.is=T)
+  # 
+  # if(length(grep("table or view does not exist",QASiteFile)) > 0)
+  # {
+  #   stop("Incorrect database number entered for qa.db")
+  # }
+  # 
+  # ##Make unique AgencyCd/sitefile key
+  # QASiteFile$agencySTAID <- gsub(" ","",paste0(SiteFile$AGENCY_CD,SiteFile$SITE_NO))
+  # 
+  # ##Subset SiteFile to unique agency code site ID pair
+  # QASiteFile <- SiteFile[SiteFile$agencySTAID %in% gsub(" ","",uniqueSTAIDS),]
+  # QAsiteType <- QASiteFile[c("SITE_NO","SITE_TP_CD")]
+  # 
+  # 
+  # #get the record numbers
+  # Query <- paste("select * from ", DSN, ".QW_SAMPLE_",qa.db," where site_no IN (", STAID.list, ")", sep="")
+  # QASamples <- RODBC::sqlQuery(Chan1, Query, as.is=T)
+  # 
+  # ##Make unique AgencyCd/sitefile key
+  # Samples$agencySTAID <- gsub(" ","",paste0(Samples$AGENCY_CD,Samples$SITE_NO))
+  # 
+  # ##Subset Samples to unique agency code site ID pair
+  # Samples <- Samples[Samples$agencySTAID %in% gsub(" ","",uniqueSTAIDS),]
+  # 
+  # 
+  # if(nrow(SiteFile) == 0 & nrow(QASiteFile) == 0){
+  #   print("Site does not exist in sitefile, check site number input")
+  #   stop("Site does not exist in environmantal or QA database sitefile, check site number input")
+  # }
+  # 
+  # 
+  # ##Check if samples were pulled and quit if no
+  # if(nrow(Samples) == 0 & nrow(QASamples) == 0) {
+  #   #print("No samples exist in your local NWIS database for site number specified, check data criteria")
+  #   stop("No samples exist in your local environmantal or QA NWIS database for site number specified, check data criteria")
+  # }
+  # 
+  # ###Rename to SiteFile and Samples variable names, QA distinction was coded in later and this 
+  # ###Makes it so I do not have to change the code below
+  # 
+  # SiteFile <- QASiteFile
+  # Samples <- QASamples
+  # 
+  # 
+  # if(nrow(SiteFile) > 0 & nrow(Samples) > 0)
+  # {
+  #   #Subset records to date range, times are in GMT, which is the universal NWIS time so that you can have a consistant date-range accross timezones.
+  #   #Time is corrected to local sample timezone before plotting
+  #   Samples$SAMPLE_START_DT <- as.POSIXct(Samples$SAMPLE_START_DT, tz="GMT")
+  #   if(!is.na(begin.date) && !is.na(end.date)) {
+  #     Samples <- Samples[Samples$SAMPLE_START_DT >= begin.date & Samples$SAMPLE_START_DT <= end.date,]
+  #     
+  #     if(nrow(Samples) == 0) {
+  #       print("No samples exist in your local NWIS database for the date range specified, check data criteria")
+  #       stop("No samples exist in your local NWIS database for the date range specified, check data criteria")
+  #     }
+  #     
+  #   }else {} 
+  #   
+  #   if(!is.null(projectCd))
+  #   {
+  #     Samples <- Samples[Samples$PROJECT_CD %in% projectCd,]
+  #     if(nrow(Samples) == 0) {
+  #       print("No samples exist in your local NWIS database for the project code specified, check data criteria")
+  #       stop("No samples exist in your local NWIS database for the project code specified, check data criteria")
+  #     }
+  #   } else{}
+  #   
+  #   ###Check for samples. If no samples then skip QA database
+  #   if(nrow(Samples) > 0)
+  #   {
+  #     
+  #     #get the QWResult file using the record numbers
+  #     ##SQL is limited to 1000 entries in querry
+  #     ##Get the number of 1000 bins in querry
+  #     breaks <- ceiling(length(Samples$RECORD_NO)/1000)
+  #     
+  #     ##Run SQL queries
+  #     for(i in 1:breaks)
+  #     {
+  #       j <- i-1
+  #       ###Get the 1st 1000
+  #       if(i == 1)
+  #       {
+  #         ####Get the results
+  #         records.list <- paste("'", Samples$RECORD_NO[1:1000], "'", sep="", collapse=",")
+  #         Query <- paste("select * from ", DSN, ".QW_RESULT_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         Results <- RODBC::sqlQuery(Chan1, Query, as.is=T)
+  #         ####Get result level commments
+  #         Query <- paste("select * from ", DSN, ".QW_RESULT_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         resultComments <- RODBC::sqlQuery(Chan1, Query, as.is=T)
+  #         ####Get sample level comments
+  #         Query <- paste("select * from ", DSN, ".QW_SAMPLE_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         sampleComments <- RODBC::sqlQuery(Chan1, Query, as.is=T)
+  #         ####Get qualifier codes
+  #         Query <- paste("select * from ", DSN, ".QW_VAL_QUAL_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         resultQualifiers <- RODBC::sqlQuery(Chan1, Query, as.is=T)
+  #       } else if(i > 1 & (j*1000+1000) < length(Samples$RECORD_NO))
+  #         ###Get the middle ones
+  #       {
+  #         j <- j * 1000+1
+  #         records.list <- paste("'", Samples$RECORD_NO[j:(j+999)], "'", sep="", collapse=",")
+  #         Query <- paste("select * from ", DSN, ".QW_RESULT_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         Results <- rbind(Results,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #         Query <- paste("select * from ", DSN, ".QW_RESULT_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         resultComments <- rbind(resultComments,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #         Query <- paste("select * from ", DSN, ".QW_SAMPLE_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         sampleComments <- rbind(sampleComments,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #         Query <- paste("select * from ", DSN, ".QW_VAL_QUAL_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         resultQualifiers <- rbind(resultQualifiers,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #       } else if (i > 1 && (j*1000+1000) > length(Samples$RECORD_NO))
+  #       {
+  #         ###Get the last ones
+  #         j <- j * 1000+1
+  #         records.list <- paste("'", Samples$RECORD_NO[j:length(Samples$RECORD_NO)], "'", sep="", collapse=",")
+  #         Query <- paste("select * from ", DSN, ".QW_RESULT_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         Results <- rbind(Results,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #         Query <- paste("select * from ", DSN, ".QW_RESULT_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         resultComments <- rbind(resultComments,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #         Query <- paste("select * from ", DSN, ".QW_SAMPLE_CM_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         sampleComments <- rbind(sampleComments,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #         Query <- paste("select * from ", DSN, ".QW_VAL_QUAL_",qa.db," where record_no IN (", records.list, ")", sep="")
+  #         resultQualifiers <- rbind(resultQualifiers,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #       } else{}
+  #     }
+  #     ###Join comments to results
+  #     Results <- dplyr::left_join(Results,sampleComments,by="RECORD_NO")
+  #     Results <- dplyr::left_join(Results,resultComments,by=c("RECORD_NO","PARM_CD"))
+  #     Results <- dplyr::left_join(Results,resultQualifiers,by=c("RECORD_NO","PARM_CD"))
+  #     
+  #     Results$Val_qual <- paste(Results$RESULT_VA,Results$REMARK_CD, sep = " ")
+  #     Results$Val_qual <- gsub("NA","",Results$Val_qual)
+  #     
+  #     #Get list of parm names
+  #     #SQL is limited to 1000 entries in querry
+  #     ##Get the number of 1000 bins in querry
+  #     breaks <- ceiling(length(unique(Results$PARM_CD))/1000)
+  #     
+  #     ##Run SQL queries
+  #     for(i in 1:breaks)
+  #     {
+  #       j <- i-1
+  #       ###Get the 1st 1000
+  #       if(i == 1)
+  #       {
+  #         parms.list <- paste("'", unique(Results$PARM_CD)[1:1000], "'", sep="", collapse=",")
+  #         Query <- paste("select * from ", DSN, ".PARM where PARM_CD IN (", parms.list, ")", sep="")
+  #         parms <- RODBC::sqlQuery(Chan1, Query, as.is=T)
+  #       } else if(i > 1 && (j*1000+1000) < length(unique(Results$PARM_CD)))
+  #         ###Get the middle ones
+  #       {
+  #         j <- j * 1000+1
+  #         parms.list <- paste("'", unique(Results$PARM_CD)[j:(j+999)], "'", sep="", collapse=",")
+  #         Query <- paste("select * from ", DSN, ".PARM where PARM_CD IN (", parms.list, ")", sep="")
+  #         parms <- rbind(parms,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #       } else if (i > 1 && (j*1000+1000) > length(unique(Results$PARM_CD)))
+  #       {
+  #         ###Get the last ones
+  #         j <- j * 1000+1
+  #         parms.list <- paste("'", unique(Results$PARM_CD)[j:length(unique(Results$PARM_CD))], "'", sep="", collapse=",")
+  #         Query <- paste("select * from ", DSN, ".PARM where PARM_CD IN (", parms.list, ")", sep="")
+  #         parms <- rbind(parms,RODBC::sqlQuery(Chan1, Query, as.is=T))
+  #       } else{}
+  #     }
+  #     parms <- parms[c("PARM_CD","PARM_SEQ_GRP_CD","PARM_DS","PARM_NM","PARM_SEQ_NU")]
+  #     
+  #     
+  #     
+  #     #############################################################################
+  #     RODBC::odbcClose(Chan1)###End of ODBC connection
+  #     #############################################################################
+  #     
+  #     #station names and dates
+  #     name_num <- SiteFile[c("SITE_NO","STATION_NM")]
+  #     Sample_meta <- dplyr::left_join(Samples, name_num,by="SITE_NO")
+  #     Sample_meta$RECORD_NO <- paste(Sample_meta$RECORD_NO,qa.db,sep="_")
+  #     
+  #     Sample_meta <- Sample_meta[c("RECORD_NO","SITE_NO","STATION_NM","SAMPLE_START_DT","SAMPLE_END_DT","MEDIUM_CD",
+  #                                  "SAMP_TYPE_CD","AGENCY_CD","PROJECT_CD","AQFR_CD","LAB_NO","HYD_EVENT_CD",
+  #                                  "SAMPLE_CR","SAMPLE_CN","SAMPLE_MD","SAMPLE_MN",
+  #                                  "SAMPLE_START_SG","SAMPLE_START_TZ_CD","SAMPLE_START_LOCAL_TM_FG",
+  #                                  "SAMPLE_END_SG","SAMPLE_END_TZ_CD","SAMPLE_END_LOCAL_TM_FG","SAMPLE_ID",
+  #                                  "TM_DATUM_RLBLTY_CD","ANL_STAT_CD","HYD_COND_CD",
+  #                                  "TU_ID","BODY_PART_ID","COLL_ENT_CD","SIDNO_PARTY_CD")]
+  #     
+  #     
+  #     #join tables so parm names are together
+  #     Results<- dplyr::left_join(Results,parms,by="PARM_CD")
+  #     
+  #     #Paste database number ot record number to make unique
+  #     Results$RECORD_NO <- paste(Results$RECORD_NO, qa.db,sep="_")
+  #     
+  #     #Subset results to selected parmeters
+  #     if (parm.group.check == TRUE) 
+  #     {
+  #       if(!("All" %in% dl.parms))
+  #       {
+  #         Results <- Results[Results$PARM_SEQ_GRP_CD %in% dl.parms,]
+  #       } else{} 
+  #     } else {Results <- Results[Results$PARM_CD %in% dl.parms,]}
+  #     
+  #     #Make dataframe as record number and pcode. MUST HAVE ALL UNIQUE PCODE NAMES
+  #     if(nrow(Results) != 0)
+  #     {
+  #       longTable2 <- dplyr::left_join(Results,Sample_meta,by="RECORD_NO")
+  #       longTable2 <- dplyr::left_join(longTable2,QAsiteType,by="SITE_NO")
+  #     }else{}
+  #     
+  #   }
+  # } else{}
+  # ###Check that data was pulled from Database 2
+  # if(exists("longTable2"))
+  # {
+  #   longTable <- dplyr::bind_rows(longTable1,longTable2)
+  # } else{
+  #   longTable <-longTable1
+  # }
   
   remarkCodes <- c("<",">","A","E","M","N","R","S","U","V")
   

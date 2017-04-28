@@ -4,7 +4,7 @@
 \alias{getLocalNWIS}
 \title{Function to pull data from NWIS}
 \usage{
-getLocalNWIS(DSN, env.db = "01", qa.db = "02", STAIDS, dl.parms = "All",
+getLocalNWIS(DSN, env.db = "01", STAIDS, dl.parms = "All",
   parm.group.check = TRUE, begin.date = NA, end.date = NA,
   projectCd = NULL, resultAsText = FALSE)
 }
@@ -12,8 +12,6 @@ getLocalNWIS(DSN, env.db = "01", qa.db = "02", STAIDS, dl.parms = "All",
 \item{DSN}{A character string containing the DSN for your local server}
 
 \item{env.db}{A character string containing the database number of environmental samples}
-
-\item{qa.db}{A character string containing the database number of QA samples}
 
 \item{STAIDS}{A character vector of stations IDs. Agency code defaults to "USGS" unless appended to the beginning of station ID with a dash, e.g. "USGS-123456".}
 
@@ -28,6 +26,8 @@ getLocalNWIS(DSN, env.db = "01", qa.db = "02", STAIDS, dl.parms = "All",
 \item{projectCd}{Character vector containing project codes to subset data by.}
 
 \item{resultAsText}{Output results as character instead of numeric. Used for literal output of results from NWIS that are no affected by class coerrcion, such as dropping zeros after decimal point. Default is False.}
+
+\item{qa.db}{A character string containing the database number of QA samples}
 }
 \value{
 Returns a list containing two dataframes: longTable and wideTable. 
