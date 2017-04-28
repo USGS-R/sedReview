@@ -4,8 +4,7 @@
 \alias{getLocalNWIS}
 \title{Function to pull data from NWIS}
 \usage{
-getLocalNWIS(DSN, env.db = "01", STAIDS, dl.parms = "All",
-  parm.group.check = TRUE, begin.date = NA, end.date = NA,
+getLocalNWIS(DSN, env.db = "01", STAIDS, begin.date = NA, end.date = NA,
   projectCd = NULL, resultAsText = FALSE)
 }
 \arguments{
@@ -14,10 +13,6 @@ getLocalNWIS(DSN, env.db = "01", STAIDS, dl.parms = "All",
 \item{env.db}{A character string containing the database number of environmental samples}
 
 \item{STAIDS}{A character vector of stations IDs. Agency code defaults to "USGS" unless appended to the beginning of station ID with a dash, e.g. "USGS-123456".}
-
-\item{dl.parms}{A character vector of pcodes to pull data, e.g. c("00300","00915") or NWIS parameter groups specified in details section.}
-
-\item{parm.group.check}{A logical of weather or not to use NWIS parameter groups. If TRUE, must use NWIS parameter group names in dl.parms}
 
 \item{begin.date}{Character string containing beginning date of data pull (yyyy-mm-dd)}
 
@@ -28,6 +23,10 @@ getLocalNWIS(DSN, env.db = "01", STAIDS, dl.parms = "All",
 \item{resultAsText}{Output results as character instead of numeric. Used for literal output of results from NWIS that are no affected by class coerrcion, such as dropping zeros after decimal point. Default is False.}
 
 \item{qa.db}{A character string containing the database number of QA samples}
+
+\item{dl.parms}{A character vector of pcodes to pull data, e.g. c("00300","00915") or NWIS parameter groups specified in details section.}
+
+\item{parm.group.check}{A logical of weather or not to use NWIS parameter groups. If TRUE, must use NWIS parameter group names in dl.parms}
 }
 \value{
 Returns a list containing two dataframes: longTable and wideTable. 

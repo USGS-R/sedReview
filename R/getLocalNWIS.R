@@ -51,15 +51,18 @@
 #' @export
 getLocalNWIS <- function(DSN,
                      env.db = "01",
-                     #qa.db = "02",
-                     STAIDS ,
-                     dl.parms = "All",
-                     parm.group.check = TRUE,
+                     STAIDS,
                      begin.date = NA,
                      end.date = NA,
                      projectCd = NULL,
                      resultAsText = FALSE)
 {
+  
+  
+  dl.parms = c("SED","INF","PHY")
+  parm.group.check = TRUE
+  
+  
   ##Check that the 32 bit version of r is running
   if(Sys.getenv("R_ARCH") != "/i386"){
     print("You are not running 32 bit R. This function requires R be run in 32 bit mode for the ODBC driver to function properly. Please restart R in 32bit mode.")
