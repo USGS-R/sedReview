@@ -1,9 +1,8 @@
 context("checkSamplerTyp")
 
 test_that("Return values check", {
-  data("exampleData", package = "sedReview")
+  data("testData", package = "sedReview")
   load("data/checkSamplerTypOut.rda")
-  longTable <- exampleData$longTable
-  checkSamplerTypOutTest <- checkSamplerTyp(longTable)
+  checkSamplerTypOutTest <- checkSamplerTyp(testData)
   expect_equal(checkSamplerTypOut, checkSamplerTypOutTest)
 })
