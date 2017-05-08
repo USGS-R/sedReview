@@ -6,3 +6,4 @@ test_that("Return values check", {
   checkNWIS20OutTest <- checkNWIS20(testData)
   expect_equal(checkNWIS20Out, checkNWIS20OutTest)
 })
+
