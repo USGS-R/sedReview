@@ -17,9 +17,14 @@ A dataframe containing all samples with applicable flags
 \description{
 Function to flag uncommon sampler type
 }
+\details{
+Function determines most common sampler type from dataset or records and flags all others that are not most common.
+
+Note, there are valid reasons for different sampler types, this is just a check.
+}
 \examples{
-data("exampleData",package="sedReview")
-x <- exampleData$longTable
+data("testData",package="sedReview")
+x <- testData
 samplerTypFlags <- checkSamplerTyp(x)
 
 }

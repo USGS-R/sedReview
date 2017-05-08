@@ -9,8 +9,8 @@
 #' @details P72219 - Sampler nozzle material, code: Plastic=2, TFE=3
 #' @details P72220 - Sampler nozzle diameter, code: 3/16"=3, 1/4"=4, 5/16"=5
 #' @examples 
-#' data("exampleData",package="sedReview")
-#' x <- exampleData
+#' data("testData",package="sedReview")
+#' x <- testData
 #' bagIEflags <- checkCalcBagIE(x)
 #' 
 #' @importFrom dplyr left_join

@@ -23,8 +23,8 @@ function to test EDI sample collected correctly. Number of sampling verticals 4-
 function to test EWI sample collected correctly. Number of verticals between 10 and 20.
 }
 \examples{
-data("exampleData",package="sedReview")
-x <- exampleData$longTable
+data("testData",package="sedReview")
+x <- testData
 sampleVertFlags <- checkSamVert(x)
 
 }
