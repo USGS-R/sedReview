@@ -20,7 +20,7 @@ Function to flag sediment outliers
 }
 \examples{
 data("exampleData",package="sedReview")
-x <- exampleData$longTable
+x <- exampleData
 sedOutlierFlags <- getSedOutliers(x)
 
 }

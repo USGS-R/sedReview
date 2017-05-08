@@ -19,7 +19,7 @@ Function to perform NWIS 20.xx checks
 }
 \examples{
 data("exampleData",package="sedReview")
-x <- exampleData$longTable
+x <- exampleData
 nwis20flags <- checkNWIS20(x)
 
 }
