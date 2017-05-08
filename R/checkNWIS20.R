@@ -3,8 +3,8 @@
 #' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @examples 
-#' data("exampleData",package="sedReview")
-#' x <- exampleData
+#' data("testData",package="sedReview")
+#' x <- testData
 #' nwis20flags <- checkNWIS20(x)
 #' 
 #' @importFrom dplyr left_join

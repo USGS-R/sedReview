@@ -4,8 +4,8 @@
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @details See OSW Technical Memo No. 2001.03 for more details and background information
 #' @examples 
-#' data("exampleData",package="sedReview")
-#' x <- exampleData$longTable
+#' data("testData",package="sedReview")
+#' x <- testData
 #' checkOSW2001_03Flags <- checkOSW2001_03(x)
 #' 
 #' @importFrom dplyr left_join

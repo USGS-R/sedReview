@@ -5,8 +5,8 @@
 #' @details Function determines most common sample purpose for all retrieved records and flags all sample purposes other than the most common.
 #' @details There are of course valid reasons to have different sample purposes, this is just a check.
 #' @examples 
-#' data("exampleData",package="sedReview")
-#' x <- exampleData$longTable
+#' data("testData",package="sedReview")
+#' x <- testData
 #' samplePurpFlags <- checkSamPurp(x)
 #' 
 #' @importFrom dplyr left_join
