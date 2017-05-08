@@ -23,8 +23,8 @@ Function determines most common sampler type from dataset or records and flags a
 Note, there are valid reasons for different sampler types, this is just a check.
 }
 \examples{
-data("exampleData",package="sedReview")
-x <- exampleData
+data("testData",package="sedReview")
+x <- testData
 samplerTypFlags <- checkSamplerTyp(x)
 
 }

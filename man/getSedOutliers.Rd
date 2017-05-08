@@ -19,8 +19,8 @@ A dataframe containing all samples with applicable flags
 Function to flag sediment outliers
 }
 \examples{
-data("exampleData",package="sedReview")
-x <- exampleData
+data("testData",package="sedReview")
+x <- testData
 sedOutlierFlags <- getSedOutliers(x)
 
 }

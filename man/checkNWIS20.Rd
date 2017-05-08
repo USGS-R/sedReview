@@ -18,8 +18,8 @@ A dataframe containing all samples with applicable flags
 Function to perform NWIS 20.xx checks
 }
 \examples{
-data("exampleData",package="sedReview")
-x <- exampleData
+data("testData",package="sedReview")
+x <- testData
 nwis20flags <- checkNWIS20(x)
 
 }
