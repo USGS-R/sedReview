@@ -18,7 +18,7 @@ A dataframe containing all samples with applicable flags
 Function to check and flag bag intake efficiency parameters, and calculate and flag the bag efficiency
 }
 \details{
-checks and calculated bag intake efficiency under OSW Tech Memo 2013.03 (https://water.usgs.gov/admin/memo/SW/sw13.03.pdf)
+checks and calculates bag intake efficiency under OSW Tech Memo 2013.03 (https://water.usgs.gov/admin/memo/SW/sw13.03.pdf)
 
 P72217 - Duration sampler collected water, seconds
 
