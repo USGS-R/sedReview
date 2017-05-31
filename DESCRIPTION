@@ -5,7 +5,7 @@ Version: 0.1
 Date: 2017-04-25
 Authors@R: as.person(c(
     "T. Joe Mills <tmills@usgs.gov> [aut, cre]", 
-    "Collin Penn <cpenn@usgs.gov> [aut]",
+    "Colin Penn <cpenn@usgs.gov> [aut]",
     "Molly Wood <mwood@usgs.gov> [aut]")
     )
 Depends:
