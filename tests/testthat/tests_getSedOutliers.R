@@ -1,9 +1,8 @@
 context("getSedOutliers")
 
 test_that("Return values check", {
-  data("exampleData", package = "sedReview")
+  data("testData", package = "sedReview")
   load("data/getSedOutliersOut.rda")
-  longTable <- exampleData$longTable
-  getSedOutliersOutTest <- getSedOutliers(longTable)
+  getSedOutliersOutTest <- getSedOutliers(testData)
   expect_equal(getSedOutliersOut, getSedOutliersOutTest)
 })

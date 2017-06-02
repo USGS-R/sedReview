@@ -21,8 +21,8 @@ Function to flag TSS results without an accompanying SSC result
 See OSW Technical Memo No. 2001.03 for more details and background information
 }
 \examples{
-data("exampleData",package="sedReview")
-x <- exampleData$longTable
+data("testData",package="sedReview")
+x <- testData
 checkOSW2001_03Flags <- checkOSW2001_03(x)
 
 }

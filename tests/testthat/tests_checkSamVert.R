@@ -1,9 +1,9 @@
 context("checkSamVert")
 
 test_that("Return values check", {
-  data("exampleData", package = "sedReview")
+  data("testData", package = "sedReview")
   load("data/checkSamVertOut.rda")
-  longTable <- exampleData$longTable
-  checkSamVertOutTest <- checkSamVert(longTable)
+  checkSamVertOutTest <- checkSamVert(testData)
   expect_equal(checkSamVertOut, checkSamVertOutTest)
 })
+

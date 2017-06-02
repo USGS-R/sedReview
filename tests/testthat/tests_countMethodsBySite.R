@@ -1,11 +1,10 @@
-context("countBySite")
+context("countMethodsBySite")
 
 test_that("Return values check", {
   ###load the data upfront#
-  data("exampleData",package="sedReview")
-  load("data/countBySiteOut.rda")
-  longTable <- exampleData$longTable
-  countBySiteOutTest <- countMethodsBySite(longTable)
-  expect_equal(countBySiteOut,countBySiteOutTest)
+  data("testData", package = "sedReview")
+  load("data/countMethodsBySiteOut.rda")
+  countMethodsBySiteOutTest <- countMethodsBySite(testData)
+  expect_equal(countMethodsBySiteOut,countMethodsBySiteOutTest)
 })
 
