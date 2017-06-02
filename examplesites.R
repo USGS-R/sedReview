@@ -40,4 +40,4 @@ data_OR <- getLocalNWIS(DSN = "NWISOR",
 
 testData <- dplyr::bind_rows(data_ID,data_IL,data_MO,data_OR)
 
-save(testData,file="data/testData.rda")
+save(testData,file="data/exampleData.rda")
