@@ -20,5 +20,5 @@ Searches for samples that were collected for sediment data but are missing disch
 \examples{
 data("exampleData",package="sedReview")
 x <- exampleData$longTable
-checkQ(x,bySite = TRUE)
+checkQ(x,returnAll = FALSE)
 }

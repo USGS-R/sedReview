@@ -7,7 +7,7 @@
 #' @examples
 #' data("exampleData",package="sedReview")
 #' x <- exampleData$longTable
-#' checkQ(x,bySite = TRUE)
+#' checkQ(x,returnAll = FALSE)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
 #' @export
