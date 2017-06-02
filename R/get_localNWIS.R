@@ -137,6 +137,8 @@ get_localNWIS <- function(DSN,
   Query <- paste("select * from ", DSN, ".SITEFILE_",env.db," where site_no IN (", STAID.list, ")",sep="")
   SiteFile <- RODBC::sqlQuery(Chan1, Query, as.is=T)
   
+
+  
   if(length(grep("table or view does not exist",SiteFile)) > 0)
   {
     stop("Incorrect database number entered for env.db")

@@ -14,7 +14,6 @@
 
 check_all <- function(x, returnAllTables = FALSE)
 {
-  
   #Bag IE
   bagIEFlags <- check_bagIE(x, returnAll = FALSE)
   

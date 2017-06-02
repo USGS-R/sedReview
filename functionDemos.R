@@ -48,7 +48,7 @@ data("exampleData",package="sedReview")
 ##############
 
 #Bag IE
-bagIEFlags <- check_bagIE(exampleData)
+bagIEFlags <- check_bagIE(exampleData,returnAll = TRUE)
 
 #has Q
 hasQFlags <- check_hasQ(exampleData,returnAll = FALSE)
@@ -72,7 +72,7 @@ verticlesFlags <- check_verticles(exampleData)
 methodsBySite <- count_methodsBySite(exampleData)
 
 #Count sample status
-sampleStatus <- count_sampleStatus(exampleData,bySite = TRUE)
+sampleStatus <- count_sampleStatus(exampleData,bySite = FALSE)
 
 #Find outliers
 outliers <- find_outliers(exampleData)
@@ -80,5 +80,12 @@ outliers <- find_outliers(exampleData)
 #Get a simple data table
 wideDataTable <- make_wideTable(exampleData)
 
+###############################
+#Or, alternatively use a master function to run everything
 #run all checks and summarize
-allFlags <- flagSummary(x,returnAll=FALSE,returnAllTables = TRUE)
+data("exampleData",package="sedReview")
+allFlags <- check_all(exampleData,returnAllTables = TRUE)
+
+View(allFlags$flaggedSamples)
+
+
