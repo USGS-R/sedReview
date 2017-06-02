@@ -80,3 +80,5 @@ outliers <- find_outliers(exampleData)
 #Get a simple data table
 wideDataTable <- make_wideTable(exampleData)
 
+#run all checks and summarize
+allFlags <- flagSummary(x,returnAll=FALSE,returnAllTables = TRUE)
