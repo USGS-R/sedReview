@@ -1,9 +1,10 @@
-install.packages("microbenchmark")
-library(microbenchmark)
 library(sedReview)
 
 #load the data
 load("data/testData.rda")
+
+#Make it wide
+wideData <- makeWideTable(testData)
 
 #checkNWIS20
 system.time({

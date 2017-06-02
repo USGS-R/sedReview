@@ -7,7 +7,7 @@
 #' @examples
 #' data("exampleData",package="sedReview")
 #' x <- exampleData$longTable
-#' checkQ(x,bySite = TRUE)
+#' checkQ(x,returnAll = FALSE)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
 #' @export
@@ -29,6 +29,10 @@ checkQ <- function(x, returnAll = FALSE) {
   sedRecords$hasQ <- ifelse(sedRecords$UID %in% qRecords$UID,TRUE,FALSE)
   
   Qsum <- dplyr::left_join(sedRecords,qRecords,by=c("UID"))
+  
+  if(returnAll == FALSE) {
+    Qsum <- Qsum[Qsum$hasQ == FALSE,]
+  }
   
   return(Qsum)
 }
