@@ -66,14 +66,14 @@ check_all <- function(x, returnAllTables = FALSE)
   
   flaggedSamples <- dplyr::left_join(flaggedSamples,temp,by=c("UID","PARM_CD"))
   
-  flaggedSamples <- filter(flaggedSamples,bagIEFlags |
-                             QFlags |
-                             metaDataFlags |
-                             samplePurpFlags |
-                             samplerTypeFlags |
-                             tssFlags |
-                             verticlesFlags |
-                             outliers)
+  flaggedSamples <- filter(flaggedSamples, bagIEFlags == T |
+                             QFlags == T|
+                             metaDataFlags == T|
+                             samplePurpFlags == T|
+                             samplerTypeFlags == T|
+                             tssFlags == T|
+                             verticlesFlags == T|
+                             outliers == T)
   
   
   if(returnAllTables == TRUE)
