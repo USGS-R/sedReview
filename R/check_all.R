@@ -5,7 +5,7 @@
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
-#' allChecks <- check_all(x, returnAll = FALSE, returnAllTables = FALSE)
+#' allChecks <- check_all(x, returnAllTables = FALSE)
 #' @importFrom dplyr left_join
 #' @importFrom dplyr summarize
 #' @importFrom dplyr transmute
