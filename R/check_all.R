@@ -67,7 +67,7 @@ check_all <- function(x, returnAllTables = FALSE)
   flaggedSamples <- dplyr::left_join(flaggedSamples,temp,by=c("UID","PARM_CD"))
   
   flaggedSamples <- filter(flaggedSamples, bagIEFlags == T |
-                             QFlags == T|
+                             #QFlags == T|
                              metaDataFlags == T|
                              samplePurpFlags == T|
                              samplerTypeFlags == T|
