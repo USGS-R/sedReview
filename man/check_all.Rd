@@ -23,5 +23,5 @@ Runs all check_ functions and outputs a summary dataframe of flagged samples or 
 \examples{
 data("exampleData",package="sedReview")
 x <- exampleData
-allChecks <- check_all(x, returnAll = FALSE, returnAllTables = FALSE)
+allChecks <- check_all(x, returnAllTables = FALSE)
 }
