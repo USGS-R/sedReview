@@ -7,9 +7,9 @@
 check_hasQ(x, returnAll = FALSE)
 }
 \arguments{
-\item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
+\item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
-\item{returnAll}{Logical. Return dataframe containing all samples if \code{TRUE} or only return samples missing discharge if \code{FALSE}. Defualt is \code{FALSE}}
+\item{returnAll}{Logical. Return dataframe containing all samples if \code{TRUE} or only return samples missing discharge if \code{FALSE}. Default is \code{FALSE}}
 }
 \value{
 A data.frame of samples, what sediment data are available, and then a flag for missing discharge along with what discharge parameter are present

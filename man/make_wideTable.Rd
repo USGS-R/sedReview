@@ -7,13 +7,13 @@
 make_wideTable(x)
 }
 \arguments{
-\item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
+\item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 }
 \value{
 A wide format data.frame
 }
 \description{
-Reformats teh longTable output (by result) from getLocalNWIS into wide format (by sample)
+Reformats the longTable output (by result) from get_localNWIS into wide format (by sample)
 }
 \details{
 The wide format data frame format is primarily for visual inspection of data.
@@ -23,4 +23,7 @@ A number of important metadata are missing from this table and thus it is not re
 data("exampleData",package="sedReview")
 x <- exampleData
 make_wideTableOut <- make_wideTable(x)
+}
+\seealso{
+\code{\link[sedReview]{get_localNWIS}}
 }

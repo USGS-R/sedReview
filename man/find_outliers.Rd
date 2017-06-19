@@ -8,7 +8,7 @@ find_outliers(x, lowThreshold = 0.1, highThreshold = 0.9,
   returnAll = FALSE)
 }
 \arguments{
-\item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
+\item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
 \item{lowThreshold}{numeric value between 0 and 1 indicating the quantile threshold for a low value outlier.}
 

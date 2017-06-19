@@ -7,7 +7,7 @@
 count_methodsBySite(x)
 }
 \arguments{
-\item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
+\item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 }
 \value{
 A data.frame tabular summary of counts of samples by site and method
