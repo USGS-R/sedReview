@@ -1,6 +1,6 @@
 #' find_outliers
 #' @description Function to flag sediment outliers
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @param lowThreshold numeric value between 0 and 1 indicating the quantile threshold for a low value outlier.
 #' @param highThreshold numeric value between 0 and 1 indicating the quantile threshold for a high value outlier.

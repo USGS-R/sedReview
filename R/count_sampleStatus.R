@@ -1,7 +1,7 @@
 #' count_sampleStatus
 #' 
 #' @description Returns counts of sample status (DQI_CD) by parameter for each site or for multiple sites together
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param bySite Logical. Count by site if \code{TRUE} or for all sites if \code{FALSE}
 #' @return A data.frame tabular summary of counts of sample status (DQI_CD) by parameter
 #' @examples
@@ -10,6 +10,7 @@
 #' count_sampleStatusOut <- count_sampleStatus(x,bySite = TRUE)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
+#' @importFrom reshape2 dcast
 #' @export
 #' 
 

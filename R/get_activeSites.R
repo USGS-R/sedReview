@@ -1,5 +1,6 @@
 #Function to get all active sediment sites
 
+## CP note: the SAMPLE_MD is not the best way, need to talk with Abby about best way to get this info
 #here is how to get the whole site file 
 #Query <- "select * from NWISCO.SITEFILE_01"
 #Then just subset it to SAMPLE_MD in the last 5 years

@@ -1,6 +1,6 @@
 #' get_localNWIS
 #' 
-#' Pulls data from NWIS internal servers using ODBC connection and returns a list containing dataframes.
+#' Pulls data from NWIS internal servers using ODBC connection and returns a longtable (by result)
 #' @param DSN A character string containing the DSN for your local server
 #' @param env.db A character string containing the database number of environmental samples
 #' @param STAIDS A character vector of stations IDs. Agency code defaults to "USGS" unless appended to the beginning of station ID with a dash, e.g. "USGS-123456". 
@@ -8,9 +8,9 @@
 #' @param end.date Character string containing ending date of data pull (yyyy-mm-dd)
 #' @param projectCd Character vector containing project codes to subset data by.
 #' @param resultAsText Output results as character instead of numeric. Used for literal output of results from NWIS that are no affected by class coerrcion, such as dropping zeros after decimal point. Default is False. 
-#' @return Returns a list containing two dataframes: longTable and wideTable. 
-#' longTable contains all data pulled from NWIS along with all assosciated metadata in by-result format. 
-#' wideTable contains all data pulled from NWIS in wide (sample-result) format, an easier format for import into spreadsheet programs.
+#' @return Returns a dataframe of samples. 
+#' The longTable format contains all data pulled from NWIS along with all assosciated metadata in by-result format. 
+#' For a wideTable containing all data pulled from NWIS in wide (sample-result) format, an easier format for import into spreadsheet programs, use the \code{make_wideTable} function
 #' Dataframe names will be changed to more appropriate values in future package updates.
 #' @details 
 #' NWIS parameter groups are as follows: All = "All",

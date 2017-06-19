@@ -1,5 +1,6 @@
-#' Function to run all checks on a dataset
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' check_all
+#' @description Function to run all checks on a dataset
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAllTables Return all tables of flagged results
 #' @details Runs all check_ functions and outputs a summary dataframe of flagged samples or a list of all flag results if \code{returnAllTables = TRUE}
 #' @examples 
@@ -12,6 +13,9 @@
 #' @importFrom dplyr transmute
 #' @export
 #' @return A dataframe containing all samples with applicable flags
+#' @seealso \code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
+#' \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, 
+#' \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}
 
 check_all <- function(x, returnAllTables = FALSE)
 {

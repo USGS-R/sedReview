@@ -1,6 +1,6 @@
 #' check_samplePurp
 #' @description Function to flag uncommon sample purpose
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @details Function determines most common sample purpose for all retrieved records and flags all sample purposes other than the most common.
 #' @details There are of course valid reasons to have different sample purposes, this is just a check.

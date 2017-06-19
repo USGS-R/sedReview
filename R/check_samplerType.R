@@ -1,6 +1,6 @@
 #' check_samplerType
 #' @description Function to flag uncommon sampler type
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @details Function determines most common sampler type from dataset or records and flags all others that are not most common.
 #' @details Note, there are valid reasons for different sampler types, this is just a check.

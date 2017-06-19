@@ -1,6 +1,6 @@
 #' check_metaData
 #' @description Function to perform NWIS 20.xx checks
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @examples 
 #' data("exampleData",package="sedReview")

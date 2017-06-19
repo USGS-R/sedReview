@@ -1,8 +1,8 @@
 #' check_hasQ
 #' 
 #' @description Searches for samples that were collected for sediment data but are missing discharge measurements
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
-#' @param returnAll Logical. Return dataframe containing all samples if \code{TRUE} or only return samples missing discharge if \code{FALSE}. Defualt is \code{FALSE}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param returnAll Logical. Return dataframe containing all samples if \code{TRUE} or only return samples missing discharge if \code{FALSE}. Default is \code{FALSE}
 #' @return A data.frame of samples, what sediment data are available, and then a flag for missing discharge along with what discharge parameter are present
 #' @examples
 #' data("exampleData",package="sedReview")
@@ -10,6 +10,8 @@
 #' checkQOut <- check_hasQ(x,returnAll = FALSE)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
+#' @importFrom dplyr left_join
+#' @importFrom reshape2 dcast
 #' @export
 #' 
 
