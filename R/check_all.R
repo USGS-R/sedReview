@@ -2,11 +2,13 @@
 #' @description Function to run all checks on a dataset
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAllTables Return all tables of flagged results
-#' @details Runs all check_ functions and outputs a summary dataframe of flagged samples or a list of all flag results if \code{returnAllTables = TRUE}
+#' @details Runs all check_, count_, and find_ functions and outputs a summary dataframe of flagged samples or a list of all flag results if \code{returnAllTables = TRUE}
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
 #' allChecks <- check_all(x, returnAllTables = FALSE)
+#' allChecksList <- check_all(x, returnAllTables = TRUE)
+#' view(allChecksList$flaggedSamples)
 #' @importFrom dplyr left_join
 #' @importFrom dplyr summarize
 #' @importFrom dplyr group_by
@@ -15,7 +17,8 @@
 #' @return A dataframe containing all samples with applicable flags
 #' @seealso \code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
 #' \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, 
-#' \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}
+#' \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}},
+#' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}}, \code{\link[sedReview]{find_outliers}}
 
 check_all <- function(x, returnAllTables = FALSE)
 {
