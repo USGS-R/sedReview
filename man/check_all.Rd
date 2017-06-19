@@ -2,12 +2,12 @@
 % Please edit documentation in R/check_all.R
 \name{check_all}
 \alias{check_all}
-\title{Function to run all checks on a dataset}
+\title{check_all}
 \usage{
 check_all(x, returnAllTables = FALSE)
 }
 \arguments{
-\item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
+\item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
 \item{returnAllTables}{Return all tables of flagged results}
 }
@@ -24,4 +24,9 @@ Runs all check_ functions and outputs a summary dataframe of flagged samples or 
 data("exampleData",package="sedReview")
 x <- exampleData
 allChecks <- check_all(x, returnAllTables = FALSE)
+}
+\seealso{
+\code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
+\code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, 
+\code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}
 }

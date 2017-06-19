@@ -1,14 +1,16 @@
 #' count_methodsBySite
 #' 
 #' @description Returns counts of samples by site, sampling method, and sampler type. See details
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @return A data.frame tabular summary of counts of samples by site and method
 #' @examples
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
 #' count_methodsBySiteOut <- count_methodsBySite(x)
 #' @importFrom dplyr group_by
+#' @importFrom dplyr ungroup
 #' @importFrom dplyr summarise
+#' @importFrom dplyr filter
 #' @export
 count_methodsBySite <- function(x) {
   

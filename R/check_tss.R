@@ -1,6 +1,6 @@
 #' check_tss
 #' @description Function to flag TSS results without an accompanying SSC result
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @details See OSW Technical Memo No. 2001.03 for more details and background information
 #' @examples 

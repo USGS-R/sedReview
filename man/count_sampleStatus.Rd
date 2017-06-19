@@ -7,7 +7,7 @@
 count_sampleStatus(x, bySite = TRUE)
 }
 \arguments{
-\item{x}{A \code{longTable} dataframe output from \code{getLocalNWIS}}
+\item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
 \item{bySite}{Logical. Count by site if \code{TRUE} or for all sites if \code{FALSE}}
 }

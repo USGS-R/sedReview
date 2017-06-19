@@ -1,8 +1,8 @@
 #' check_bagIE
 #' @description Function to check and flag bag intake efficiency parameters, and calculate and flag the bag efficiency
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
-#' @details checks and calculates bag intake efficiency under OSW Tech Memo 2013.03 (https://water.usgs.gov/admin/memo/SW/sw13.03.pdf)
+#' @details checks and calculates bag intake efficiency under OSW Tech Memo 2013.03 \url{https://water.usgs.gov/admin/memo/SW/sw13.03.pdf}
 #' @details P72217 - Duration sampler collected water, seconds
 #' @details P72218 - Sample volume to compute isokinetic transit rate, milliliters
 #' @details P72196 - Velocity to compute isokinetic transit rate, feet per second

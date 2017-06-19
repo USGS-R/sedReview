@@ -1,7 +1,7 @@
 #' make_wideTable
 #' 
-#' @description Reformats teh longTable output (by result) from getLocalNWIS into wide format (by sample)
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @description Reformats the longTable output (by result) from get_localNWIS into wide format (by sample)
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @return A wide format data.frame 
 #' @details The wide format data frame format is primarily for visual inspection of data.
 #' A number of important metadata are missing from this table and thus it is not recommended to use these data in analyis
@@ -12,7 +12,7 @@
 #' @importFrom dplyr left_join
 #' @importFrom reshape2 dcast
 #' @export
-#' 
+#' @seealso \code{\link[sedReview]{get_localNWIS}}
 
 
 make_wideTable <- function(x) {

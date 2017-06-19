@@ -1,21 +1,20 @@
-#' check_verticles
+#' check_verticals
 #' @description Function to check if number of verticals in EDI/EWI samples is correct
-#' @param x A \code{longTable} dataframe output from \code{getLocalNWIS}
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
-
 #' @details function to test EDI sample collected correctly. Number of sampling verticals 4-9.
 #' @details function to test EWI sample collected correctly. Number of verticals between 10 and 20.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
-#' check_verticlesOut <- check_verticles(x)
+#' check_verticalsOut <- check_verticals(x)
 #' 
 #' @importFrom dplyr left_join
 #' @export
 #' @return A dataframe containing all samples with applicable flags
 
 # x is plotData from NWISodbc data pull
-check_verticles <- function(x, returnAll = FALSE){
+check_verticals <- function(x, returnAll = FALSE){
   
   # Select all EDI and EWI samples
   EDI <- x[x$PARM_CD == "82398", ]
