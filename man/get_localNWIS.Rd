@@ -12,6 +12,8 @@ get_localNWIS(DSN, env.db = "01", qa.db = "02", STAIDS, begin.date = NA,
 
 \item{env.db}{A character string containing the database number of environmental samples}
 
+\item{qa.db}{A character string containing the database number of QA samples}
+
 \item{STAIDS}{A character vector of stations IDs. Agency code defaults to "USGS" unless appended to the beginning of station ID with a dash, e.g. "USGS-123456".}
 
 \item{begin.date}{Character string containing beginning date of data pull (yyyy-mm-dd)}

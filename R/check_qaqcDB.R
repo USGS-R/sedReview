@@ -14,6 +14,9 @@
 #' check_qaqcDBOut <- check_qaqcDB(x)
 #' }
 #' @importFrom dplyr left_join
+#' @importFrom dplyr select
+#' @importFrom dplyr matches
+#' @importFrom stringi stri_sub
 #' @export
 #' @return A dataframe containing all samples with applicable flags
 #' @seealso \code{\link[sedReview]{get_localNWIS}}
@@ -22,10 +25,35 @@ check_qaqcDB <- function(x,
                          qa.db = "02",
                          returnAll = FALSE)
 {
-  x <- x[x$PARM_CD %in% c("80154","80225","91145") & x$MEDIUM_CD == "WSQ", ]
-  qaqc <- grep(pattern = paste0("_", qa.db), x$RECORD_NO, value = TRUE)
-  qaqc <- x$UID[]
-  x <- x[x$]
+  # extract SSC, Bedload, Bedload mass Pcodes and WSQ medium code
+  qaqc <- x[x$PARM_CD %in% c("80154","80225","91145") & x$MEDIUM_CD == "WSQ", ]
   
+  # add database number column to extracted data, extracted from UID string 
+  qaqc$DB <- stringi::stri_sub(qaqc$UID, from = -2, to = -1)
+  
+  # select only samples in user defined QAQC database
+  qaqc <- qaqc[qaqc$DB == qa.db, ]
+  
+  # flag samples
+  qaqc$qaqcFlag <- "SED sample in QAQC DB"
+  qaqc <- dplyr::select(qaqc, -dplyr::matches("DB"))
+  
+  # list of flagged samples
+  ### data frame of all samples with flags
+  flaggedSamples <- unique(x[c("UID",
+                               "RECORD_NO",
+                               "SITE_NO",
+                               "STATION_NM",
+                               "SAMPLE_START_DT",
+                               "MEDIUM_CD")])
+  # append flags
+  flaggedSamples <- dplyr::left_join(flaggedSamples, qaqc[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA", "qaqcFlag")], by = "UID")
+  if(returnAll == FALSE)
+  {
+    flaggedSamples <- flaggedSamples[is.na(flaggedSamples$qaqcFlag)==FALSE, ]
+  }
+  
+  
+  return(flaggedSamples)
   
 }
