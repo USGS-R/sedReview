@@ -31,11 +31,8 @@ check_qaqcDB <- function(x,
   # add database number column to extracted data, extracted from UID string 
   qaqc$DB <- stringi::stri_sub(qaqc$UID, from = -2, to = -1)
   
-  # select only samples in user defined QAQC database
-  qaqc <- qaqc[qaqc$DB == qa.db, ]
-  
-  # flag samples
-  qaqc$qaqcFlag <- "SED sample in QAQC DB"
+  # select only samples in user defined QAQC database and flag
+  qaqc$qaqcFlag[qaqc$DB == qa.db] <- "SED sample in QAQC DB"
   qaqc <- dplyr::select(qaqc, -dplyr::matches("DB"))
   
   # list of flagged samples
