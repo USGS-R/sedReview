@@ -14,7 +14,8 @@ Imports:
     lubridate,
     dplyr,
     reshape2,
-    RODBC
+    RODBC,
+    stringi
 Suggests:
     xtable,
     knitr,

@@ -4,10 +4,12 @@
 \alias{check_all}
 \title{check_all}
 \usage{
-check_all(x, returnAllTables = FALSE)
+check_all(x, qa.db = "02", returnAllTables = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
+
+\item{qa.db}{A character string containing the database number of QA samples (for check_qaqcDB function), should be same QA DB used in \code{get_localNWIS}}
 
 \item{returnAllTables}{Return all tables of flagged results}
 }
@@ -18,15 +20,20 @@ A dataframe containing all samples with applicable flags
 Function to run all checks on a dataset
 }
 \details{
-Runs all check_ functions and outputs a summary dataframe of flagged samples or a list of all flag results if \code{returnAllTables = TRUE}
+Runs all check_, count_, and find_ functions and outputs a summary dataframe of flagged samples or a list of all flag results if \code{returnAllTables = TRUE}
 }
 \examples{
 data("exampleData",package="sedReview")
 x <- exampleData
 allChecks <- check_all(x, returnAllTables = FALSE)
+allChecksList <- check_all(x, returnAllTables = TRUE)
+\dontrun{
+view(allChecksList$flaggedSamples)
+}
 }
 \seealso{
 \code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
 \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, 
-\code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}
+\code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}, \code{\link[sedReview]{check_qaqcDB}}
+\code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}}, \code{\link[sedReview]{find_outliers}}
 }
