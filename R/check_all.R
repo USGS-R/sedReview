@@ -101,7 +101,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                 samplerTypeFlags = samplerTypeFlags,
                 tssFlags = tssFlags,
                 verticalsFlags = verticalsFlags,
-                qaqcFlags - qaqcFlags,
+                qaqcFlags = qaqcFlags,
                 methodsBySite = methodsBySite,
                 sampleStatus = sampleStatus,
                 outliers = outliers))
