@@ -27,7 +27,9 @@ data("exampleData",package="sedReview")
 x <- exampleData
 allChecks <- check_all(x, returnAllTables = FALSE)
 allChecksList <- check_all(x, returnAllTables = TRUE)
+\dontrun{
 view(allChecksList$flaggedSamples)
+}
 }
 \seealso{
 \code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
