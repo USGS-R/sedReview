@@ -9,7 +9,9 @@
 #' x <- exampleData
 #' allChecks <- check_all(x, returnAllTables = FALSE)
 #' allChecksList <- check_all(x, returnAllTables = TRUE)
+#' \dontrun{
 #' view(allChecksList$flaggedSamples)
+#' }
 #' @importFrom dplyr left_join
 #' @importFrom dplyr summarize
 #' @importFrom dplyr group_by
