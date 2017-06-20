@@ -4,10 +4,12 @@
 \alias{check_all}
 \title{check_all}
 \usage{
-check_all(x, returnAllTables = FALSE)
+check_all(x, qa.db = "02", returnAllTables = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
+
+\item{qa.db}{A character string containing the database number of QA samples (for check_qaqcDB function), should be same QA DB used in \code{get_localNWIS}}
 
 \item{returnAllTables}{Return all tables of flagged results}
 }
