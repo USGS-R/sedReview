@@ -34,6 +34,7 @@
 #' #Will not run unless connected to NWISCO
 #' qw.data <- get_localNWIS(DSN="NWISCO",
 #'                              env.db = "01",
+#'                              qa.db = "02",
 #'                              STAIDS = c("06733000","09067005"),
 #'                              begin.date = "2005-01-01",
 #'                              end.date = "2015-10-27",
@@ -46,6 +47,7 @@
 #' @export
 get_localNWIS <- function(DSN,
                      env.db = "01",
+                     qa.db = "02",
                      STAIDS,
                      begin.date = NA,
                      end.date = NA,
