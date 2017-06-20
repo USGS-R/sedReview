@@ -1,6 +1,7 @@
 #' check_qaqcDB
 #' @description Function to check if SSC, bedload, or bedload mass are coded as WSQ and in the QA/QC database
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param qa.db A character string containing the database number of QA samples
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @details Function finds and flags SSC (P80154), bedload (P80225), and bedload mass (P91145) results
 #' that are coded as medium_cd "WSQ" and stored in the user defined QA/QC database (default is qa.db = "02") downloaded with \code{get_localNWIS}
@@ -17,10 +18,14 @@
 #' @return A dataframe containing all samples with applicable flags
 #' @seealso \code{\link[sedReview]{get_localNWIS}}
 
-check_qaqcDB <- function(x, returnAll = FALSE)
+check_qaqcDB <- function(x, 
+                         qa.db = "02",
+                         returnAll = FALSE)
 {
   x <- x[x$PARM_CD %in% c("80154","80225","91145") & x$MEDIUM_CD == "WSQ", ]
-  
+  qaqc <- grep(pattern = paste0("_", qa.db), x$RECORD_NO, value = TRUE)
+  qaqc <- x$UID[]
+  x <- x[x$]
   
   
 }

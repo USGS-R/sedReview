@@ -3,6 +3,7 @@
 #' Pulls data from NWIS internal servers using ODBC connection and returns a longtable (by result)
 #' @param DSN A character string containing the DSN for your local server
 #' @param env.db A character string containing the database number of environmental samples
+#' @param qa.db A character string containing the database number of QA samples
 #' @param STAIDS A character vector of stations IDs. Agency code defaults to "USGS" unless appended to the beginning of station ID with a dash, e.g. "USGS-123456". 
 #' @param begin.date Character string containing beginning date of data pull (yyyy-mm-dd)
 #' @param end.date Character string containing ending date of data pull (yyyy-mm-dd)
