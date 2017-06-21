@@ -1,5 +1,21 @@
+#' calc_concSandFine
+#' 
+#' @description Function to calculate sand/fine concentration based on SSC and sand/fine split value and output basic plots
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param plotTime Logical, if \code{TRUE} basic timeseries plots of Conc vs. Time are created for each site with complete data, default is \code{FALSE}
+#' @param plotFlow Logical, if \code{TRUE} basic plots of Conc vs. Flow are created for each site with complete data, default is \code{FALSE} 
+#' @details Sand and Fine concentration (mg/L) is calculated for sites with SSC (P80154) and % finer than 62.5 microns (P70331)
+#' @details Some measure of discharge (P00060, P00061, P30208, P30209, P50042, P72137, P72243, P99060, P99061) must be present a record to plot in plotFlow, otherwise it is removed
+#' @examples 
+#' data("exampleData",package="sedReview")
+#' x <- exampleData
+#' concSandFine <- calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
+#' 
+#' @importFrom dplyr left_join
+#' @export
+#' @return A dataframe containing all samples with complete SSC, sand/fine split, and calculated sand and fine concentrations
 
-plot_concSandFine <- function(x, plotTime = FALSE, plotFlow = FALSE)
+calc_concSandFine <- function(x, plotTime = FALSE, plotFlow = FALSE)
 {
   # get suspended sediment concentration
   SSC <- x[x$PARM_CD == "80154", ]
