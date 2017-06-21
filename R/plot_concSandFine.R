@@ -39,6 +39,42 @@ plot_concSandFine <- function(x, plotTime = FALSE, plotFlow = FALSE)
   SSC$sandConc <- SSC$SSC * ((100 - SSC$split) / 100)
   SSC$fineConc <- SSC$SSC * (SSC$split / 100)
   
+  # plot timeseries of concentrations
+  if(plotTime == TRUE)
+  {
+    # get list of sites
+    sites <- unique(SSC$SITE_NO)
+    # loop through and output plots
+    for( i in 1:length(sites))
+    {
+      temp <- SSC[SSC$SITE_NO == sites[i], ]
+      plot(x = temp$SAMPLE_START_DT, y = temp$sandConc, xlab = "Date", ylab = "Sand Conc mg/L", 
+           main = paste(unique(temp$SITE_NO), unique(temp$STATION_NM)))
+      plot(x = temp$SAMPLE_START_DT, y = temp$fineConc, xlab = "Date", ylab = "Fine Conc mg/L", 
+           main = paste(unique(temp$SITE_NO), unique(temp$STATION_NM)))
+    }
+  }
+  # plot concentration v. flow 
+  if(plotFlow == TRUE)
+  {
+    # remove records that don't have flow data
+    temp1 <- SSC[is.na(SSC$cfs) == FALSE, ]
+    # get list of sites
+    sites <- unique(temp1$SITE_NO)
+    if(length(sites) > 0)
+    {
+      for( i in 1:length(sites))
+      {
+        temp <- temp1[temp1$SITE_NO == sites[i], ]
+        plot(x = temp$cfs, y = temp$sandConc, xlab = "Discharge cfs", ylab = "Sand Conc mg/L", 
+             main = paste(unique(temp$SITE_NO), unique(temp$STATION_NM)))
+        plot(x = temp$cfs, y = temp$fineConc, xlab = "Discharge cfs", ylab = "Fine Conc mg/L", 
+             main = paste(unique(temp$SITE_NO), unique(temp$STATION_NM)))
+      }
+    } else(print("No sites with flow data to plot"))
+
+  }
+  
   return(SSC)
 }
 
