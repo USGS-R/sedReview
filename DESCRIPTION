@@ -21,7 +21,7 @@ Suggests:
     knitr,
     testthat,
     rmarkdown
-Description: Contains various functions useful for reviewing discrete water-quality sediment data.
+Description: Contains various functions useful for reviewing discrete water-quality sediment data in local NWIS databases.
 License: CC0
 LazyLoad: yes
 LazyData: yes
