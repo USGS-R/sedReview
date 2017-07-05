@@ -1,6 +1,6 @@
 Package: sedReview
 Type: Package
-Title: Package for review of discrete water-quality sediment data stored in the USGS NWIS system locally
+Title: Package for review of discrete water-quality sediment data stored in the USGS NWIS system
 Version: 0.1
 Date: 2017-04-25
 Authors@R: as.person(c(
