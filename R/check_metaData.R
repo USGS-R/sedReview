@@ -131,8 +131,11 @@ check_metaData <- function(x, returnAll = FALSE)
   typeQA <- x[x$PARM_CD == "99111",]
   typeQA <- unique(typeQA$RECORD_NO)
   missingTypQA <- x[!(x$RECORD_NO %in% typeQA) & x$MEDIUM_CD %in% ENVlist & x$SAMPLE_START_DT > as.POSIXct("2001-09-30"),]
-  missingTypQA$check_20.64 <- paste("flag missing P99111 (Type-of-QA)")
-  missingTypQA <- unique(missingTypQA[c("UID", "check_20.64")])
+  if(nrow(missingTypQA)>0){
+    missingTypQA$check_20.64 <- paste("flag missing P99111 (Type-of-QA)")
+    missingTypQA <- unique(missingTypQA[c("UID", "check_20.64")])
+  }
+  
   
   ### data frame of all samples with flags
   flaggedSamples <- unique(x[c("UID",
