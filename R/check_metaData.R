@@ -110,28 +110,36 @@ check_metaData <- function(x, returnAll = FALSE)
   sampPurp <- x[x$PARM_CD == "71999",]
   sampPurp <- unique(sampPurp$RECORD_NO)
   missingPurp <- x[!(x$RECORD_NO %in% sampPurp) & x$SAMPLE_START_DT > as.POSIXct("2001-09-30"),]
-  missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose")
+  if(nrow(missingPurp)>0){
+    missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose")
+  }else{missingPurp$check_20.61 <- character(0)}
   missingPurp <- unique(missingPurp[c("UID", "check_20.61")])
   
   ### NWIS check 20.62 - SW or GW sample missing sampler-type (P84164)
   sampTyp <- x[x$PARM_CD == "84164",]
   sampTyp <- unique(sampTyp$RECORD_NO)
   missingTyp <- x[!(x$RECORD_NO %in% sampTyp) & x$MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ") & x$SAMPLE_START_DT > as.POSIXct("2001-09-30"),]
-  missingTyp$check_20.62 <- paste("flag missing P84164 (Sampler Type)")
+  if(nrow(missingTyp)>0){
+    missingTyp$check_20.62 <- paste("flag missing P84164 (Sampler Type)")
+  }else{missingTyp$check_20.62 <- character(0)}
   missingTyp <- unique(missingTyp[c("UID", "check_20.62")])
   
   ### NWIS check 20.63 - SW or GW sample missing sampling-method (P82398)
   sampMeth <- x[x$PARM_CD == "82398",]
   sampMeth <- unique(sampMeth$RECORD_NO)
   missingMeth <- x[!(x$RECORD_NO %in% sampMeth) & x$MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ") & x$SAMPLE_START_DT > as.POSIXct("2001-09-30"),]
-  missingMeth$check_20.63 <- paste("flag missing P82398 (Sampling Method)")
+  if(nrow(missingMeth)>0){
+    missingMeth$check_20.63 <- paste("flag missing P82398 (Sampling Method)")
+  }else{missingMeth$check_20.63 <- character(0)}
   missingMeth <- unique(missingMeth[c("UID", "check_20.63")])
   
   ### NWIS check 20.64 - ENV sample missing Type-of-QA associated with sample (P99111)
   typeQA <- x[x$PARM_CD == "99111",]
   typeQA <- unique(typeQA$RECORD_NO)
   missingTypQA <- x[!(x$RECORD_NO %in% typeQA) & x$MEDIUM_CD %in% ENVlist & x$SAMPLE_START_DT > as.POSIXct("2001-09-30"),]
-  missingTypQA$check_20.64 <- paste("flag missing P99111 (Type-of-QA)")
+  if(nrow(missingTypQA)>0){
+    missingTypQA$check_20.64 <- paste("flag missing P99111 (Type-of-QA)")
+  }else{missingTypQA$check_20.64 <- character(0)}
   missingTypQA <- unique(missingTypQA[c("UID", "check_20.64")])
   
   ### data frame of all samples with flags

@@ -23,7 +23,11 @@ check_hasQ <- function(x, returnAll = FALSE) {
   sedRecords <- x[x$PARM_CD %in% c("80254","80154","80155","80225","00496","00535"),]
   qRecords <- x[x$PARM_CD %in%  c("00060", "00061", "30208", "30209", "50042", "72137", "72243", "99060", "99061"),]
   
-
+  if(nrow(sedRecords)==0){
+    #print('Site contains no sediment specific records (Parameter codes: "80254","80154","80155","80225","00496","00535")')
+    stop('Site contains no sediment specific records (Parameter codes: "80254","80154","80155","80225","00496","00535")')
+  }
+  
   sedRecords <- reshape2::dcast(sedRecords,UID+RECORD_NO+SITE_NO+STATION_NM+SAMPLE_START_DT+MEDIUM_CD~PARM_CD,value.var="RESULT_VA")
   qRecords <- reshape2::dcast(qRecords,UID~PARM_CD,value.var="RESULT_VA")
   

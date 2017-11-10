@@ -400,11 +400,11 @@ get_localNWIS <- function(DSN,
     if(!is.na(begin.date) && !is.na(end.date)) {
       Samples <- Samples[Samples$SAMPLE_START_DT >= begin.date & Samples$SAMPLE_START_DT <= end.date,]
 
-      if(nrow(Samples) == 0) {
-        print("No samples exist in your local NWIS database for the date range specified, check data criteria")
-        stop("No samples exist in your local NWIS database for the date range specified, check data criteria")
-      }
-
+    #   if(nrow(Samples) == 0) {
+    #     print("No samples exist in your local NWIS database for the date range specified, check data criteria")
+    #     stop("No samples exist in your local NWIS database for the date range specified, check data criteria")
+    #   }
+    # 
     }else {}
 
     if(!is.null(projectCd))
@@ -657,4 +657,5 @@ get_localNWIS <- function(DSN,
   
   return(longTable)
   
-}
+  }
+  
