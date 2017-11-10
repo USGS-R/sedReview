@@ -110,7 +110,9 @@ check_metaData <- function(x, returnAll = FALSE)
   sampPurp <- x[x$PARM_CD == "71999",]
   sampPurp <- unique(sampPurp$RECORD_NO)
   missingPurp <- x[!(x$RECORD_NO %in% sampPurp) & x$SAMPLE_START_DT > as.POSIXct("2001-09-30"),]
-  missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose")
+  if(nrow(missingPurp)>0){
+    missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose")
+  }else{missingPurp$check_20.61 <- character(0)}
   missingPurp <- unique(missingPurp[c("UID", "check_20.61")])
   
   ### NWIS check 20.62 - SW or GW sample missing sampler-type (P84164)
@@ -119,7 +121,6 @@ check_metaData <- function(x, returnAll = FALSE)
   missingTyp <- x[!(x$RECORD_NO %in% sampTyp) & x$MEDIUM_CD %in% c("WS ", "WSQ", "WG ", "WGQ") & x$SAMPLE_START_DT > as.POSIXct("2001-09-30"),]
   if(nrow(missingTyp)>0){
     missingTyp$check_20.62 <- paste("flag missing P84164 (Sampler Type)")
-    
   }else{missingTyp$check_20.62 <- character(0)}
   missingTyp <- unique(missingTyp[c("UID", "check_20.62")])
   

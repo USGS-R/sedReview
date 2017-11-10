@@ -8,10 +8,11 @@ siteData <- get_localNWIS(DSN = 'nwisco',                             #Colorado 
                           env.db = '01',
                           qa.db = '02',
                           STAIDS = c(
-                            #'402114105350101',
-                            #''09163500',
-                            #'06741510'
-                            '401723105400000'),
+                            '402114105350101',     # BigT below Moraine Park - WQ site
+                            '09163500',            # CO River at UT state line - WQ site w/ sediment
+                            '06741510',            # BigT at Loveland - WQ site w/ sediment?
+                            '401723105400000'      # Andrews Creek RMNP - WQ site w/ no sediment
+                            ),
                           begin.date = '2017-07-01',
                           end.date = '2017-09-30')
 
