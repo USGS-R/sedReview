@@ -19,6 +19,11 @@ check_samplePurp <- function(x, returnAll = FALSE){
   purp <- x[x$PARM_CD == "71999", ]
   purp <- unique(purp[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA")])
   
+  if(nrow(purp)==0){
+    stop("All pulled record numbers missing sample purpose (PARM_CD 71999)")
+  }
+  
+  
   # table of unique sample purposes
   sampPurp <- as.data.frame(table(purp$RESULT_VA))
   names(sampPurp) <- c("SamplePurpose", "count")
