@@ -1,7 +1,7 @@
 #' check_samplerType
 #' @description Function to flag uncommon sampler type
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
-#' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
+#' @param returnAll logical, return dataframe containing all results or only return flagged samples. Default is FALSE
 #' @details Function determines most common sampler type from dataset or records and flags all others that are not most common.
 #' @details Note, there are valid reasons for different sampler types, this is just a check.
 #' @examples 
@@ -25,9 +25,10 @@ check_samplerType <- function(x, returnAll = FALSE){
   sampTyp$SamplerType <- as.character(sampTyp$SamplerType)
   # most common sampler type
   mainType <- sampTyp$SamplerType[sampTyp$count %in% max(sampTyp$count)]
-  
+  print(paste0("Most common sampler type is ", mainType))
   # flag sampler types other than most common
-  sampler$sampTypFlag[sampler$RESULT_VA != mainType] <- paste("flag uncommon sampler type ", sampler$RESULT_VA[sampler$RESULT_VA != mainType])
+  sampler$sampTypFlag[sampler$RESULT_VA != mainType] <- paste0("flag uncommon sampler type ", sampler$RESULT_VA[sampler$RESULT_VA != mainType],
+                                                              ", most common type is ", mainType)
   
   # list of flagged samples
   ### data frame of all samples with flags
