@@ -57,6 +57,7 @@
 #' @importFrom reshape2 dcast
 #' @importFrom dplyr left_join
 #' @importFrom lubridate yday
+#' @importFrom smwrBase waterYear
 #' @export
 get_localNWIS <- function(DSN,
                      env.db = "01",
@@ -635,6 +636,9 @@ get_localNWIS <- function(DSN,
   ###Add in day of year to longTable
   longTable$DOY <- lubridate::yday(longTable$SAMPLE_START_DT)
   
+  ###Add in water year to longTable
+  longTable$WY <- smwrBase::waterYear(longTable$SAMPLE_START_DT, numeric = TRUE)
+  
   ###Remove trailing spaces on site IDs
   
   longTable$SITE_NO <- gsub(" ","",longTable$SITE_NO)
@@ -662,7 +666,7 @@ get_localNWIS <- function(DSN,
                            "HYD_COND_CD","SAMP_TYPE_CD","HYD_EVENT_CD",
                            "AQFR_CD","TU_ID","BODY_PART_ID",
                            "COLL_ENT_CD","SIDNO_PARTY_CD",
-                           "HUC_CD","SITE_TP_CD", "SAMPLE_MONTH","DOY")]
+                           "HUC_CD","SITE_TP_CD", "SAMPLE_MONTH","DOY", "WY")]
   
   ###Remove reviewed and rejected results or return only rejected samples
   if(rejected == TRUE){
