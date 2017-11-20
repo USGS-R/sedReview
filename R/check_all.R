@@ -58,6 +58,9 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   #Find outliers
   outliers <- find_outliers(x, returnAll = FALSE)
   
+  #Calculate sand and fines concentration
+  concSandFine <- calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
+  
   
   flaggedSamples <- x[x$DQI_CD %in% c("I","S","P"),
                       c("UID","RECORD_NO","SITE_NO","STATION_NM","SAMPLE_START_DT","MEDIUM_CD","PARM_CD","PARM_NM","PARM_SEQ_GRP_CD","DQI_CD")]
@@ -126,7 +129,8 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                 qaqcFlags = qaqcFlags,
                 methodsBySite = methodsBySite,
                 sampleStatus = sampleStatus,
-                outliers = outliers))
+                outliers = outliers,
+                concSandFine = concSandFine))
   } else {
     return(flaggedSamples)
   }
