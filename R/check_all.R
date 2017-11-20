@@ -91,6 +91,26 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                                     verticalsFlags == T |
                                     qaqcFlags == T |
                                     outliers == T)
+  
+  flaggedSamples <- unique(flaggedSamples[c("UID",
+                            "RECORD_NO",
+                            "SITE_NO",
+                            "STATION_NM",
+                            "SAMPLE_START_DT",
+                            "MEDIUM_CD",
+                            "bagIEFlags",
+                            "QFlags",
+                            "metaDataFlags",
+                            "samplePurpFlags", 
+                            "samplerTypeFlags",
+                            "tssFlags",
+                            "verticalsFlags",
+                            "qaqcFlags",
+                            "outliers")])
+  flaggedSamples[flaggedSamples == FALSE] <- ""
+  flaggedSamples[flaggedSamples == TRUE] <- "flags present"
+  # sort summary flags by site, date/time
+  flaggedSamples <- flaggedSamples[order(flaggedSamples$SITE_NO, flaggedSamples$SAMPLE_START_DT),]
 
   
   if(returnAllTables == TRUE)
