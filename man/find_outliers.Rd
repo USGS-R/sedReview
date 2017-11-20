@@ -20,7 +20,9 @@ find_outliers(x, lowThreshold = 0.1, highThreshold = 0.9,
 A dataframe containing all samples with applicable flags
 }
 \description{
-Function to flag sediment outliers
+Function to flag sediment outliers based on threshold criteria.
+
+Flags for suspended sediment concentration (P80154), suspended sediment load (P80155), bed and suspended sediment loss on ignition (P00496/00535), and Sand/Silt break (P70331 Suspended sediment, sieve diamter, percent smaller than 0.0625mm)
 }
 \examples{
 data("exampleData",package="sedReview")
