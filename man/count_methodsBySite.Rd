@@ -10,10 +10,18 @@ count_methodsBySite(x)
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 }
 \value{
-A data.frame tabular summary of counts of samples by site and method
+A data.frame tabular summary of counts of samples by site, water year, and method
 }
 \description{
-Returns counts of samples by site, sampling method, and sampler type. See details
+Returns counts of samples by site, WY, sampling method, and sampler type.
+
+Returns total counts of SSC(P80154), Bedload(P80225), Bedload mass (P91145), and the following specifics:
+
+counts of SSC methode code (P82398) = 10, 20, or 60
+
+counts of SSC sampler type (P84164) = 3060, 3070, or 3071
+
+counts of Bedload method code (P82398) = 1000, 1010, or 1020
 }
 \examples{
 data("exampleData",package="sedReview")
