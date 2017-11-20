@@ -1,5 +1,6 @@
 #' find_outliers
-#' @description Function to flag sediment outliers
+#' @description Function to flag sediment outliers based on threshold criteria.
+#' @description Flags for suspended sediment concentration (P80154), suspended sediment load (P80155), bed and suspended sediment loss on ignition (P00496/00535), and Sand/Silt break (P70331 Suspended sediment, sieve diamter, percent smaller than 0.0625mm)
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @param lowThreshold numeric value between 0 and 1 indicating the quantile threshold for a low value outlier.
@@ -44,8 +45,8 @@ find_outliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll 
       percentiles <- stats::quantile(d$RESULT_VA, probs = c(lowThreshold,highThreshold), na.rm = TRUE)
       outliers <- d[d$RESULT_VA < percentiles[1] |
                         d$RESULT_VA > percentiles[2],]
-      outliers$flag[outliers$RESULT_VA < percentiles[1]] <- paste("flag low")
-      outliers$flag[outliers$RESULT_VA > percentiles[2]] <- paste("flag high")
+      outliers$flag[outliers$RESULT_VA < percentiles[1]] <- paste("flag low, result_va = ", outliers$RESULT_VA[outliers$RESULT_VA < percentiles[1]])
+      outliers$flag[outliers$RESULT_VA > percentiles[2]] <- paste("flag high, result_va = ", outliers$RESULT_VA[outliers$RESULT_VA > percentiles[2]])
       d$flag <- NULL
       d <- dplyr::left_join(d, outliers[c("UID", "flag")], by = "UID")
     } 
