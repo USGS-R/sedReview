@@ -36,3 +36,4 @@ View(vertFlags)
 # write csv file to the D drive of vertical flags that can be opened in excel
 write.table(vertFlags, file = 'D:/verticalFlags.csv', quote = TRUE, sep = ",",
             row.names = FALSE, col.names = TRUE, na = "")
+
