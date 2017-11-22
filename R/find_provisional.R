@@ -1,6 +1,21 @@
-
-data('exampleData', package = "sedReview")
-x <- exampleData
+#' find_provisional
+#' @description Find sediment parameter code records with DQI code of "S" and output record number files for QWDATA.
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param env.db A character string containing the database number of environmental samples
+#' @param qa.db A character string containing the database number of QA samples
+#' @param pcodes A character vector of parameter codes of interest. Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
+#' @param env.fileout A character string of the filename for environmental database records to be output. Default is NULL, if NULL a file will not be output.
+#' @param qa.fileout A character string of the filename for QA database records to be output. Default is NULL, if NULL a file will not be output.
+#' @details In RStudio the function will automatically show the environmental and QA database records in view tabs.
+#' @details Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
+#' @examples
+#' data('exampleData', package = "sedReview")
+#' x <- exampleData
+#' provisional.recs <- find_provisional(x)
+#' \dontrun{
+#' view(provisional.recs$env.provisional)}
+#' @export
+#' @return A list of dataframes for the environmental and QA database records. List names are env.provisional and qa.provisional
 
 
 find_provisional <- function(x, env.db = "01", qa.db = "02",

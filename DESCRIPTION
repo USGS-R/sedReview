@@ -15,8 +15,7 @@ Imports:
     dplyr,
     reshape2,
     RODBC,
-    stringi,
-    smwrBase
+    stringi
 Suggests:
     xtable,
     knitr,
