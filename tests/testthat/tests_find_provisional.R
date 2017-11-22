@@ -1,4 +1,4 @@
-context(find_provisional)
+context("find_provisional")
 
 test_that("Return values check", {
   data("exampleData", package = "sedReview")
