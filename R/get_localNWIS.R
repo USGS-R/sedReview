@@ -57,7 +57,6 @@
 #' @importFrom reshape2 dcast
 #' @importFrom dplyr left_join
 #' @importFrom lubridate yday
-#' @importFrom smwrBase waterYear
 #' @export
 get_localNWIS <- function(DSN,
                      env.db = "01",
@@ -637,7 +636,7 @@ get_localNWIS <- function(DSN,
   longTable$DOY <- lubridate::yday(longTable$SAMPLE_START_DT)
   
   ###Add in water year to longTable
-  longTable$WY <- smwrBase::waterYear(longTable$SAMPLE_START_DT, numeric = TRUE)
+  longTable$WY <- sedReview::waterYear(longTable$SAMPLE_START_DT, numeric = TRUE)
   
   ###Remove trailing spaces on site IDs
   
