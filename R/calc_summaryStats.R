@@ -8,6 +8,8 @@
 #' data('exampleData', package = "sedReview")
 #' x <- exampleData
 #' summaryStats <- calc_summaryStats(x)
+#' @importFrom dplyr summarise
+#' @importFrom dplyr group_by
 #' @export
 #' @return A dataframe of summary statistics
 
@@ -28,6 +30,7 @@ calc_summaryStats <- function(x, pcodes = c("80154",
                            median = median(RESULT_VA),
                            mean = mean(RESULT_VA),
                            stdev = sd(RESULT_VA, na.rm = T))
+  temp$mean <- format(temp$mean, scientific = FALSE)
   
   return(temp)
   
