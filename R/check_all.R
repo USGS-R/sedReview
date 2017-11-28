@@ -22,7 +22,7 @@
 #' \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, \code{\link[sedReview]{check_sedMass}}, 
 #' \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}, \code{\link[sedReview]{check_qaqcDB}}
 #' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}}, \code{\link[sedReview]{find_outliers}},
-#' \code{\link[sedReview]{find_provisional}}
+#' \code{\link[sedReview]{find_provisional}}, \code{\link[sedReview]{calc_concSandFine}}, \code{\link[sedReview]{calc_summaryStats}}
 
 check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
 {
@@ -67,6 +67,9 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   
   #Calculate sand and fines concentration
   concSandFine <- calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
+  
+  #Calculate summary statistics
+  summaryStats <- calc_summaryStats(x)
   
   
   flaggedSamples <- x[x$DQI_CD %in% c("I","S","P"),
@@ -142,7 +145,8 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                 sampleStatus = sampleStatus,
                 outliers = outliers,
                 provisional = provisional,
-                concSandFine = concSandFine))
+                concSandFine = concSandFine,
+                summaryStats = summaryStats))
   } else {
     return(flaggedSamples)
   }
