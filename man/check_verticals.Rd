@@ -9,7 +9,7 @@ check_verticals(x, returnAll = FALSE)
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
-\item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE}
+\item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Default is FALSE}
 }
 \value{
 A dataframe containing all samples with applicable flags
