@@ -16,10 +16,12 @@ calc_summaryStats(x, pcodes = c("80154", "70331", "00530", "80155", "80225",
 A dataframe of summary statistics
 }
 \description{
-Calculates summary statistics grouped by site, parameter, and water year.
+Calculates summary statistics and tallys non-detects grouped by site, parameter, and water year.
 }
 \details{
-Calculates minimum, maximum, median, mean, and standard deviation (if applicable).
+Calculates minimum, maximum, median, mean, and standard deviation (if applicable). Non-detects (REMARK_CD = "<") and Averages (REMARK_CD = "A") are not included in calculations.
+
+A count of the number of non-detect samples is included in the summary.
 
 Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
 }
