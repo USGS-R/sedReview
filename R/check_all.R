@@ -21,7 +21,8 @@
 #' @seealso \code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
 #' \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, \code{\link[sedReview]{check_sedMass}}, 
 #' \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}, \code{\link[sedReview]{check_qaqcDB}}
-#' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}}, \code{\link[sedReview]{find_outliers}}
+#' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}}, \code{\link[sedReview]{find_outliers}},
+#' \code{\link[sedReview]{find_provisional}}
 
 check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
 {
@@ -60,6 +61,9 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   
   #Find outliers
   outliers <- find_outliers(x, returnAll = FALSE)
+  
+  #Find provisional
+  provisional <- find_provisional(x, view = FALSE)
   
   #Calculate sand and fines concentration
   concSandFine <- calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
@@ -137,6 +141,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                 methodsBySite = methodsBySite,
                 sampleStatus = sampleStatus,
                 outliers = outliers,
+                provisional = provisional,
                 concSandFine = concSandFine))
   } else {
     return(flaggedSamples)
