@@ -19,9 +19,10 @@
 #' @export
 #' @return A dataframe containing all samples with applicable flags
 #' @seealso \code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
-#' \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, 
+#' \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, \code{\link[sedReview]{check_sedMass}}, 
 #' \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}, \code{\link[sedReview]{check_qaqcDB}}
-#' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}}, \code{\link[sedReview]{find_outliers}}
+#' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}}, \code{\link[sedReview]{find_outliers}},
+#' \code{\link[sedReview]{find_provisional}}, \code{\link[sedReview]{calc_concSandFine}}, \code{\link[sedReview]{calc_summaryStats}}
 
 check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
 {
@@ -39,6 +40,9 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   
   #Sampler type
   samplerTypeFlags <- check_samplerType(x, returnAll = FALSE)
+  
+  #Sediment mass P91157
+  sedMassFlags <- check_sedMass(x, returnAll = FALSE)
   
   #TSS has SSC
   tssFlags <- check_tss(x, returnAll = FALSE)
@@ -58,8 +62,14 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   #Find outliers
   outliers <- find_outliers(x, returnAll = FALSE)
   
+  #Find provisional
+  provisional <- find_provisional(x, view = FALSE)
+  
   #Calculate sand and fines concentration
   concSandFine <- calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
+  
+  #Calculate summary statistics
+  summaryStats <- calc_summaryStats(x)
   
   
   flaggedSamples <- x[x$DQI_CD %in% c("I","S","P"),
@@ -74,6 +84,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                            metaDataFlags = ifelse(UID %in% metaDataFlags$UID,TRUE,FALSE),
                            samplePurpFlags = ifelse(UID %in% samplePurpFlags$UID,TRUE,FALSE),
                            samplerTypeFlags = ifelse(UID %in% samplerTypeFlags$UID,TRUE,FALSE),
+                           sedMassFlags = ifelse(UID %in% sedMassFlags$UID,TRUE,FALSE),
                            tssFlags = ifelse(UID %in% tssFlags$UID,TRUE,FALSE),
                            verticalsFlags = ifelse(UID %in% verticalsFlags$UID,TRUE,FALSE),
                            qaqcFlags = ifelse(UID %in% qaqcFlags$UID,TRUE,FALSE),
@@ -90,6 +101,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                                     metaDataFlags == T |
                                     samplePurpFlags == T |
                                     samplerTypeFlags == T |
+                                    sedMassFlags == T |
                                     tssFlags == T |
                                     verticalsFlags == T |
                                     qaqcFlags == T |
@@ -106,6 +118,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                             "metaDataFlags",
                             "samplePurpFlags", 
                             "samplerTypeFlags",
+                            "sedMassFlags",
                             "tssFlags",
                             "verticalsFlags",
                             "qaqcFlags",
@@ -124,13 +137,16 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                 metaDataFlags = metaDataFlags,
                 samplePurpFlags = samplePurpFlags,
                 samplerTypeFlags = samplerTypeFlags,
+                sedMassFlags = sedMassFlags,
                 tssFlags = tssFlags,
                 verticalsFlags = verticalsFlags,
                 qaqcFlags = qaqcFlags,
                 methodsBySite = methodsBySite,
                 sampleStatus = sampleStatus,
                 outliers = outliers,
-                concSandFine = concSandFine))
+                provisional = provisional,
+                concSandFine = concSandFine,
+                summaryStats = summaryStats))
   } else {
     return(flaggedSamples)
   }
