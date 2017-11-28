@@ -5,7 +5,7 @@
 \title{find_provisional}
 \usage{
 find_provisional(x, env.db = "01", qa.db = "02", pcodes = c("80154",
-  "70331", "00530", "80155", "80225", "91145"), env.fileout = NULL,
+  "70331", "91157", "00530", "91145"), env.fileout = NULL,
   qa.fileout = NULL, view = TRUE)
 }
 \arguments{
@@ -15,7 +15,7 @@ find_provisional(x, env.db = "01", qa.db = "02", pcodes = c("80154",
 
 \item{qa.db}{A character string containing the database number of QA samples}
 
-\item{pcodes}{A character vector of parameter codes of interest. Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)}
+\item{pcodes}{A character vector of parameter codes of interest. Default pcodes are SSC (80154), Sand/silt break on suspended (70331), Suspended sediment mass(91157) TSS (00530), Bedload mass (91145)}
 
 \item{env.fileout}{A character string of the filename for environmental database records to be output. Default is NULL, if NULL a file will not be output.}
 
@@ -32,7 +32,7 @@ Find sediment parameter code records with DQI code of "S" and output record numb
 \details{
 In RStudio the function will automatically show the environmental and QA database records in view tabs when view = TRUE, which is the default
 
-Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
+Default pcodes are SSC (80154), Sand/silt break on suspended (70331), Suspended sediment mass(91157) TSS (00530), Bedload mass (91145)
 }
 \examples{
 data('exampleData', package = "sedReview")
