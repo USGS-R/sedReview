@@ -1,4 +1,28 @@
-
+#' find_boxcoef
+#' @description Function to find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param site_no Character of a site number in the x \code{dataframe} from \code{get_localNWIS}
+#' @param timediff Number of hours to look before and after a point sample for a paired cross-section sample.
+#' Default is 1 (ie. look for a paired sample 1 hour before and 1 hour after a point sample timestamp)
+#' @details Returns a dataframe of paired samples at given site_no for SSC (P80154). A summary count of all box coefficient pairs for all sites in
+#' \code{x} can be found using the related function \code{summary_boxcoef}. 
+#' @details Point samples are defined as samples where sampling method (P82398) is 30 (single vertical), 50 (point sample), 900 (SS pumping),
+#' or 920 (SS BSV DI att strctr). Or samples where sampler type (P84164) is 3070 (grab sample) or 4115 (auto-sampler).
+#' @details Cross-section samples are defined as samples where sampling method (P82398) is 10 (EWI), 15 (multiple verticals EWT), or 20 (EDI)   
+#' @examples 
+#' data("exampleData",package="sedReview")
+#' x <- exampleData
+#' 
+#' #find box coefficient sample pairs at site 05586300
+#' boxcoef_05586300 <- find_boxcoef(x, site_no = "05586300")
+#' 
+#' #find box coefficient sample pairs at site 06934500 
+#' #and expand paired sample window to +/- 2 hours from point sample
+#' boxcoef_06934500 <- find_boxcoef(x, site_no = "06934500", timediff = 2)
+#' @importFrom dplyr left_join
+#' @export
+#' @return A dataframe containing sample pairs with SSC result values of point and cross-section sample, with date/time stamps.
+#' @seealso \code{\link[sedReview]{get_localNWIS}}
 
 find_boxcoef <- function(x, site_no, timediff = 1){
   #Convert timediff to seconds
