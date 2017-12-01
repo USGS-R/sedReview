@@ -1,7 +1,24 @@
-data('exampleData2', package = "sedReview")
-boxCoef <- summary_boxcoef(x)
-boxCoef_list <- summary_boxcoef(x, returnAllTables = TRUE)
-View(boxCoef_list$summary)
+#' summary_boxcoef
+#' @description Function to summarise box coefficient pairs for multiple sites and years utilizing the find_boxcoef function
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param timediff Number of hours to look before and after a point sample for a paired cross-section sample.
+#' Default is 1 (ie. look for a paired sample 1 hour before and 1 hour after a point sample timestamp)
+#' @param returnAllTables Logical. If \code{TRUE}, return a list with the summary table and all individual site tables from the find_boxcoef function used internally.
+#' Default is FALSE.
+#' @details Function summarises box coefficient pairs by each site and WY. See documentation for \code{find_boxcoef} function for more details.
+#' @examples 
+#' data('exampleData2', package = "sedReview")
+#' x <- exampleData2
+#' boxCoef <- summary_boxcoef(x)
+#' boxCoef_list <- summary_boxcoef(x, returnAllTables = TRUE)
+#' \dontrun{
+#' View(boxCoef_list$summary)
+#' }
+#' @importFrom dplyr summarise
+#' @importFrom dplyr group_by
+#' @export
+#' @return A dataframe of the summary counts of box coefficient pairs, or a list of the summary and individual site box_coef data
+#' @seealso \code{\link[sedReview]{get_localNWIS}}, \code{\link[sedReview]{find_boxcoef}}
 
 summary_boxcoef <- function(x,
                             timediff = 1,

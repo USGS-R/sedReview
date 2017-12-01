@@ -41,5 +41,5 @@ boxcoef_05586300 <- find_boxcoef(x, site_no = "05586300")
 boxcoef_06934500 <- find_boxcoef(x, site_no = "06934500", timediff = 2)
 }
 \seealso{
-\code{\link[sedReview]{get_localNWIS}}
+\code{\link[sedReview]{get_localNWIS}}, \code{\link[sedReview]{summary_boxcoef}}
 }

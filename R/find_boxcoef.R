@@ -22,7 +22,7 @@
 #' @importFrom dplyr left_join
 #' @export
 #' @return A dataframe containing sample pairs with SSC result values of point and cross-section sample, with date/time stamps.
-#' @seealso \code{\link[sedReview]{get_localNWIS}}
+#' @seealso \code{\link[sedReview]{get_localNWIS}}, \code{\link[sedReview]{summary_boxcoef}}
 
 find_boxcoef <- function(x, site_no, timediff = 1){
   #Convert timediff to seconds
