@@ -54,6 +54,7 @@
 #'                              resultAsText = FALSE,
 #'                              rejected = TRUE)                              
 #' }
+#' @import RODBC
 #' @importFrom reshape2 dcast
 #' @importFrom dplyr left_join
 #' @importFrom lubridate yday
@@ -672,6 +673,8 @@ get_localNWIS <- function(DSN,
     longTable <- longTable[longTable$DQI_CD %in% c("Q","X"),]
   }else{longTable <- longTable[!(longTable$DQI_CD %in% c("Q","X")),]}
   
+  ###Sort by site number and start date/time
+  longTable <- longTable[order(longTable$SITE_NO, longTable$SAMPLE_START_DT),]
   
   return(longTable)
   
