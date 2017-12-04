@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_metaData.R
 \name{check_metaData}
 \alias{check_metaData}
-\title{check_metaData}
+\title{check_metaData. Perform NWIS 20.xx metadata checks.}
 \usage{
 check_metaData(x, returnAll = FALSE)
 }

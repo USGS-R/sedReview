@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_boxcoef.R
 \name{find_boxcoef}
 \alias{find_boxcoef}
-\title{find_boxcoef}
+\title{find_boxcoef. Find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.}
 \usage{
 find_boxcoef(x, site_no, timediff = 1)
 }

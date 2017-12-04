@@ -1,4 +1,4 @@
-#' find_provisional
+#' find_provisional. Find sediment parameter code records with DQI code of "S" and output record number files
 #' @description Find sediment parameter code records with DQI code of "S" and output record number files for QWDATA.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param env.db A character string containing the database number of environmental samples

@@ -1,4 +1,4 @@
-#' check_verticals
+#' check_verticals. Check if number of verticals in EDI/EWI samples is correct
 #' @description Function to check if number of verticals in EDI/EWI samples is correct
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Default is FALSE

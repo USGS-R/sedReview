@@ -1,4 +1,4 @@
-#' check_samplerType
+#' check_samplerType. Flag uncommon sampler type
 #' @description Function to flag uncommon sampler type
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Default is FALSE

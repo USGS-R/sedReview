@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_sedMass.R
 \name{check_sedMass}
 \alias{check_sedMass}
-\title{check_sedMass}
+\title{check_sedMass. Check and flag sediment mass (P91157) less than 2mg}
 \usage{
 check_sedMass(x, returnAll = FALSE)
 }

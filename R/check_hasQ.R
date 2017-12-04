@@ -1,4 +1,4 @@
-#' check_hasQ
+#' check_hasQ. Searches for samples that were collected for sediment data but are missing discharge measurements
 #' 
 #' @description Searches for samples that were collected for sediment data but are missing discharge measurements
 #' @param x A \code{dataframe} output from \code{get_localNWIS}

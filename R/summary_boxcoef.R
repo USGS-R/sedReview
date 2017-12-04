@@ -1,4 +1,4 @@
-#' summary_boxcoef
+#' summary_boxcoef. Summarise box coefficient pairs for multiple sites and years utilizing the find_boxcoef function
 #' @description Function to summarise box coefficient pairs for multiple sites and years utilizing the find_boxcoef function
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param timediff Number of hours to look before and after a point sample for a paired cross-section sample.

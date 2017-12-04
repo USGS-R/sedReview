@@ -2,7 +2,7 @@
 % Please edit documentation in R/count_methodsBySite.R
 \name{count_methodsBySite}
 \alias{count_methodsBySite}
-\title{count_methodsBySite}
+\title{count_methodsBySite. Counts of samples by site, WY, sampling method, and sampler type.}
 \usage{
 count_methodsBySite(x)
 }

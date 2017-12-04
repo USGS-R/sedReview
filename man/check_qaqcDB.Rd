@@ -2,7 +2,8 @@
 % Please edit documentation in R/check_qaqcDB.R
 \name{check_qaqcDB}
 \alias{check_qaqcDB}
-\title{check_qaqcDB}
+\title{check_qaqcDB.
+Check if SSC, bedload, or bedload mass are coded as WSQ and in the QA/QC database}
 \usage{
 check_qaqcDB(x, qa.db = "02", returnAll = FALSE)
 }

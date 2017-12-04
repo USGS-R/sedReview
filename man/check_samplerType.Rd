@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_samplerType.R
 \name{check_samplerType}
 \alias{check_samplerType}
-\title{check_samplerType}
+\title{check_samplerType. Flag uncommon sampler type}
 \usage{
 check_samplerType(x, returnAll = FALSE)
 }

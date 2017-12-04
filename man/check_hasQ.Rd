@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_hasQ.R
 \name{check_hasQ}
 \alias{check_hasQ}
-\title{check_hasQ}
+\title{check_hasQ. Searches for samples that were collected for sediment data but are missing discharge measurements}
 \usage{
 check_hasQ(x, returnAll = FALSE)
 }

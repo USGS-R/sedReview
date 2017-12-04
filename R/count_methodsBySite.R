@@ -1,4 +1,4 @@
-#' count_methodsBySite
+#' count_methodsBySite. Counts of samples by site, WY, sampling method, and sampler type.
 #' 
 #' @description Returns counts of samples by site, WY, sampling method, and sampler type.
 #' @description Returns total counts of SSC(P80154), Bedload(P80225), Bedload mass (P91145), and the following specifics:

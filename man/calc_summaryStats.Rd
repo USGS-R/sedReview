@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_summaryStats.R
 \name{calc_summaryStats}
 \alias{calc_summaryStats}
-\title{calc_summaryStats}
+\title{calc_summaryStats. Calculate summary stats and non-detections.}
 \usage{
 calc_summaryStats(x, pcodes = c("80154", "70331", "00530", "80155", "80225",
   "91145"))

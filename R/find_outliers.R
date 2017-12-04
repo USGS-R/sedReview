@@ -1,4 +1,4 @@
-#' find_outliers
+#' find_outliers. Flag sediment outliers based on threshold criteria.
 #' @description Function to flag sediment outliers based on threshold criteria.
 #' @description Flags for suspended sediment concentration (P80154), suspended sediment load (P80155), bed and suspended sediment loss on ignition (P00496/00535), and Sand/Silt break (P70331 Suspended sediment, sieve diamter, percent smaller than 0.0625mm)
 #' @param x A \code{dataframe} output from \code{get_localNWIS}

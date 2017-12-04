@@ -1,4 +1,4 @@
-#' find_boxcoef
+#' find_boxcoef. Find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.
 #' @description Function to find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param site_no Character of a site number in the x \code{dataframe} from \code{get_localNWIS}

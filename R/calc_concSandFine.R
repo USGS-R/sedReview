@@ -1,4 +1,4 @@
-#' calc_concSandFine
+#' calc_concSandFine. calculate sand/fine concentration based on SSC and sand/fine split value and output basic plots
 #' 
 #' @description Function to calculate sand/fine concentration based on SSC and sand/fine split value and output basic plots
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
