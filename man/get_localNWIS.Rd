@@ -2,7 +2,8 @@
 % Please edit documentation in R/get_localNWIS.R
 \name{get_localNWIS}
 \alias{get_localNWIS}
-\title{get_localNWIS}
+\title{get_localNWIS.  
+Pulls data from NWIS internal servers using ODBC connection and returns a longtable (by result)}
 \usage{
 get_localNWIS(DSN, env.db = "01", qa.db = "02", STAIDS, begin.date = NA,
   end.date = NA, projectCd = NULL, resultAsText = FALSE,
@@ -34,6 +35,7 @@ For a wideTable containing all data pulled from NWIS in wide (sample-result) for
 Dataframe names will be changed to more appropriate values in future package updates.
 }
 \description{
+get_localNWIS.  
 Pulls data from NWIS internal servers using ODBC connection and returns a longtable (by result)
 }
 \details{

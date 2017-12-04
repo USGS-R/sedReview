@@ -1,4 +1,4 @@
-#' count_sampleStatus
+#' count_sampleStatus. Counts of sample status (DQI_CD) by parameter
 #' 
 #' @description Returns counts of sample status (DQI_CD) by parameter for each site or for multiple sites together
 #' @param x A \code{dataframe} output from \code{get_localNWIS}

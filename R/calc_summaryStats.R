@@ -1,4 +1,4 @@
-#' calc_summaryStats
+#' calc_summaryStats. Calculate summary stats and non-detections.
 #' @description Calculates summary statistics and tallys non-detects grouped by site, parameter, and water year.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param pcodes A character vector of parameter codes of interest. Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)

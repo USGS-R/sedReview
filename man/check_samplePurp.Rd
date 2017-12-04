@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_samplePurp.R
 \name{check_samplePurp}
 \alias{check_samplePurp}
-\title{check_samplePurp}
+\title{check_samplePurp. flag uncommon sample purpose}
 \usage{
 check_samplePurp(x, returnAll = FALSE)
 }

@@ -1,4 +1,5 @@
-#' check_qaqcDB
+#' check_qaqcDB.
+#' Check if SSC, bedload, or bedload mass are coded as WSQ and in the QA/QC database
 #' @description Function to check if SSC, bedload, or bedload mass are coded as WSQ and in the QA/QC database
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param qa.db A character string containing the database number of QA samples

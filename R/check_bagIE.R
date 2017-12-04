@@ -1,4 +1,4 @@
-#' check_bagIE
+#' check_bagIE. Check and flag bag intake efficiency parameters, and calculate and flag the bag efficiency
 #' @description Function to check and flag bag intake efficiency parameters, and calculate and flag the bag efficiency
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE

@@ -2,7 +2,7 @@
 % Please edit documentation in R/count_sampleStatus.R
 \name{count_sampleStatus}
 \alias{count_sampleStatus}
-\title{count_sampleStatus}
+\title{count_sampleStatus. Counts of sample status (DQI_CD) by parameter}
 \usage{
 count_sampleStatus(x, bySite = TRUE)
 }

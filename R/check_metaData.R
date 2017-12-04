@@ -1,4 +1,4 @@
-#' check_metaData
+#' check_metaData. Perform NWIS 20.xx metadata checks.
 #' @description Function to perform NWIS 20.xx checks
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE

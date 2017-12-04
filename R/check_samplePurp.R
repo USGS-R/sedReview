@@ -1,4 +1,4 @@
-#' check_samplePurp
+#' check_samplePurp. flag uncommon sample purpose
 #' @description Function to flag uncommon sample purpose
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE

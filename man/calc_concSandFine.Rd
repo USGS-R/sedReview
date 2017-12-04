@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_concSandFine.R
 \name{calc_concSandFine}
 \alias{calc_concSandFine}
-\title{calc_concSandFine}
+\title{calc_concSandFine. calculate sand/fine concentration based on SSC and sand/fine split value and output basic plots}
 \usage{
 calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
 }

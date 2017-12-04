@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_all.R
 \name{check_all}
 \alias{check_all}
-\title{check_all}
+\title{check_all. Run all project level review checks on a dataset.}
 \usage{
 check_all(x, qa.db = "02", returnAllTables = FALSE)
 }
@@ -17,7 +17,7 @@ check_all(x, qa.db = "02", returnAllTables = FALSE)
 A dataframe containing all samples with applicable flags
 }
 \description{
-Function to run all checks on a dataset
+Function to run all project level review checks on a dataset.
 }
 \details{
 Runs all check_, count_, and find_ functions and outputs a summary dataframe of flagged samples or a list of all flag results if \code{returnAllTables = TRUE}

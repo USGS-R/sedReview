@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_verticals.R
 \name{check_verticals}
 \alias{check_verticals}
-\title{check_verticals}
+\title{check_verticals. Check if number of verticals in EDI/EWI samples is correct}
 \usage{
 check_verticals(x, returnAll = FALSE)
 }

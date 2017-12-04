@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_outliers.R
 \name{find_outliers}
 \alias{find_outliers}
-\title{find_outliers}
+\title{find_outliers. Flag sediment outliers based on threshold criteria.}
 \usage{
 find_outliers(x, lowThreshold = 0.1, highThreshold = 0.9,
   returnAll = FALSE)

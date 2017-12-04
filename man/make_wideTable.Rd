@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_wideTable.R
 \name{make_wideTable}
 \alias{make_wideTable}
-\title{make_wideTable}
+\title{make_wideTable. Reformats the longTable output (by result) from get_localNWIS into wide format (by sample)}
 \usage{
 make_wideTable(x)
 }

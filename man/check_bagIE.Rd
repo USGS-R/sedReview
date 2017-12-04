@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_bagIE.R
 \name{check_bagIE}
 \alias{check_bagIE}
-\title{check_bagIE}
+\title{check_bagIE. Check and flag bag intake efficiency parameters, and calculate and flag the bag efficiency}
 \usage{
 check_bagIE(x, returnAll = FALSE)
 }

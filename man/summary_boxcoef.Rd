@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary_boxcoef.R
 \name{summary_boxcoef}
 \alias{summary_boxcoef}
-\title{summary_boxcoef}
+\title{summary_boxcoef. Summarise box coefficient pairs for multiple sites and years utilizing the find_boxcoef function}
 \usage{
 summary_boxcoef(x, timediff = 1, returnAllTables = FALSE)
 }

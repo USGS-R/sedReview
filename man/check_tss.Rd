@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_tss.R
 \name{check_tss}
 \alias{check_tss}
-\title{check_tss}
+\title{check_tss. Flag TSS results without an accompanying SSC result}
 \usage{
 check_tss(x, returnAll = FALSE)
 }

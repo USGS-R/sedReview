@@ -1,4 +1,4 @@
-#' make_wideTable
+#' make_wideTable. Reformats the longTable output (by result) from get_localNWIS into wide format (by sample)
 #' 
 #' @description Reformats the longTable output (by result) from get_localNWIS into wide format (by sample)
 #' @param x A \code{dataframe} output from \code{get_localNWIS}

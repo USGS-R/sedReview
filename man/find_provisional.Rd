@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_provisional.R
 \name{find_provisional}
 \alias{find_provisional}
-\title{find_provisional}
+\title{find_provisional. Find sediment parameter code records with DQI code of "S" and output record number files}
 \usage{
 find_provisional(x, env.db = "01", qa.db = "02", pcodes = c("80154",
   "70331", "91157", "00530", "91145"), env.fileout = NULL,

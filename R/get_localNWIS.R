@@ -1,5 +1,4 @@
-#' get_localNWIS
-#' 
+#' get_localNWIS.  
 #' Pulls data from NWIS internal servers using ODBC connection and returns a longtable (by result)
 #' @param DSN A character string containing the DSN for your local server
 #' @param env.db A character string containing the database number of environmental samples

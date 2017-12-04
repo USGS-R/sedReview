@@ -1,5 +1,5 @@
-#' check_all
-#' @description Function to run all checks on a dataset
+#' check_all. Run all project level review checks on a dataset.
+#' @description Function to run all project level review checks on a dataset.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param qa.db A character string containing the database number of QA samples (for check_qaqcDB function), should be same QA DB used in \code{get_localNWIS}
 #' @param returnAllTables Return all tables of flagged results

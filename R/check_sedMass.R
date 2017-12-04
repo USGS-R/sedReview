@@ -1,4 +1,4 @@
-#' check_sedMass
+#' check_sedMass. Check and flag sediment mass (P91157) less than 2mg
 #' @description Function to check and flag sediment mass (P91157) less than 2mg
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Default is FALSE
