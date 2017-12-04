@@ -2,8 +2,8 @@
 % Please edit documentation in R/waterYear.R
 \name{waterYear}
 \alias{waterYear}
-\title{Stolen from smwrBase to remove dependency on that package
-Takes a date and returns the water year}
+\title{Originally from smwrBase, borrowed to remove dependency on that package.
+Takes a date and returns the water year.}
 \usage{
 waterYear(x, numeric = FALSE)
 }
@@ -16,8 +16,8 @@ waterYear(x, numeric = FALSE)
 A dataframe containing all samples with applicable flags
 }
 \description{
-Stolen from smwrBase to remove dependency on that package
-Takes a date and returns the water year
+Originally from smwrBase, borrowed to remove dependency on that package.
+Takes a date and returns the water year.
 }
 \examples{
 waterYear("2015-01-01")

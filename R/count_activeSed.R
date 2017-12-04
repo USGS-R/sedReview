@@ -1,9 +1,31 @@
+#' For higher level review. Retrieves all stream site sediment samples in a given date range via an ODBC connection to an internal NWIS server,
+#' and returns a summary table by site, water year, and number of samples in each analysis.
+#' 
+#' @description For higher level review. Retrieves all stream site sediment samples in a given date range via an ODBC connection to an internal NWIS server,
+#' and returns a summary table by site, water year, and number of samples in each analysis.
+#' @param DSN A character string containing the DSN for your local server
+#' @param env.db A character string containing the database number of environmental samples
+#' @param begin.date Character string containing beginning date of data pull (yyyy-mm-dd)
+#' @param end.date Character string containing ending date of data pull (yyyy-mm-dd)
+#' @details For review at the center level. Function retrieves all stream site (SITE_TYP_CD = 'ST') sediment 
+#' (SSC (80154), sand/silt break (70331), TSS (00530), and bedload (80225)) samples in the defined date range of the users internal NWIS database.
+#' A summary table of sample counts by site, water year, and parameter is returned. 
+#' @examples 
+#' \dontrun{
+#' #Will not run unless connected to NWISCO
+#' activeSed <- count_activeSed(DSN = 'nwisco',
+#'                              env.db = '01',
+#'                              begin.date = '2015-10-01',
+#'                              end.date = '2017-09-30')}
+#'                              
+#' @import RODBC
+#' @importFrom dplyr summarise
+#' @importFrom dplyr group_by
+#' @importFrom dplyr left_join
+#' @export
+#' @return A summary dataframe
 
 
-activeSed <- count_activeSed(DSN = 'nwisco',
-                             env.db = '01',
-                             begin.date = '2015-10-01',
-                             end.date = '2017-09-30')
 
 count_activeSed <- function(DSN,
                             env.db = "01",
