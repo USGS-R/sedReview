@@ -11,6 +11,7 @@
 #' find_outliersOut <- find_outliers(x)
 #' 
 #' @importFrom dplyr left_join
+#' @importFrom stats quantile
 #' @export
 #' @return A dataframe containing all samples with applicable flags
 
@@ -42,9 +43,8 @@ find_outliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll 
   {
     if(nrow(d)>0)
     {
-      percentiles <- stats::quantile(d$RESULT_VA, probs = c(lowThreshold,highThreshold), na.rm = TRUE)
-      outliers <- d[d$RESULT_VA < percentiles[1] |
-                        d$RESULT_VA > percentiles[2],]
+      percentiles <- stats::quantile(d$RESULT_VA, probs = c(lowThreshold,highThreshold), na.rm = TRUE, names = FALSE)
+      outliers <- d[which(d$RESULT_VA < percentiles[1] | d$RESULT_VA > percentiles[2]),]
       outliers$flag[outliers$RESULT_VA < percentiles[1]] <- paste("flag low, result_va = ", outliers$RESULT_VA[outliers$RESULT_VA < percentiles[1]])
       outliers$flag[outliers$RESULT_VA > percentiles[2]] <- paste("flag high, result_va = ", outliers$RESULT_VA[outliers$RESULT_VA > percentiles[2]])
       d$flag <- NULL

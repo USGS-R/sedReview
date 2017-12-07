@@ -2,8 +2,8 @@
 #' @description Calculates summary statistics and tallys non-detects grouped by site, parameter, and water year.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param pcodes A character vector of parameter codes of interest. Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
-#' @details Calculates minimum, maximum, median, mean, and standard deviation (if applicable). Non-detects (REMARK_CD = "<") and Averages (REMARK_CD = "A") are not included in calculations.
-#' @details A count of the number of non-detect samples is included in the summary.
+#' @details Calculates number of samples, minimum, maximum, median, mean, and standard deviation (if applicable). Non-detects (REMARK_CD = "<") and Averages (REMARK_CD = "A") are not included in calculations.
+#' @details A count of the number of non-detect samples is included in the summary. Summary value "n" does not include non-detects.
 #' @details Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
 #' @examples
 #' data('exampleData', package = "sedReview")
@@ -26,6 +26,7 @@ calc_summaryStats <- function(x, pcodes = c("80154",
   
   #group by site, by pcode, by WY and calc stats
   temp <- dplyr::summarise(dplyr::group_by(statSamples,SITE_NO,STATION_NM,PARM_CD,PARM_NM,WY),
+                           n = length(RESULT_VA),
                            min = min(RESULT_VA),
                            max = max(RESULT_VA),
                            median = median(RESULT_VA),
