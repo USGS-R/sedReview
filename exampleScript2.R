@@ -34,4 +34,30 @@ prov <- find_provisional(fountain,
 prov <- find_provisional(fountain,
                          env.db = '01',
                          qa.db = '02',
-                         env.fileout = 'D:/Fountain_Creek_Provisional_SSC.txt')
+                         env.fileout = 'D:/Fountain_Creek_Provisional_SSC.txt',
+                         view = FALSE)
+
+# pull all data for Monument Creek blw Bijou St., Colo.Springs
+monumentBijou <- get_localNWIS(DSN = 'nwisco',
+                          env.db = '01',
+                          qa.db = '02',
+                          STAIDS = c('07104905'))
+sumStatsMon <- calc_summaryStats(monumentBijou)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
