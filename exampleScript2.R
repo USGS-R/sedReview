@@ -47,16 +47,20 @@ sumStatsMon <- calc_summaryStats(monumentBijou)
 # make some plots
 monumentTS <- plot_sedTS(monumentBijou)
 monumentBox <- plot_ssctssBoxplot(monumentBijou)
+monumentFlow <- plot_sedFlow(monumentBijou)
+monumentTurb <- plot_turbSSC(monumentBijou)
 
 # view a plot
 monumentBox$combined
 monumentTS$SSC
+monumentFlow$SSC
+monumentTurb$Turbidity_63680
 
 # output PDF docs to the D drive
-plot_sedTS(monumentBijou, PDFout = "D:/Timeseries.pdf")
-plot_ssctssBoxplot(monumentBijou, PDFout = "D:/Boxplots.pdf")
-
-
+plot_sedTS(monumentBijou, PDFout = "D:/ex2_Timeseries.pdf")
+plot_ssctssBoxplot(monumentBijou, PDFout = "D:/ex2_Boxplots.pdf")
+plot_sedFlow(monumentBijou, PDFout = "D:/ex2_Flowplots.pdf")
+plot_turbSSC(monumentBijou, PDFout = "D:/ex2_TurbSSC.pdf")
 
 
 

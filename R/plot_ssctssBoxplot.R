@@ -1,6 +1,30 @@
-# modified from WQReview::qwparmBoxPlot
-library(ggplot2)
-library(cowplot)
+#' plot_ssctssBoxplot. Plot individual and side-by-side boxplots for SSC and TSS at a site.
+#' 
+#' @description Function to output individual and side-by-side boxplots for SSC and TSS at a site. Output is list of plots or write to PDF.
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param siteSelect Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.
+#' @param PDFout Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.
+#' @details Boxplots of SSC (P80154) and TSS (P00530). Box contains lower, median, and upper quartile. Whiskers extend to closest point
+#' within +/- 1.5 IQR. Any points outside of +/- 1.5 IQR are plotted as outlier points.
+#' @details If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are boxplot of SSC, boxplot of TSS,
+#' side-by-side boxplot of SSC and TSS. See example for more details.
+#' @details Portions of code modified from \code{WQReview::qwparmBoxPlot}.
+#' @examples 
+#' data("exampleData",package="sedReview")
+#' x <- exampleData
+#' ssctssBoxplot <- plot_ssctssBoxplot(exampleData, siteSelect = "05586300")
+#' \dontrun{
+#' # view plot in Rstudio
+#' ssctssBoxplot$SSC
+#' 
+#' # output to file on D drive
+#' plot_ssctssBoxplot(exampleData, siteSelect = "05586300", PDFout = "D:/boxplot.pdf")
+#' }
+#' 
+#' @import ggplot2
+#' @import cowplot
+#' @export
+#' @return If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 
 plot_ssctssBoxplot <- function(x,
                                siteSelect = NULL,
@@ -10,7 +34,7 @@ plot_ssctssBoxplot <- function(x,
   }
   # if more than 1 site in file, quit
   if(length(unique(x$SITE_NO)) > 1){
-    stop("More than one site in input dataframe x. Subset data to one site_no.")
+    stop("More than one site in input dataframe x. Subset data to one site_no with siteSelect.")
   }
   
   # SSC plot
