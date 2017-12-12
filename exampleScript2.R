@@ -44,11 +44,17 @@ monumentBijou <- get_localNWIS(DSN = 'nwisco',
                           STAIDS = c('07104905'))
 sumStatsMon <- calc_summaryStats(monumentBijou)
 
+# make some plots
+monumentTS <- plot_sedTS(monumentBijou)
+monumentBox <- plot_ssctssBoxplot(monumentBijou)
 
+# view a plot
+monumentBox$combined
+monumentTS$SSC
 
-
-
-
+# output PDF docs to the D drive
+plot_sedTS(monumentBijou, PDFout = "D:/Timeseries.pdf")
+plot_ssctssBoxplot(monumentBijou, PDFout = "D:/Boxplots.pdf")
 
 
 
