@@ -25,7 +25,6 @@
 #' @export
 #' @return If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 
-turbSSC <- plot_turbSSC(exampleData2, siteSelect = "09163500")
 plot_turbSSC <- function(x,
                          siteSelect = NULL,
                          PDFout = NULL){
