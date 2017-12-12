@@ -1,4 +1,28 @@
-
+#' plot_sedFlow. Create plots of sediment vs. discharge for select sediment parameters.
+#' 
+#' @description Function to output scatterplots of sediment parameter vs. discharge. Output is list of plots or write to PDF.
+#' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param siteSelect Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.
+#' @param PDFout Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.
+#' @details Scatterplots of SSC (P80154), sand/silt break (P70331), bedload (P80255) vs. flow (discharge reported or converted to cfs). 
+#' @details If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are specified above. See example for more details.
+#' @examples 
+#' data("exampleData",package="sedReview")
+#' x <- exampleData
+#' sedFlow <- plot_sedFlow(exampleData, siteSelect = "06934500")
+#' \dontrun{
+#' # view plot in Rstudio
+#' sedFlow$SSC
+#' 
+#' # output to file on D drive
+#' plot_sedFlow(exampleData, siteSelect = "06934500", PDFout = "D:/flow.pdf")
+#' }
+#' 
+#' @import ggplot2
+#' @import cowplot
+#' @importFrom dplyr left_join
+#' @export
+#' @return If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 
 plot_sedFlow <- function(x,
                          siteSelect = NULL,
