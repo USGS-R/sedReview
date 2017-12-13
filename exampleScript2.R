@@ -44,23 +44,23 @@ monumentBijou <- get_localNWIS(DSN = 'nwisco',
                           STAIDS = c('07104905'))
 sumStatsMon <- calc_summaryStats(monumentBijou)
 
-# # make some plots
-# monumentTS <- plot_sedTS(monumentBijou)
-# monumentBox <- plot_ssctssBoxplot(monumentBijou)
-# monumentFlow <- plot_sedFlow(monumentBijou)
-# monumentTurb <- plot_turbSSC(monumentBijou)
-# 
-# # view a plot
-# monumentBox$combined
-# monumentTS$SSC
-# monumentFlow$SSC
-# monumentTurb$Turbidity_63680
-# 
-# # output PDF docs to the D drive
-# plot_sedTS(monumentBijou, PDFout = "D:/ex2_Timeseries.pdf")
-# plot_ssctssBoxplot(monumentBijou, PDFout = "D:/ex2_Boxplots.pdf")
-# plot_sedFlow(monumentBijou, PDFout = "D:/ex2_Flowplots.pdf")
-# plot_turbSSC(monumentBijou, PDFout = "D:/ex2_TurbSSC.pdf")
+# make some plots
+monumentTS <- plot_sedTS(monumentBijou)
+monumentSSCTSS <- plot_SSCTSS(monumentBijou)
+monumentFlow <- plot_sedFlow(monumentBijou)
+monumentTurb <- plot_turbSSC(monumentBijou)
+
+# view a plot
+monumentSSCTSS$combined
+monumentTS$SSC
+monumentFlow$SSC
+monumentTurb$Turbidity_63680
+
+# output PDF docs to the D drive
+plot_sedTS(monumentBijou, PDFout = "D:/ex2_Timeseries.pdf")
+plot_SSCTSS(monumentBijou, PDFout = "D:/ex2_ssctss.pdf")
+plot_sedFlow(monumentBijou, PDFout = "D:/ex2_Flowplots.pdf")
+plot_turbSSC(monumentBijou, PDFout = "D:/ex2_TurbSSC.pdf")
 
 
 

@@ -1,24 +1,24 @@
-#' plot_ssctssBoxplot. Plot individual and side-by-side boxplots for SSC and TSS at a site.
+#' plot_SSCTSS. Plot individual and side-by-side boxplots for SSC and TSS, and SSC vs. TSS scatterplot at a site.
 #' 
-#' @description Function to output individual and side-by-side boxplots for SSC and TSS at a site. Output is list of plots or write to PDF.
+#' @description Function to output individual and side-by-side boxplots, and scatterplot, for SSC and TSS at a site. Output is list of plots or write to PDF.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param siteSelect Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.
 #' @param PDFout Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.
-#' @details Boxplots of SSC (P80154) and TSS (P00530). Box contains lower, median, and upper quartile. Whiskers extend to closest point
+#' @details Boxplots of SSC (P80154) and TSS (P00530). Box contains lower, median, and upper quartile. Whiskers extend to farthest point
 #' within +/- 1.5 IQR. Any points outside of +/- 1.5 IQR are plotted as outlier points.
 #' @details If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are boxplot of SSC, boxplot of TSS,
-#' side-by-side boxplot of SSC and TSS. See example for more details.
+#' side-by-side boxplot of SSC and TSS, and a SSC vs. TSS scatterplot of samples with both analyses. See example for more details.
 #' @details Portions of code modified from \code{WQReview::qwparmBoxPlot}.
 #' @examples 
 #' data("exampleData",package="sedReview")
-#' x <- exampleData
-#' ssctssBoxplot <- plot_ssctssBoxplot(exampleData, siteSelect = "05586300")
+#' x <- exampleData2
+#' ssctss <- plot_SSCTSS(exampleData2, siteSelect = "09163500")
 #' \dontrun{
 #' # view plot in Rstudio
-#' ssctssBoxplot$SSC
+#' ssctss$combined
 #' 
 #' # output to file on D drive
-#' plot_ssctssBoxplot(exampleData, siteSelect = "05586300", PDFout = "D:/boxplot.pdf")
+#' plot_ssctss(exampleData2, siteSelect = "09163500", PDFout = "D:/ssctss.pdf")
 #' }
 #' 
 #' @import ggplot2
@@ -26,9 +26,9 @@
 #' @export
 #' @return If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 
-plot_ssctssBoxplot <- function(x,
-                               siteSelect = NULL,
-                               PDFout = NULL){
+plot_SSCTSS <- function(x,
+                        siteSelect = NULL,
+                        PDFout = NULL){
   if(!(is.null(siteSelect))){
     x <- x[x$SITE_NO == siteSelect,]
   }
@@ -38,7 +38,7 @@ plot_ssctssBoxplot <- function(x,
   }
   
   # SSC plot
-  plotData1 <- x[x$PARM_CD %in% c('80154') & !(x$MEDIUM_CD == 'OAQ'),c("PARM_CD","PARM_NM","RESULT_VA")]
+  plotData1 <- x[x$PARM_CD %in% c('80154') & !(x$MEDIUM_CD == 'OAQ'),c("UID","PARM_CD","PARM_NM","RESULT_VA")]
   if(nrow(plotData1) == 0){warning("No SSC data to plot")
   }else{
     p1 <- ggplot(data = plotData1, aes(x=PARM_NM,y=RESULT_VA))
@@ -47,12 +47,12 @@ plot_ssctssBoxplot <- function(x,
   }
   
   # TSS plot
-  plotData2 <- x[x$PARM_CD %in% c('00530') & !(x$MEDIUM_CD == 'OAQ'),c("PARM_CD","PARM_NM","RESULT_VA")]
+  plotData2 <- x[x$PARM_CD %in% c('00530') & !(x$MEDIUM_CD == 'OAQ'),c("UID","PARM_CD","PARM_NM","RESULT_VA")]
   if(nrow(plotData2) == 0){warning("No TSS data to plot")
   }else{
     p2 <- ggplot(data = plotData2, aes(x=PARM_NM,y=RESULT_VA))
     p2 <- p2 + geom_boxplot(fill = 'grey',colour = "black", outlier.colour = 'red') + 
-      xlab("TSS_00530") + ylab("")
+      xlab("TSS_00530") + ylab(NULL)
   }
   
   # if no data to plot, quit function
@@ -64,10 +64,22 @@ plot_ssctssBoxplot <- function(x,
     title <- ggdraw() + draw_label(paste(unique(x$SITE_NO),unique(x$STATION_NM)), fontface = 'bold')
     p_final <- cowplot::plot_grid(title, p_final, ncol = 1, rel_heights = c(0.1,1))
     p1 <- p1 + labs(title = paste(unique(x$SITE_NO),"\n",unique(x$STATION_NM)))
-    p2 <- p2 + labs(title = paste(unique(x$SITE_NO),"\n",unique(x$STATION_NM)))
+    p2 <- p2 + labs(title = paste(unique(x$SITE_NO),"\n",unique(x$STATION_NM))) + ylab("Concentration (mg/L")
   }else{
     if(exists('p1')){p1 <- p1 + labs(title = paste(unique(x$SITE_NO),"\n",unique(x$STATION_NM)))}
-    if(exists('p2')){p2 <- p2 + labs(title = paste(unique(x$SITE_NO),"\n",unique(x$STATION_NM)))}
+    if(exists('p2')){p2 <- p2 + labs(title = paste(unique(x$SITE_NO),"\n",unique(x$STATION_NM))) + ylab("Concentration (mg/L")}
+  }
+  
+  # create SSC vs. TSS scatterplot. RESULT_VA.x is SSC, RESULT_VA.y is TSS
+  scatterdata <- plotData1[plotData1$UID %in% plotData2$UID,]
+  scatterdata <- dplyr::left_join(scatterdata, plotData2, by = "UID")
+  scatterdata <- scatterdata[!(is.na(scatterdata$RESULT_VA.x)) & !(is.na(scatterdata$RESULT_VA.y)),]
+  if(nrow(scatterdata) == 0){warning("No TSS/SSC pairs for scatterplot. Check input dataframe x.")
+  }else{
+    p3 <- ggplot(data = scatterdata, aes(x = RESULT_VA.x, y = RESULT_VA.y))
+    p3 <- p3 + geom_point(size = 3)
+    p3 <- p3 + xlab("TSS_00530 (mg/L)") + ylab(paste('SSC_80154 (mg/L)',"\n"))
+    p3 <- p3 + labs(title = paste(unique(scatterdata$SITE_NO),"\n",unique(scatterdata$STATION_NM)))
   }
   
   if(is.null(PDFout)){
@@ -75,6 +87,7 @@ plot_ssctssBoxplot <- function(x,
     names(plotList) <- 'SSC'  
     if(exists('p2')){plotList$TSS <- p2}
     if(exists('p_final')){plotList$combined <- p_final}
+    if(exists('p3')){plotList$scatter <- p3}
     return(plotList)
   }else{
     pdf(file = PDFout)
@@ -85,6 +98,7 @@ plot_ssctssBoxplot <- function(x,
     if(exists('p1')){print(p1)}
     if(exists('p2')){print(p2)}
     if(exists('p_final')){print(p_final)}
+    if(exists('p3')){print(p3)}
     dev.off()
   }
 }
