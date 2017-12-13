@@ -15,7 +15,9 @@ Imports:
     dplyr,
     reshape2,
     RODBC,
-    stringi
+    stringi,
+    ggplot2,
+    cowplot
 Suggests:
     xtable,
     knitr,
