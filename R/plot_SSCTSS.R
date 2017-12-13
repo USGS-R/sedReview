@@ -22,7 +22,7 @@
 #' }
 #' 
 #' @import ggplot2
-#' @importFrom cowplot plot_grid
+#' @import cowplot
 #' @importFrom dplyr left_join
 #' @export
 #' @return If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
@@ -62,7 +62,7 @@ plot_SSCTSS <- function(x,
   # if both SSC and TSS, create side-by-side plot
   if(exists('p1') & exists('p2')){
     p_final <- cowplot::plot_grid(p1,p2,ncol = 2)
-    title <- ggdraw() + draw_label(paste(unique(x$SITE_NO),unique(x$STATION_NM)), fontface = 'bold')
+    title <- cowplot::ggdraw() + cowplot::draw_label(paste(unique(x$SITE_NO),unique(x$STATION_NM)), fontface = 'bold')
     p_final <- cowplot::plot_grid(title, p_final, ncol = 1, rel_heights = c(0.1,1))
     p1 <- p1 + labs(title = paste(unique(x$SITE_NO),"\n",unique(x$STATION_NM)))
     p2 <- p2 + labs(title = paste(unique(x$SITE_NO),"\n",unique(x$STATION_NM))) + ylab("Concentration (mg/L")
