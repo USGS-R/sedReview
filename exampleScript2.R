@@ -50,17 +50,17 @@ monumentSSCTSS <- plot_SSCTSS(monumentBijou)
 monumentFlow <- plot_sedFlow(monumentBijou)
 monumentTurb <- plot_turbSSC(monumentBijou)
 
-# view a plot
-monumentSSCTSS$combined
-monumentTS$SSC
-monumentFlow$SSC
-monumentTurb$Turbidity_63680
-
-# output PDF docs to the D drive
-plot_sedTS(monumentBijou, PDFout = "D:/ex2_Timeseries.pdf")
-plot_SSCTSS(monumentBijou, PDFout = "D:/ex2_ssctss.pdf")
-plot_sedFlow(monumentBijou, PDFout = "D:/ex2_Flowplots.pdf")
-plot_turbSSC(monumentBijou, PDFout = "D:/ex2_TurbSSC.pdf")
+# # view a plot
+# monumentSSCTSS$combined
+# monumentTS$SSC
+# monumentFlow$SSC
+# monumentTurb$Turbidity_63680
+# 
+# # output PDF docs to the D drive
+# plot_sedTS(monumentBijou, PDFout = "D:/ex2_Timeseries.pdf")
+# plot_SSCTSS(monumentBijou, PDFout = "D:/ex2_ssctss.pdf")
+# plot_sedFlow(monumentBijou, PDFout = "D:/ex2_Flowplots.pdf")
+# plot_turbSSC(monumentBijou, PDFout = "D:/ex2_TurbSSC.pdf")
 
 
 
