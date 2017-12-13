@@ -23,6 +23,7 @@
 #' 
 #' @import ggplot2
 #' @importFrom cowplot plot_grid
+#' @importFrom dplyr left_join
 #' @export
 #' @return If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 
