@@ -20,7 +20,6 @@
 #' }
 #' 
 #' @import ggplot2
-#' @import cowplot
 #' @export
 #' @return If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 
