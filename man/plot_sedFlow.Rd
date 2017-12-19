@@ -20,7 +20,8 @@ If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} speci
 Function to output scatterplots of sediment parameter vs. discharge. Output is list of plots or write to PDF.
 }
 \details{
-Scatterplots of SSC (P80154), sand/silt break (P70331), bedload (P80255) vs. flow (discharge reported or converted to cfs).
+Scatterplots of SSC (P80154), sand/silt break (P70331), bedload (P80255) vs. flow (all discharge reported or converted to cfs).
+Not all parameters need to be present in \code{x} for plots to be created (eg. if only SSC present than only SSC vs. flow plot returned)
 
 If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are specified above. See example for more details.
 }

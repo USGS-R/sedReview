@@ -17,11 +17,12 @@ plot_SSCTSS(x, siteSelect = NULL, PDFout = NULL)
 If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 }
 \description{
-Function to output individual and side-by-side boxplots, and scatterplot, for SSC and TSS at a site. Output is list of plots or write to PDF.
+Function to output individual and side-by-side boxplots, and scatterplot, for SSC and TSS at a site. Output is a list of plots or write to PDF.
 }
 \details{
 Boxplots of SSC (P80154) and TSS (P00530). Box contains lower, median, and upper quartile. Whiskers extend to farthest point
 within +/- 1.5 IQR. Any points outside of +/- 1.5 IQR are plotted as outlier points.
+Both parameters do not need to be present in \code{x} for plots to be created (eg. if only SSC present then only a boxplot of SSC is returned)
 
 If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are boxplot of SSC, boxplot of TSS,
 side-by-side boxplot of SSC and TSS, and a SSC vs. TSS scatterplot of samples with both analyses. See example for more details.

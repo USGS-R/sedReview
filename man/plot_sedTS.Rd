@@ -17,10 +17,11 @@ plot_sedTS(x, siteSelect = NULL, PDFout = NULL)
 If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 }
 \description{
-Function to output timeseries plots for sediment parameters. Output is list of plots or write to PDF.
+Function to output timeseries plots for sediment parameters. Output is a list of plots or write to PDF.
 }
 \details{
 Timeseries plots of SSC (P80154), sand/silt break (P70331), SSL (P80155), bedload (P80255) and bedload mass (P91145).
+Not all parameters need to be present in \code{x} for plots to be created (eg. if only SSC present than only SSC timeseries plot returned)
 
 If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are specified above. See example for more details.
 

@@ -17,7 +17,7 @@ plot_turbSSC(x, siteSelect = NULL, PDFout = NULL)
 If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 }
 \description{
-Function to output scatterplots of SSC vs. turbidity. Output is list of plots or write to PDF.
+Function to output scatterplots of SSC vs. turbidity. Output is a list of plots or write to PDF.
 }
 \details{
 Scatterplots of SSC (P80154) vs. Turbidity (Parameter codes 00076, 61028, 63675, 63676, 63677, 63679, 63680, 63681, 
