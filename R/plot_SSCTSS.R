@@ -1,11 +1,12 @@
 #' plot_SSCTSS. Plot individual and side-by-side boxplots for SSC and TSS, and SSC vs. TSS scatterplot at a site.
 #' 
-#' @description Function to output individual and side-by-side boxplots, and scatterplot, for SSC and TSS at a site. Output is list of plots or write to PDF.
+#' @description Function to output individual and side-by-side boxplots, and scatterplot, for SSC and TSS at a site. Output is a list of plots or write to PDF.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param siteSelect Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.
 #' @param PDFout Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.
 #' @details Boxplots of SSC (P80154) and TSS (P00530). Box contains lower, median, and upper quartile. Whiskers extend to farthest point
 #' within +/- 1.5 IQR. Any points outside of +/- 1.5 IQR are plotted as outlier points.
+#' Both parameters do not need to be present in \code{x} for plots to be created (eg. if only SSC present then only a boxplot of SSC is returned) 
 #' @details If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are boxplot of SSC, boxplot of TSS,
 #' side-by-side boxplot of SSC and TSS, and a SSC vs. TSS scatterplot of samples with both analyses. See example for more details.
 #' @details Portions of code modified from \code{WQReview::qwparmBoxPlot}.

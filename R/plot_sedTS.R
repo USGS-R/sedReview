@@ -1,10 +1,11 @@
 #' plot_sedTS. Create timeseries plots for sediment parameters.
 #' 
-#' @description Function to output timeseries plots for sediment parameters. Output is list of plots or write to PDF.
+#' @description Function to output timeseries plots for sediment parameters. Output is a list of plots or write to PDF.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param siteSelect Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.
 #' @param PDFout Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.
-#' @details Timeseries plots of SSC (P80154), sand/silt break (P70331), SSL (P80155), bedload (P80255) and bedload mass (P91145). 
+#' @details Timeseries plots of SSC (P80154), sand/silt break (P70331), SSL (P80155), bedload (P80255) and bedload mass (P91145).
+#' Not all parameters need to be present in \code{x} for plots to be created (eg. if only SSC present than only SSC timeseries plot returned)
 #' @details If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are specified above. See example for more details.
 #' @details Portions of code modified from \code{WQReview::qwtsPlot}.
 #' @examples 

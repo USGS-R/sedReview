@@ -4,7 +4,8 @@
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param siteSelect Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.
 #' @param PDFout Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.
-#' @details Scatterplots of SSC (P80154), sand/silt break (P70331), bedload (P80255) vs. flow (discharge reported or converted to cfs). 
+#' @details Scatterplots of SSC (P80154), sand/silt break (P70331), bedload (P80255) vs. flow (all discharge reported or converted to cfs).
+#' Not all parameters need to be present in \code{x} for plots to be created (eg. if only SSC present than only SSC vs. flow plot returned)  
 #' @details If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are specified above. See example for more details.
 #' @examples 
 #' data("exampleData",package="sedReview")
