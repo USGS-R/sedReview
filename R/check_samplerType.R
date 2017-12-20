@@ -17,18 +17,25 @@
 check_samplerType <- function(x, returnAll = FALSE){
   # sampler types
   sampler <- x[x$PARM_CD == "84164", ]
-  sampler <- unique(sampler[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA")])
+  sampler <- unique(sampler[c("UID","SITE_NO","PARM_CD", "PARM_NM", "RESULT_VA")])
   
   # table of unique sampler types
-  sampTyp <- as.data.frame(table(sampler$RESULT_VA))
-  names(sampTyp) <- c("SamplerType", "count")
-  sampTyp$SamplerType <- as.character(sampTyp$SamplerType)
+  sampTyp <- dplyr::summarise(dplyr::group_by(sampler, SITE_NO, RESULT_VA),
+                               count = length(RESULT_VA))
+  
   # most common sampler type
-  mainType <- sampTyp$SamplerType[sampTyp$count %in% max(sampTyp$count)]
-  print(paste0("Most common sampler type is ", mainType))
+  mainType <- dplyr::summarise(dplyr::group_by(sampTyp,SITE_NO),
+                               max = max(count))
+  
+  mainType <- dplyr::left_join(mainType, sampTyp, by = c('SITE_NO' = 'SITE_NO', 'max' = 'count'))
+  mainType <- mainType[c('SITE_NO','RESULT_VA')]
+  names(mainType) <- c('SITE_NO','mostCommonSampler')
+  
   # flag sampler types other than most common
-  sampler$sampTypFlag[sampler$RESULT_VA != mainType] <- paste0("flag uncommon sampler type ", sampler$RESULT_VA[sampler$RESULT_VA != mainType],
-                                                              ", most common type is ", mainType)
+  sampler <- dplyr::left_join(sampler, mainType, by = 'SITE_NO')
+  
+  sampler$sampTypFlag[sampler$RESULT_VA != sampler$mostCommonSampler] <- paste("flag uncommon sampler type ", 
+                                                                       sampler$RESULT_VA[sampler$RESULT_VA != sampler$mostCommonSampler])
   
   # list of flagged samples
   ### data frame of all samples with flags
@@ -39,7 +46,9 @@ check_samplerType <- function(x, returnAll = FALSE){
                                "SAMPLE_START_DT",
                                "MEDIUM_CD")])
   # append flags
-  flaggedSamples <- dplyr::left_join(flaggedSamples, sampler[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA", "sampTypFlag")], by = "UID")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, 
+                                     sampler[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA","mostCommonSampler","sampTypFlag")], 
+                                     by = "UID")
   if(returnAll == FALSE)
   {
     flaggedSamples <- flaggedSamples[is.na(flaggedSamples$sampTypFlag)==FALSE, ]

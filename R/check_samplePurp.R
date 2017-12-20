@@ -10,6 +10,8 @@
 #' samplePurpFlags <- check_samplePurp(x)
 #' 
 #' @importFrom dplyr left_join
+#' @importFrom dplyr summarise
+#' @importFrom dplyr group_by
 #' @export
 #' @return A dataframe containing all samples with applicable flags
 
@@ -51,8 +53,9 @@ check_samplePurp <- function(x, returnAll = FALSE){
                                "SAMPLE_START_DT",
                                "MEDIUM_CD")])
   # append flags
-  flaggedSamples <- dplyr::left_join(flaggedSamples, purp, by = "UID")
-  flaggedSamples <- dplyr::left_join(flaggedSamples, purp[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA", "sampPurpFlag")], by = "UID")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, 
+                                     purp[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA","mostCommonPurpose","sampPurpFlag")], 
+                                     by = "UID")
   if(returnAll == FALSE)
   {
     flaggedSamples <- flaggedSamples[is.na(flaggedSamples$sampPurpFlag)==FALSE, ]

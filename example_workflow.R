@@ -33,3 +33,24 @@ concSandFines <- calc_concSandFine(siteData, plotTime = TRUE, plotFlow = TRUE)
 
 # calculate summary statistics table using default sediment parameters
 sumStats <- calc_summaryStats(siteData)
+
+# check bag sampler intake efficiency. There are no bag samples in my siteData so a dataframe of 0 observations was returned
+bagIE <- check_bagIE(siteData)
+
+# check and flag samples that don't have associated discharge
+hasQ <- check_hasQ(siteData)
+
+# check metadata and flag samples that are missing NWIS 20.xx level checks
+metaData <- check_metaData(siteData)
+
+# check for sediment samples that are in the QAQC database (for NWISCO that is DB 02)
+qaqc <- check_qaqcDB(siteData, qa.db = '02')
+
+# check and flag samples not collected with most common purpose
+purp <- check_samplePurp(siteData)
+
+# check and flag samples not collected with most common sampler type
+
+
+
+

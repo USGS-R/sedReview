@@ -23,8 +23,6 @@ Function to check if SSC, bedload, or bedload mass are coded as WSQ and in the Q
 \details{
 Function finds and flags SSC (P80154), bedload (P80225), and bedload mass (P91145) results
 that are coded as medium_cd "WSQ" and stored in the user defined QA/QC database (default is qa.db = "02") downloaded with \code{get_localNWIS}
-
-function to test EWI sample collected correctly. Number of verticals between 10 and 20.
 }
 \examples{
 \dontrun{
