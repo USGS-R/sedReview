@@ -2,6 +2,7 @@
 #' @description Function to flag sediment outliers based on threshold criteria.
 #' @description Flags for suspended sediment concentration (P80154), suspended sediment load (P80155), bed and suspended sediment loss on ignition (P00496/00535), and Sand/Silt break (P70331 Suspended sediment, sieve diamter, percent smaller than 0.0625mm)
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param site_no Character of a site number in the x \code{dataframe} from \code{get_localNWIS} if x contains more than one site. Default is NULL.
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @param lowThreshold numeric value between 0 and 1 indicating the quantile threshold for a low value outlier.
 #' @param highThreshold numeric value between 0 and 1 indicating the quantile threshold for a high value outlier.
@@ -16,7 +17,19 @@
 #' @return A dataframe containing all samples with applicable flags
 
 # x is plotData from NWISodbc data pull
-find_outliers <- function(x, lowThreshold = 0.1, highThreshold = 0.9, returnAll = FALSE){
+find_outliers <- function(x, site_no = NULL, lowThreshold = 0.1, highThreshold = 0.9, returnAll = FALSE){
+  
+  if(!(is.null(site_no))){
+    site_no <- as.character(site_no)
+    if((site_no %in% x$SITE_NO)==FALSE){
+      stop("Site number not in input data.")
+    }
+    x <- x[x$SITE_NO == site_no,]
+    
+  }
+  if(length(unique(x$SITE_NO))>1){
+    stop("More than one site, please specify 'site_no'")}
+  
   # extract SSC (80154) SSL (80155) and LOI (00496/00535)
   ## medium codes containing sediment parameters
   sedMedium <- c("WS ", "SS ", "SB ", "WSQ", "SSQ", "SBQ")

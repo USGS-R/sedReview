@@ -4,12 +4,12 @@
 \alias{find_boxcoef}
 \title{find_boxcoef. Find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.}
 \usage{
-find_boxcoef(x, site_no, timediff = 1)
+find_boxcoef(x, site_no = NULL, timediff = 1)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
-\item{site_no}{Character of a site number in the x \code{dataframe} from \code{get_localNWIS}}
+\item{site_no}{Character of a site number in the x \code{dataframe} from \code{get_localNWIS} if x contains more than one site. Default is NULL.}
 
 \item{timediff}{Number of hours to look before and after a point sample for a paired cross-section sample.
 Default is 1 (ie. look for a paired sample 1 hour before and 1 hour after a point sample timestamp)}
