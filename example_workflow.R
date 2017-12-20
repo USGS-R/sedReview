@@ -5,6 +5,10 @@ data("exampleData2", package = "sedReview")
 ########################################
 ## Project Chief Review
 ## for review of a single site or several sites operated by a project chief
+## for any created dataframe (table of data or results), click in the upper left Environment tab on the dataset to view it.
+## to see the help page for any function, type ?sedReview:: then the funtion of interest into the console.
+## to run section of code, highlight and hit Run, or Ctrl+Enter.
+## to run an individual line, make sure the cursor is anywhere in that line and hit Ctrl+Enter or Run.
 ########################################
 
 # import data for your site(s) using get_localNwis.
@@ -24,6 +28,8 @@ checkAll <- check_all(siteData)
 
 ### now go through each project level review function to view individual calculations, checks, counts, finds, and plots
 
-# 
+# calculate sand and fines concentrations and output quick plots. Use arrows in Plots tab to scroll through output plots
+concSandFines <- calc_concSandFine(siteData, plotTime = TRUE, plotFlow = TRUE)
 
-
+# calculate summary statistics table using default sediment parameters
+sumStats <- calc_summaryStats(siteData)

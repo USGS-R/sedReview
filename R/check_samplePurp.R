@@ -17,7 +17,7 @@
 check_samplePurp <- function(x, returnAll = FALSE){
   # sample purposes
   purp <- x[x$PARM_CD == "71999", ]
-  purp <- unique(purp[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA")])
+  purp <- unique(purp[c("UID","SITE_NO","PARM_CD", "PARM_NM", "RESULT_VA")])
   
   if(nrow(purp)==0){
     stop("All pulled record numbers missing sample purpose (PARM_CD 71999)")
@@ -25,14 +25,22 @@ check_samplePurp <- function(x, returnAll = FALSE){
   
   
   # table of unique sample purposes
-  sampPurp <- as.data.frame(table(purp$RESULT_VA))
-  names(sampPurp) <- c("SamplePurpose", "count")
-  sampPurp$SamplePurpose <- as.character(sampPurp$SamplePurpose)
+  sampPurp <- dplyr::summarise(dplyr::group_by(purp, SITE_NO, RESULT_VA),
+                               count = length(RESULT_VA))
+  
   # most common samp purpose
-  mainPurp <- sampPurp$SamplePurpose[sampPurp$count %in% max(sampPurp$count)]
+  mainPurp <- dplyr::summarise(dplyr::group_by(sampPurp,SITE_NO),
+                               max = max(count))
+  
+  mainPurp <- dplyr::left_join(mainPurp, sampPurp, by = c('SITE_NO' = 'SITE_NO', 'max' = 'count'))
+  mainPurp <- mainPurp[c('SITE_NO','RESULT_VA')]
+  names(mainPurp) <- c('SITE_NO','mostCommonPurpose')
   
   # flag sample purposes other than most common
-  purp$sampPurpFlag[purp$RESULT_VA != mainPurp] <- paste("flag uncommon sample purpose ", purp$RESULT_VA[purp$RESULT_VA != mainPurp])
+  purp <- dplyr::left_join(purp, mainPurp, by = 'SITE_NO')
+  
+  purp$sampPurpFlag[purp$RESULT_VA != purp$mostCommonPurpose] <- paste("flag uncommon sample purpose ", 
+                                                                       purp$RESULT_VA[purp$RESULT_VA !=purp$mostCommonPurpose])
   
   # list of flagged samples
   ### data frame of all samples with flags
@@ -43,6 +51,7 @@ check_samplePurp <- function(x, returnAll = FALSE){
                                "SAMPLE_START_DT",
                                "MEDIUM_CD")])
   # append flags
+  flaggedSamples <- dplyr::left_join(flaggedSamples, purp, by = "UID")
   flaggedSamples <- dplyr::left_join(flaggedSamples, purp[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA", "sampPurpFlag")], by = "UID")
   if(returnAll == FALSE)
   {
