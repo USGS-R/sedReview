@@ -36,7 +36,7 @@ prov <- find_provisional(fountain,
                          qa.db = '02',
                          env.fileout = 'D:/Fountain_Creek_Provisional_SSC.txt',
                          view = FALSE)
-
+View(prov$env.provisional)
 # pull all data for Monument Creek blw Bijou St., Colo.Springs
 monumentBijou <- get_localNWIS(DSN = 'nwisco',
                           env.db = '01',
@@ -50,24 +50,33 @@ monumentSSCTSS <- plot_SSCTSS(monumentBijou)
 monumentFlow <- plot_sedFlow(monumentBijou)
 monumentTurb <- plot_turbSSC(monumentBijou)
 
-# # view a plot
-# monumentSSCTSS$combined
-# monumentTS$SSC
-# monumentFlow$SSC
-# monumentTurb$Turbidity_63680
-# 
-# # output PDF docs to the D drive
-# plot_sedTS(monumentBijou, PDFout = "D:/ex2_Timeseries.pdf")
-# plot_SSCTSS(monumentBijou, PDFout = "D:/ex2_ssctss.pdf")
-# plot_sedFlow(monumentBijou, PDFout = "D:/ex2_Flowplots.pdf")
-# plot_turbSSC(monumentBijou, PDFout = "D:/ex2_TurbSSC.pdf")
+# view a plot
+monumentSSCTSS$combined
+monumentTS$SSC
+monumentFlow$SSC
+monumentTurb$Turbidity_63680
+
+# output PDF docs to the D drive
+plot_sedTS(monumentBijou, PDFout = "D:/ex2_Timeseries.pdf")
+plot_SSCTSS(monumentBijou, PDFout = "D:/ex2_ssctss.pdf")
+plot_sedFlow(monumentBijou, PDFout = "D:/ex2_Flowplots.pdf")
+plot_turbSSC(monumentBijou, PDFout = "D:/ex2_TurbSSC.pdf")
 
 
 
+data("exampleData",package="sedReview")
+x <- exampleData
+
+#find box coefficient sample pairs at site 05586300
+boxcoef_COriv <- find_boxcoef(x, site_no = "09163500")
+
+#find box coefficient sample pairs at site 06934500 
+#and expand paired sample window to +/- 2 hours from point sample
+boxcoef_06934500 <- find_boxcoef(x, site_no = "06934500", timediff = 2)
 
 
 
-
-
-
-
+data('exampleData2', package = "sedReview")
+x <- exampleData2
+boxCoef <- summary_boxcoef(x)
+boxCoef_list <- summary_boxcoef(x, returnAllTables = TRUE)

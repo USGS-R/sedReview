@@ -1,7 +1,7 @@
 #' find_boxcoef. Find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.
 #' @description Function to find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
-#' @param site_no Character of a site number in the x \code{dataframe} from \code{get_localNWIS}
+#' @param site_no Character of a site number in the x \code{dataframe} from \code{get_localNWIS} if x contains more than one site. Default is NULL.
 #' @param timediff Number of hours to look before and after a point sample for a paired cross-section sample.
 #' Default is 1 (ie. look for a paired sample 1 hour before and 1 hour after a point sample timestamp)
 #' @details Returns a dataframe of paired samples at given site_no for SSC (P80154). A summary count of all box coefficient pairs for all sites in
@@ -24,12 +24,23 @@
 #' @return A dataframe containing sample pairs with SSC result values of point and cross-section sample, with date/time stamps.
 #' @seealso \code{\link[sedReview]{get_localNWIS}}, \code{\link[sedReview]{summary_boxcoef}}
 
-find_boxcoef <- function(x, site_no, timediff = 1){
+find_boxcoef <- function(x, site_no = NULL, timediff = 1){
   #Convert timediff to seconds
   timediff <- timediff * 60 * 60
   
+  if(!(is.null(site_no))){
+    site_no <- as.character(site_no)
+    if((site_no %in% x$SITE_NO)==FALSE){
+      stop("Site number not in input data.")
+    }
+    x <- x[x$SITE_NO == site_no,]
+    
+  }
+  if(length(unique(x$SITE_NO))>1){
+    stop("More than one site, please specify 'site_no'")}  
+  
   #SSC samples
-  SSC <- x[x$SITE_NO == site_no & x$PARM_CD == "80154",c("UID","SITE_NO","STATION_NM","SAMPLE_START_DT","RESULT_VA")]
+  SSC <- x[x$PARM_CD == "80154",c("UID","SITE_NO","STATION_NM","SAMPLE_START_DT","RESULT_VA")]
   SSC <- unique(SSC)
   #Samples with pump or grab method and corresponds to an SSC sample
   methodPG <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% c(30,50,900,920) & x$UID %in% SSC$UID, 

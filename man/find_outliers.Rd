@@ -4,11 +4,13 @@
 \alias{find_outliers}
 \title{find_outliers. Flag sediment outliers based on threshold criteria.}
 \usage{
-find_outliers(x, lowThreshold = 0.1, highThreshold = 0.9,
+find_outliers(x, site_no = NULL, lowThreshold = 0.1, highThreshold = 0.9,
   returnAll = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
+
+\item{site_no}{Character of a site number in the x \code{dataframe} from \code{get_localNWIS} if x contains more than one site. Default is NULL.}
 
 \item{lowThreshold}{numeric value between 0 and 1 indicating the quantile threshold for a low value outlier.}
 
@@ -27,6 +29,6 @@ Flags for suspended sediment concentration (P80154), suspended sediment load (P8
 \examples{
 data("exampleData",package="sedReview")
 x <- exampleData
-find_outliersOut <- find_outliers(x)
+outliers_05586300 <- find_outliers(x, site_no = "05586300")
 
 }
