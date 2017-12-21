@@ -1,5 +1,5 @@
-#' check_all. Run all project level review checks on a dataset.
-#' @description Function to run all project level review checks on a dataset.
+#' check_all. Run all project level review checks, counts, finds, and calcs on a dataset.
+#' @description Function to run all project level review checks, counts, finds, and calcs on a dataset.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param qa.db A character string containing the database number of QA samples (for check_qaqcDB function), should be same QA DB used in \code{get_localNWIS}
 #' @param returnAllTables Return all tables of flagged results
@@ -21,7 +21,8 @@
 #' @seealso \code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
 #' \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, \code{\link[sedReview]{check_sedMass}}, 
 #' \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}, \code{\link[sedReview]{check_qaqcDB}}
-#' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}}, \code{\link[sedReview]{find_outliers}},
+#' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}},
+#' \code{\link[sedReview]{find_boxcoef}} \code{\link[sedReview]{find_outliers}},
 #' \code{\link[sedReview]{find_provisional}}, \code{\link[sedReview]{calc_concSandFine}}, \code{\link[sedReview]{calc_summaryStats}}
 
 check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
@@ -59,8 +60,23 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   #Count sample status
   sampleStatus <- count_sampleStatus(x,bySite = TRUE)
   
-  #Find outliers
-  outliers <- find_outliers(x, returnAll = FALSE)
+  #Find box coefficients
+  boxcoef <- lapply(unique(x$SITE_NO), function(y){
+    find_boxcoef(x = x, site_no = y, timediff = 1)
+  })
+  names(boxcoef) <- unique(x$SITE_NO)
+  #Find outliers for each site. Also get list of all site outlier UIDs for check_all summary table
+  outliers <- lapply(unique(x$SITE_NO), function(y){
+    find_outliers(x = x, site_no = y, returnAll = FALSE)
+  })
+  names(outliers) <- unique(x$SITE_NO)
+  if(length(outliers) > 1){
+    outliersUID <- outliers[[1]]$UID
+    for(i in 2:length(outliers)){
+      outliersUID <- append(outliersUID, outliers[[i]]$UID)
+    }
+  }else{outliersUID <- outliers[[1]]$UID}
+
   
   #Find provisional
   provisional <- find_provisional(x, view = FALSE)
@@ -88,7 +104,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                            tssFlags = ifelse(UID %in% tssFlags$UID,TRUE,FALSE),
                            verticalsFlags = ifelse(UID %in% verticalsFlags$UID,TRUE,FALSE),
                            qaqcFlags = ifelse(UID %in% qaqcFlags$UID,TRUE,FALSE),
-                           outliers = ifelse(UID %in% outliers$UID,TRUE,FALSE)
+                           outliers = ifelse(UID %in% outliersUID,TRUE,FALSE)
   )
   
   
@@ -143,6 +159,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                 qaqcFlags = qaqcFlags,
                 methodsBySite = methodsBySite,
                 sampleStatus = sampleStatus,
+                boxcoef = boxcoef,
                 outliers = outliers,
                 provisional = provisional,
                 concSandFine = concSandFine,

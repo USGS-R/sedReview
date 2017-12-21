@@ -29,12 +29,19 @@ fountain <- siteData[siteData$SITE_NO == '07106500', ]
 monument <- siteData[siteData$SITE_NO == '07104905', ]
 
 # run check_all function to see which sites/samples have flags
-checkAll <- check_all(siteData)
+checkAll <- check_all(siteData, qa.db = '02', returnAllTables = FALSE)
+# run check_all function with returnAll option to return an R list with the check_all summary and all the check datasets
+checkAll_list <- check_all(siteData, qa.db = '02', returnAllTables = TRUE)
 
+# extract the various checks/counts/calc/finds from the list with $ notation. For example:
+concSandFines1 <- checkAll_list$concSandFine
+outliers_09163500_1 <- checkAll_list$outliers$`09163500`
+
+# alternately, you can run each individual function
 ### now go through each project level review function to view individual calculations, checks, counts, finds, and plots
 
 # calculate sand and fines concentrations and output quick plots. Use arrows in Plots tab to scroll through output plots
-concSandFines <- calc_concSandFine(siteData, plotTime = TRUE, plotFlow = TRUE)
+concSandFines2 <- calc_concSandFine(siteData, plotTime = TRUE, plotFlow = TRUE)
 
 # calculate summary statistics table using default sediment parameters
 sumStats <- calc_summaryStats(siteData)
@@ -78,7 +85,7 @@ boxcoef_07106500 <- find_boxcoef(siteData, site_no = '07106500') # or you can ru
 boxcoef_fountain <- find_boxcoef(fountain)
 
 # find outliers at individual sites
-outliers_09163500 <- find_outliers(siteData, site_no = '09163500')
+outliers_09163500_2 <- find_outliers(siteData, site_no = '09163500')
 outliers_07106500 <- find_outliers(siteData, site_no = '07106500') # or you can run the function on just the fountain data set
 outliers_fountain <- find_outliers(fountain)
 
@@ -184,7 +191,9 @@ qaqc2 <- check_qaqcDB(centerData, qa.db = '02')
 
 
 #########################################
-# any dataframe can be output as a csv or tab delimited file using write.table
+#########################################
+#########################################
+# any dataframe or dataframe from a list can be output as a csv or tab delimited file using write.table
 
 # write unpaired TSS samples to a csv
 write.table(unpairedTSS2, file = 'D:/ex_centerRev_unpairedTSS.csv', quote = FALSE, sep = ",",
