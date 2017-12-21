@@ -5,7 +5,7 @@ test_that("Return values check", {
   
   # check_allOut <- check_all(exampleData, returnAllTables = TRUE)
   # saveRDS(check_allOut, "tests/testthat/data/check_allOut.rds")
-  # 
+
   # check_allOut <- readRDS("tests/testthat/data/check_allOut.rds")
   
   check_allOut <- readRDS("data/check_allOut.rds")
