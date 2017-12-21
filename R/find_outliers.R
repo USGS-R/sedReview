@@ -9,7 +9,7 @@
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
-#' find_outliersOut <- find_outliers(x)
+#' outliers_05586300 <- find_outliers(x, site_no = "05586300")
 #' 
 #' @importFrom dplyr left_join
 #' @importFrom stats quantile

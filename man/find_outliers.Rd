@@ -29,6 +29,6 @@ Flags for suspended sediment concentration (P80154), suspended sediment load (P8
 \examples{
 data("exampleData",package="sedReview")
 x <- exampleData
-find_outliersOut <- find_outliers(x)
+outliers_05586300 <- find_outliers(x, site_no = "05586300")
 
 }
