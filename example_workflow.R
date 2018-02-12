@@ -12,7 +12,7 @@ data("exampleData2", package = "sedReview")
 ########################################
 
 # import data for your site(s) using get_localNwis.
-siteData <- get_localNWIS(DSN = 'nwisco',            # Colorado NWIS server 
+siteData <- get_localNWIS(DSN = 'nwisco',            # Colorado NWIS server. test 
                           env.db = '01',
                           qa.db = '02',
                           STAIDS = c(
@@ -22,6 +22,9 @@ siteData <- get_localNWIS(DSN = 'nwisco',            # Colorado NWIS server
                             '07106500'),             # Fountain Creek at Pueblo
                           begin.date = '2015-10-01', # WY 2016-2017
                           end.date = '2017-09-30')
+
+# view results in wide table format
+siteData2 <- make_wideTable(siteData)
 
 # to run checks for only one site, rerun get_localNWIS with only one STAIDS, or subset your data in R with.
 # subset siteData to only Fountain Creek
@@ -80,7 +83,7 @@ methods <- count_methodsBySite(siteData)
 status <- count_sampleStatus(siteData)
 
 # find box coefficient pairs at individual sites
-boxcoef_09163500 <- find_boxcoef(siteData, site_no = '09163500')
+boxcoef_09163500 <- find_boxcoef(siteData, site_no = '09163500', timediff = 3)
 boxcoef_07106500 <- find_boxcoef(siteData, site_no = '07106500') # or you can run the function on just the fountain data set
 boxcoef_fountain <- find_boxcoef(fountain)
 
@@ -142,7 +145,7 @@ plot_turbSSC(monument, PDFout = 'D:/ex_monument_turbSSC.pdf')
 
 ########################################
 ## Center Level Review
-## for review of mulitiple sediment sites/projects in a WSC. Some overlapping functions with Project Chief Review.
+## for review of multiple sediment sites/projects in a WSC. Some overlapping functions with Project Chief Review.
 ## for any created dataframe (table of data or results), click in the upper left Environment tab on the dataset to view it.
 ## to see the help page for any function, type ?sedReview:: then the funtion of interest into the console.
 ## to run section of code, highlight and hit Run, or Ctrl+Enter.
@@ -164,6 +167,21 @@ centerData <- get_localNWIS(DSN = 'nwisco',
                             STAIDS = sedSites,
                             begin.date = '2015-10-01',
                             end.date = '2017-09-30')
+
+# view data that was reviewed and rejected using the rejected = TRUE option at the end of this function.
+centerData_rejected <- get_localNWIS(DSN = 'nwisco',
+                                     env.db = '01',
+                                     qa.db = '02',
+                                     STAIDS = sedSites,
+                                     begin.date = '2015-10-01',
+                                     end.date = '2017-09-30',
+                                     rejected = TRUE)
+
+# count DQI code status
+status2 <- count_sampleStatus(centerData)
+
+# check and flag sediment mass samples < 2mg
+sedMass2 <- check_sedMass(centerData)
 
 # get summary of boxcoefficient pairs at all the sites
 boxcoefSum <- summary_boxcoef(centerData)
