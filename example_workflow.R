@@ -12,7 +12,7 @@ data("exampleData2", package = "sedReview")
 ########################################
 
 # import data for your site(s) using get_localNwis.
-siteData <- get_localNWIS(DSN = 'nwisco',            # Colorado NWIS server 
+siteData <- get_localNWIS(DSN = 'nwisco',            # Colorado NWIS server. test 
                           env.db = '01',
                           qa.db = '02',
                           STAIDS = c(
@@ -22,6 +22,9 @@ siteData <- get_localNWIS(DSN = 'nwisco',            # Colorado NWIS server
                             '07106500'),             # Fountain Creek at Pueblo
                           begin.date = '2015-10-01', # WY 2016-2017
                           end.date = '2017-09-30')
+
+# view results in wide table format
+siteData2 <- make_wideTable(siteData)
 
 # to run checks for only one site, rerun get_localNWIS with only one STAIDS, or subset your data in R with.
 # subset siteData to only Fountain Creek
