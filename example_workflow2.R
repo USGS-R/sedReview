@@ -25,6 +25,9 @@ siteData <- get_localNWIS(DSN = 'nwisco',            # Colorado NWIS server
                           begin.date = '2015-10-01', # WY 2016-2017
                           end.date = '2017-09-30')
 
+# view site data in wide format
+siteData2 <- make_wideTable(siteData)
+
 # to run checks for only one site, rerun get_localNWIS with only one STAIDS, or subset your data in R with.
 # subset siteData to only Fountain Creek
 # To view a dataframe, you can click on the table icon next to the dataframe in the environment window in the upper right corner of Rstudio, or you can type View(dataframe name) in the console at lower left. 
