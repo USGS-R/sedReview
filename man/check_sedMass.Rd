@@ -20,6 +20,8 @@ Function to check and flag sediment mass (P91157) less than 2mg
 \details{
 Checks parameter code 91157 (Suspended sediment, sediment mass recovered from whole water sample, dry weight, grams)
 and flags samples < 2mg (< 0.002 g) with flag and result value.
+
+Rejected samples are not included.
 }
 \examples{
 data("exampleData",package="sedReview")

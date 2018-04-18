@@ -4,6 +4,7 @@
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Default is FALSE
 #' @details Checks parameter code 91157 (Suspended sediment, sediment mass recovered from whole water sample, dry weight, grams)
 #' and flags samples < 2mg (< 0.002 g) with flag and result value.
+#' @details Rejected samples are not included.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
@@ -14,6 +15,9 @@
 #' @return A dataframe containing all samples with applicable flags
 
 check_sedMass <- function(x, returnAll = FALSE){
+  # remove rejected samples
+  x <- x[!(x$DQI %in% c("Q","X")),]
+  
   #get records for sediment mass pcode 91157
   sedMass <- x[x$PARM_CD == '91157',]
   sedMass <- unique(sedMass[c('UID','RESULT_VA')])
