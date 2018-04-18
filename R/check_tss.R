@@ -3,6 +3,7 @@
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @details See OSW Technical Memo No. 2001.03 for more details and background information
+#' @details Rejected samples are not included.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
@@ -14,6 +15,9 @@
 
 # x is plotData from NWISodbc data pull
 check_tss <- function(x, returnAll = FALSE){
+  # remove rejected samples
+  x <- x[!(x$DQI %in% c("Q","X")),]
+  
   ### extract TSS results
   TSS <- x[x$PARM_CD == "00530",]
   TSS <- unique(TSS[c("UID", "RESULT_VA")])

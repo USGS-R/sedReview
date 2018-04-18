@@ -21,6 +21,8 @@ Function to flag uncommon sample purpose
 Function determines most common sample purpose for all retrieved records and flags all sample purposes other than the most common.
 
 There are of course valid reasons to have different sample purposes, this is just a check.
+
+Rejected samples are not included.
 }
 \examples{
 data("exampleData",package="sedReview")

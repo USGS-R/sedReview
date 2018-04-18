@@ -29,6 +29,8 @@ P72196 - Velocity to compute isokinetic transit rate, feet per second
 P72219 - Sampler nozzle material, code: Plastic=2, TFE=3
 
 P72220 - Sampler nozzle diameter, code: 3/16"=3, 1/4"=4, 5/16"=5
+
+Rejected samples are not included.
 }
 \examples{
 data("exampleData",package="sedReview")

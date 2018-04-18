@@ -21,6 +21,8 @@ Function to check if number of verticals in EDI/EWI samples is correct
 function to test EDI sample collected correctly. Number of sampling verticals 4-9.
 
 function to test EWI sample collected correctly. Number of verticals between 10 and 20.
+
+Rejected samples are not included.
 }
 \examples{
 data("exampleData",package="sedReview")

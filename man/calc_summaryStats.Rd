@@ -24,6 +24,8 @@ Calculates number of samples, minimum, maximum, median, mean, and standard devia
 A count of the number of non-detect samples is included in the summary. Summary value "n" does not include non-detects.
 
 Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
+
+Rejected samples are not included
 }
 \examples{
 data('exampleData', package = "sedReview")

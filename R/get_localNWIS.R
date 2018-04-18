@@ -8,7 +8,6 @@
 #' @param end.date Character string containing ending date of data pull (yyyy-mm-dd)
 #' @param projectCd Character vector containing project codes to subset data by.
 #' @param resultAsText Output results as character instead of numeric. Used for literal output of results from NWIS that are no affected by class coerrcion, such as dropping zeros after decimal point. Default is False.
-#' @param rejected Logical. If TRUE, only samples with DQI code of "Q" or "X" will be returned. Default is FALSE. 
 #' @return Returns a dataframe of samples. 
 #' The longTable format contains all data pulled from NWIS along with all assosciated metadata in by-result format. 
 #' For a wideTable containing all data pulled from NWIS in wide (sample-result) format, an easier format for import into spreadsheet programs, use the \code{make_wideTable} function
@@ -40,18 +39,7 @@
 #'                              begin.date = "2005-01-01",
 #'                              end.date = "2015-10-27",
 #'                              projectCd = NULL,
-#'                              resultAsText = FALSE,
-#'                              rejected = FALSE)
-#'
-#' rejectedSamples <- get_localNWIS(DSN="NWISCO",
-#'                              env.db = "01",
-#'                              qa.db = "02",
-#'                              STAIDS = c("06733000","09067005"),
-#'                              begin.date = "2005-01-01",
-#'                              end.date = "2015-10-27",
-#'                              projectCd = NULL,
-#'                              resultAsText = FALSE,
-#'                              rejected = TRUE)                              
+#'                              resultAsText = FALSE)
 #' }
 #' @import RODBC
 #' @importFrom reshape2 dcast
@@ -667,10 +655,12 @@ get_localNWIS <- function(DSN,
                            "COLL_ENT_CD","SIDNO_PARTY_CD",
                            "HUC_CD","SITE_TP_CD", "SAMPLE_MONTH","DOY", "WY")]
   
-  ###Remove reviewed and rejected results or return only rejected samples
-  if(rejected == TRUE){
-    longTable <- longTable[longTable$DQI_CD %in% c("Q","X"),]
-  }else{longTable <- longTable[!(longTable$DQI_CD %in% c("Q","X")),]}
+  ###Remove reviewed and rejected results or return only rejected samples.
+  ###Testers indicated they want rejected in sampleStatus summary.
+  ###Will remove Q and X DQIs in any subsequent functions that don't need rejected samples
+  # if(rejected == TRUE){
+  #   longTable <- longTable[longTable$DQI_CD %in% c("Q","X"),]
+  # }else{longTable <- longTable[!(longTable$DQI_CD %in% c("Q","X")),]}
   
   ###Sort by site number and start date/time
   longTable <- longTable[order(longTable$SITE_NO, longTable$SAMPLE_START_DT),]

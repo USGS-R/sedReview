@@ -4,6 +4,7 @@
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @details Function determines most common sample purpose for all retrieved records and flags all sample purposes other than the most common.
 #' @details There are of course valid reasons to have different sample purposes, this is just a check.
+#' @details Rejected samples are not included.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
@@ -17,6 +18,9 @@
 
 # x is plotData from NWISodbc data pull
 check_samplePurp <- function(x, returnAll = FALSE){
+  # remove rejected samples
+  x <- x[!(x$DQI %in% c("Q","X")),]
+  
   # sample purposes
   purp <- x[x$PARM_CD == "71999", ]
   purp <- unique(purp[c("UID","SITE_NO","PARM_CD", "PARM_NM", "RESULT_VA")])

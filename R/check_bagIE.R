@@ -8,6 +8,7 @@
 #' @details P72196 - Velocity to compute isokinetic transit rate, feet per second
 #' @details P72219 - Sampler nozzle material, code: Plastic=2, TFE=3
 #' @details P72220 - Sampler nozzle diameter, code: 3/16"=3, 1/4"=4, 5/16"=5
+#' @details Rejected samples are not included.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
@@ -18,6 +19,9 @@
 #' @return A dataframe containing all samples with applicable flags
 
 check_bagIE <- function(x, returnAll = FALSE){
+  # remove rejected samples
+  x <- x[!(x$DQI %in% c("Q","X")),]
+  
   ### Find records where sampler type code (P84164) has bag sampler value (3055,3056,3057,3058)
   bagSamp <- x[x$PARM_CD == "84164" & x$RESULT_VA %in% c(3055,3056,3057,3058), ]
   bagSamp <- unique(bagSamp[c("UID", "PARM_CD", "PARM_NM", "RESULT_VA")])

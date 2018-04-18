@@ -23,6 +23,8 @@ Function to calculate sand/fine concentration based on SSC and sand/fine split v
 Sand and Fine concentration (mg/L) is calculated for sites with SSC (P80154) and % finer than 62.5 microns (P70331)
 
 Some measure of discharge (P00060, P00061, P30208, P30209, P50042, P72137, P72243, P99060, P99061) must be present a record to plot in plotFlow, otherwise it is removed
+
+Rejected samples are not included.
 }
 \examples{
 data("exampleData",package="sedReview")

@@ -4,6 +4,7 @@
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Default is FALSE
 #' @details Function determines most common sampler type from dataset or records and flags all others that are not most common.
 #' @details Note, there are valid reasons for different sampler types, this is just a check.
+#' @details Rejected samples are not included.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
@@ -15,6 +16,9 @@
 
 # x is plotData from NWISodbc data pull
 check_samplerType <- function(x, returnAll = FALSE){
+  # remove rejected samples
+  x <- x[!(x$DQI %in% c("Q","X")),]
+  
   # sampler types
   sampler <- x[x$PARM_CD == "84164", ]
   sampler <- unique(sampler[c("UID","SITE_NO","PARM_CD", "PARM_NM", "RESULT_VA")])

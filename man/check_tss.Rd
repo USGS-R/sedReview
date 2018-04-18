@@ -19,6 +19,8 @@ Function to flag TSS results without an accompanying SSC result
 }
 \details{
 See OSW Technical Memo No. 2001.03 for more details and background information
+
+Rejected samples are not included.
 }
 \examples{
 data("exampleData",package="sedReview")

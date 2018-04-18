@@ -6,6 +6,7 @@
 #' @param plotFlow Logical, if \code{TRUE} basic plots of Conc vs. Flow are created for each site with complete data, default is \code{FALSE} 
 #' @details Sand and Fine concentration (mg/L) is calculated for sites with SSC (P80154) and % finer than 62.5 microns (P70331)
 #' @details Some measure of discharge (P00060, P00061, P30208, P30209, P50042, P72137, P72243, P99060, P99061) must be present a record to plot in plotFlow, otherwise it is removed
+#' @details Rejected samples are not included.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
@@ -17,6 +18,9 @@
 
 calc_concSandFine <- function(x, plotTime = FALSE, plotFlow = FALSE)
 {
+  # remove rejected samples
+  x <- x[!(x$DQI %in% c("Q","X")),]
+  
   # get suspended sediment concentration
   SSC <- x[x$PARM_CD == "80154", ]
   SSC <- unique(SSC[c("UID",

@@ -4,6 +4,7 @@
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Default is FALSE
 #' @details function to test EDI sample collected correctly. Number of sampling verticals 4-9.
 #' @details function to test EWI sample collected correctly. Number of verticals between 10 and 20.
+#' @details Rejected samples are not included.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
@@ -15,6 +16,8 @@
 
 # x is plotData from NWISodbc data pull
 check_verticals <- function(x, returnAll = FALSE){
+  # remove rejected samples
+  x <- x[!(x$DQI %in% c("Q","X")),]
   
   # Select all EDI and EWI samples
   EDI <- x[x$PARM_CD == "82398", ]

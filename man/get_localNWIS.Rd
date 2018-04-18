@@ -25,8 +25,6 @@ get_localNWIS(DSN, env.db = "01", qa.db = "02", STAIDS, begin.date = NA,
 \item{projectCd}{Character vector containing project codes to subset data by.}
 
 \item{resultAsText}{Output results as character instead of numeric. Used for literal output of results from NWIS that are no affected by class coerrcion, such as dropping zeros after decimal point. Default is False.}
-
-\item{rejected}{Logical. If TRUE, only samples with DQI code of "Q" or "X" will be returned. Default is FALSE.}
 }
 \value{
 Returns a dataframe of samples. 
@@ -66,17 +64,6 @@ qw.data <- get_localNWIS(DSN="NWISCO",
                              begin.date = "2005-01-01",
                              end.date = "2015-10-27",
                              projectCd = NULL,
-                             resultAsText = FALSE,
-                             rejected = FALSE)
-
-rejectedSamples <- get_localNWIS(DSN="NWISCO",
-                             env.db = "01",
-                             qa.db = "02",
-                             STAIDS = c("06733000","09067005"),
-                             begin.date = "2005-01-01",
-                             end.date = "2015-10-27",
-                             projectCd = NULL,
-                             resultAsText = FALSE,
-                             rejected = TRUE)                              
+                             resultAsText = FALSE)
 }
 }
