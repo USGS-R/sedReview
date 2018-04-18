@@ -8,7 +8,8 @@
 #' \code{x} can be found using the related function \code{summary_boxcoef}. 
 #' @details Point samples are defined as samples where sampling method (P82398) is 30 (single vertical), 50 (point sample), 900 (SS pumping),
 #' or 920 (SS BSV DI att strctr). Or samples where sampler type (P84164) is 3070 (grab sample) or 4115 (auto-sampler).
-#' @details Cross-section samples are defined as samples where sampling method (P82398) is 10 (EWI), 15 (multiple verticals EWT), or 20 (EDI)   
+#' @details Cross-section samples are defined as samples where sampling method (P82398) is 10 (EWI), 15 (multiple verticals EWT), or 20 (EDI)
+#' @details Rejected samples are not included.   
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
@@ -25,6 +26,9 @@
 #' @seealso \code{\link[sedReview]{get_localNWIS}}, \code{\link[sedReview]{summary_boxcoef}}
 
 find_boxcoef <- function(x, site_no = NULL, timediff = 1){
+  # remove rejected samples
+  x <- x[!(x$DQI %in% c("Q","X")),]
+  
   #Convert timediff to seconds
   timediff <- timediff * 60 * 60
   

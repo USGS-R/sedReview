@@ -6,6 +6,7 @@
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
 #' @param lowThreshold numeric value between 0 and 1 indicating the quantile threshold for a low value outlier.
 #' @param highThreshold numeric value between 0 and 1 indicating the quantile threshold for a high value outlier.
+#' @details Rejected samples are not included.
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
@@ -18,7 +19,10 @@
 
 # x is plotData from NWISodbc data pull
 find_outliers <- function(x, site_no = NULL, lowThreshold = 0.1, highThreshold = 0.9, returnAll = FALSE){
+  # remove rejected samples
+  x <- x[!(x$DQI %in% c("Q","X")),]
   
+  # check for site
   if(!(is.null(site_no))){
     site_no <- as.character(site_no)
     if((site_no %in% x$SITE_NO)==FALSE){
