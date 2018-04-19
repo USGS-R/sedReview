@@ -69,8 +69,8 @@ outliers_09163500_1 <- checkAll_list$outliers$`09163500`
 # Over the next several steps in the script, you are drilling down deeper into the results of the checkAll function. When the functions below are run, they create dataframes with the results. The dataframes can be viewed as tables by clicking on the table icon next to the dataframe in the environment window in the upper right corner of Rstudio, or by typing View(dataframe name) in the console at lower left. 
 
 # calculate sand and fines concentrations and output quick plots. Use arrows in Plots tab to scroll through output plots
-# This function will calculate sand and fines concentrations based on SSC and sand/silt break data reported in samples for all data in the siteData dataframe (pulled at beginning of workflow). It will then create plots of fines concentration and sand concentration by time and by discharge for each site. 
-concSandFines2 <- calc_concSandFine(siteData, plotTime = TRUE, plotFlow = TRUE)
+# This function will calculate sand and fines concentrations based on SSC and sand/silt break data reported in samples for all data in the siteData dataframe (pulled at beginning of workflow).
+concSandFines2 <- calc_concSandFine(siteData)
 
 # calculate summary statistics table using default sediment parameters
 # This function calculates summary statistics for all data in the siteData dataframe. Summary is displayed by site, parameter (SSC, SSL, bedload, sand/silt break, TSS), and water year. Currently, included statistics are minimum, maximum, median, mean, standard deviation, and # non-detects.
@@ -82,7 +82,7 @@ bagIE <- check_bagIE(siteData)
 
 # check and flag samples that don't have associated discharge
 # This function creates a dataframe of all the samples that were missing discharge data.
-hasQ <- check_hasQ(siteData)
+missingQ <- check_missingQ(siteData)
 
 # check metadata and flag samples that are missing NWIS 20.xx level checks
 # For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html
@@ -168,7 +168,7 @@ plot_sedFlow(fountain, PDFout = 'D:/ex_fountain_sedFlow.pdf')
 # This creates a nice pdf packet of sediment~flow plots for your site.
 
 # plot timeseries of sediment data
-sedTS_09163500 <- plot_sedTS(siteData, siteSelect = '09163500')
+sedTS_09163500 <- plot_sedTS(siteData, siteSelect = '09163500', log.P80154 = TRUE)
 sedTS_09163500$SSC
 sedTS_09163500$ssbreak
 plot_sedTS(siteData, siteSelect = '09163500', PDFout = 'D:/ex_09163500_TS.pdf')
@@ -193,7 +193,7 @@ ssctss_monument$scatter
 plot_SSCTSS(monument, PDFout = 'D:/ex_monument_ssctss.pdf')
 
 # plot turb versus SSC
-turbSSC_09163500 <- plot_turbSSC(siteData, siteSelect = '09163500')
+turbSSC_09163500 <- plot_turbSSC(siteData, siteSelect = '09163500', log.turb = T, log.P80154 = T)
 turbSSC_09163500$Turbidity_63676
 # Note the number after turbidity is the turbidity parameter code; it should be edited depending on what you are using to measure turbidity. See parameter codes listed at: https://nwis.waterdata.usgs.gov/nwis/pmcodes/pmcodes?radio_pm_search=pm_search&pm_search=turbidity&casrn_search=&srsname_search=&format=html_table&show=parameter_group_nm&show=parameter_nm&show=casrn&show=srsname&show=parameter_units
 
@@ -256,7 +256,7 @@ bagIE2 <- check_bagIE(centerData)
 
 # check discharge accompanies sediment sample
 # Reports a summary of sediment samples that were missing discharge data. 
-hasQ2 <- check_hasQ(centerData)
+missingQ2 <- check_missingQ(centerData)
 
 # check for TSS samples without SSC per OSW memo 01.03
 # Reports a summary of sediment samples that had TSS data but no accompanying SSC data. 

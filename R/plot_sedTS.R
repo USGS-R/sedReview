@@ -2,6 +2,11 @@
 #' 
 #' @description Function to output timeseries plots for sediment parameters. Output is a list of plots or write to PDF.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param log.P80154 Logical, if \code{TRUE}, SSC y axis will be log10. Default is \code{FALSE}.
+#' @param log.P70331 Logical, if \code{TRUE}, sand/silt break y axis will be log10. Default is \code{FALSE}.
+#' @param log.P80155 Logical, if \code{TRUE}, SSL y axis will be log10. Default is \code{FALSE}.
+#' @param log.P80225 Logical, if \code{TRUE}, bedload y axis will be log10. Default is \code{FALSE}.
+#' @param log.P91145 Logical, if \code{TRUE}, bedload mass y axis will be log10. Default is \code{FALSE}.
 #' @param siteSelect Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.
 #' @param PDFout Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.
 #' @details Timeseries plots of SSC (P80154), sand/silt break (P70331), SSL (P80155), bedload (P80255) and bedload mass (P91145).
@@ -25,6 +30,11 @@
 #' @return If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 
 plot_sedTS <- function(x,
+                       log.P80154 = FALSE,
+                       log.P70331 = FALSE,
+                       log.P80155 = FALSE,
+                       log.P80225 = FALSE,
+                       log.P91145 = FALSE,
                        siteSelect = NULL,
                        PDFout = NULL){
   # sediment pcodes to plot
@@ -52,22 +62,37 @@ plot_sedTS <- function(x,
   # create plots
   if(nrow(x[x$PARM_CD == '80154',]) > 0){
     sscPlot <- plotfun(y = x[x$PARM_CD == '80154',], ylabel = 'Concentration (mg/L)', ptcolor = 'blue')
-  }else{stop("No SSC data to plot")}
+    if(log.P80154 == TRUE){
+      sscPlot <- sscPlot + scale_y_log10()
+    }
+  }else{warning("No SSC data to plot")}
   
   if(nrow(x[x$PARM_CD == '70331',]) > 0){
     ssbreakPlot <- plotfun(y = x[x$PARM_CD == '70331',], ylabel = 'Percent (%)', ptcolor = 'tan')
+    if(log.P70331 == TRUE){
+      ssbreakPlot <- ssbreakPlot + scale_y_log10()
+    }
   }else{warning("No Sand/Silt break data to plot")}
   
   if(nrow(x[x$PARM_CD == '80155',]) > 0){
     sslPlot <- plotfun(y = x[x$PARM_CD == '80155',], ylabel = 'Discharge (tons/day)', ptcolor = 'brown')
+    if(log.P80155 == TRUE){
+      sslPlot <- sslPlot + scale_y_log10()
+    }
   }else{warning("No SSL data to plot")}
   
   if(nrow(x[x$PARM_CD == '80225',]) > 0){
     bedloadPlot <- plotfun(y = x[x$PARM_CD == '80225',], ylabel = 'Discharge (tons/day)', ptcolor = 'green')
+    if(log.P80225 == TRUE){
+      bedloadPlot <- bedloadPlot + scale_y_log10()
+    }
   }else{warning("No bedload data to plot")}
   
   if(nrow(x[x$PARM_CD == '91145',]) > 0){
     bedmassPlot <- plotfun(y = x[x$PARM_CD == '91145',], ylabel = 'Mass (g)', ptcolor = 'grey')
+    if(log.P91145 == TRUE){
+      bedmassPlot <- bedmassPlot + scale_y_log10()
+    }
   }else{warning("No bedload mass data to plot")}
   
   # return list of plots or output PDF document
