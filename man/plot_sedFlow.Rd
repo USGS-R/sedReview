@@ -4,10 +4,19 @@
 \alias{plot_sedFlow}
 \title{plot_sedFlow. Create plots of sediment vs. discharge for select sediment parameters.}
 \usage{
-plot_sedFlow(x, siteSelect = NULL, PDFout = NULL)
+plot_sedFlow(x, log.P80154 = FALSE, log.P70331 = FALSE,
+  log.P80225 = FALSE, log.Q = FALSE, siteSelect = NULL, PDFout = NULL)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
+
+\item{log.P80154}{Logical, if \code{TRUE}, SSC y axis will be log10. Default is \code{FALSE}.}
+
+\item{log.P70331}{Logical, if \code{TRUE}, sand/silt break y axis will be log10. Default is \code{FALSE}.}
+
+\item{log.P80225}{Logical, if \code{TRUE}, bedload y axis will be log10. Default is \code{FALSE}.}
+
+\item{log.Q}{Logical, if \code{TRUE}, flow x axis will be log10 for all parameters present. Default is \code{FALSE}.}
 
 \item{siteSelect}{Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.}
 
@@ -20,7 +29,7 @@ If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} speci
 Function to output scatterplots of sediment parameter vs. discharge. Output is list of plots or write to PDF.
 }
 \details{
-Scatterplots of SSC (P80154), sand/silt break (P70331), bedload (P80255) vs. flow (all discharge reported or converted to cfs).
+Scatterplots of SSC (P80154), sand/silt break (P70331), bedload (P80225) vs. flow (all discharge reported or converted to cfs).
 Not all parameters need to be present in \code{x} for plots to be created (eg. if only SSC present than only SSC vs. flow plot returned)
 
 If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are specified above. See example for more details.

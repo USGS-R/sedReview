@@ -2,6 +2,8 @@
 #' 
 #' @description Function to output scatterplots of SSC vs. turbidity. Output is a list of plots or write to PDF.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
+#' @param log.P80154 Logical, if \code{TRUE}, SSC y axis will be log10. Default is \code{FALSE}.
+#' @param log.turb Logical, if \code{TRUE}, Turbidity parameter x axis will be log10. Default is \code{FALSE}.
 #' @param siteSelect Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.
 #' @param PDFout Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.
 #' @details Scatterplots of SSC (P80154) vs. Turbidity (Parameter codes 00076, 61028, 63675, 63676, 63677, 63679, 63680, 63681, 
@@ -25,6 +27,8 @@
 #' @return If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 
 plot_turbSSC <- function(x,
+                         log.P80154 = FALSE,
+                         log.turb = FALSE,
                          siteSelect = NULL,
                          PDFout = NULL){
   # subset data
@@ -52,17 +56,23 @@ plot_turbSSC <- function(x,
   if(nrow(x_turb) == 0){stop("No Turbidity/SSC pair data. Check input dataframe x.")}
   
   # internal plotting function
-  plotfun <- function(y,plotdata){
+  plotfun <- function(y,plotdata, log.x, log.y){
     z <- plotdata[plotdata$PARM_CD == y,]
     p1 <- ggplot(data = z, aes(x = RESULT_VA, y = ssc))
     p1 <- p1 + geom_point(size = 3)
     p1 <- p1 + xlab("Turbidity") + ylab(paste('80154_SSC (mg/L)',"\n")) + labs(caption = paste(unique(z$PARM_CD),unique(z$PARM_NM)))
     p1 <- p1 + labs(title = paste(unique(z$SITE_NO),"\n",unique(z$STATION_NM)))
+    if(log.x == TRUE){
+      p1 <- p1 + scale_x_log10()
+    }
+    if(log.y == TRUE){
+      p1 <- p1 + scale_y_log10()
+    }
     return(p1)
   }
   
   # apply plotfun to all unique turbidity pcodes in input data
-  plotList <- lapply(unique(x_turb$PARM_CD),plotfun, plotdata = x_turb)
+  plotList <- lapply(unique(x_turb$PARM_CD),plotfun, plotdata = x_turb, log.x = log.turb, log.y = log.P80154)
   names(plotList) <- paste0('Turbidity_',unique(x_turb$PARM_CD))
   
   # return plot list or output PDF file
