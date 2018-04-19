@@ -1,4 +1,4 @@
-#' check_hasQ. Searches for samples that were collected for sediment data but are missing discharge measurements
+#' check_missingQ. Searches for samples that were collected for sediment data but are missing discharge measurements
 #' 
 #' @description Searches for samples that were collected for sediment data but are missing discharge measurements
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
@@ -7,7 +7,7 @@
 #' @examples
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
-#' checkQOut <- check_hasQ(x,returnAll = FALSE)
+#' checkQOut <- check_missingQ(x,returnAll = FALSE)
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
 #' @importFrom dplyr left_join
@@ -16,7 +16,7 @@
 #' 
 
 
-check_hasQ <- function(x, returnAll = FALSE) {
+check_missingQ <- function(x, returnAll = FALSE) {
   x <- x[c("UID","RECORD_NO","SITE_NO","STATION_NM","SAMPLE_START_DT","SAMPLE_END_DT", "MEDIUM_CD","PARM_CD","DQI_CD","RESULT_VA")]
   x <- unique(x)
   

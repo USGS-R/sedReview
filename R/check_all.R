@@ -31,7 +31,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   bagIEFlags <- check_bagIE(x, returnAll = FALSE)
   
   #has Q
-  hasQFlags <- check_hasQ(x, returnAll = FALSE)
+  hasQFlags <- check_missingQ(x, returnAll = FALSE)
   
   #Coding and meta data
   metaDataFlags <- check_metaData(x, returnAll = FALSE)

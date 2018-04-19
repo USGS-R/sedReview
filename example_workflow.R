@@ -53,7 +53,7 @@ sumStats <- calc_summaryStats(siteData)
 bagIE <- check_bagIE(siteData)
 
 # check and flag samples that don't have associated discharge
-hasQ <- check_hasQ(siteData)
+missingQ <- check_missingQ(siteData)
 
 # check metadata and flag samples that are missing NWIS 20.xx level checks
 metaData <- check_metaData(siteData)
@@ -196,7 +196,7 @@ verticals2 <- check_verticals(centerData)
 bagIE2 <- check_bagIE(centerData)
 
 # check discharge accompanies sediment sample
-hasQ2 <- check_hasQ(centerData)
+hasQ2 <- check_missingQ(centerData)
 
 # check for TSS samples without SSC per OSW memo 01.03
 unpairedTSS2 <- check_tss(centerData)

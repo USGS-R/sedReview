@@ -82,7 +82,7 @@ bagIE <- check_bagIE(siteData)
 
 # check and flag samples that don't have associated discharge
 # This function creates a dataframe of all the samples that were missing discharge data.
-hasQ <- check_hasQ(siteData)
+missingQ <- check_missingQ(siteData)
 
 # check metadata and flag samples that are missing NWIS 20.xx level checks
 # For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html
@@ -256,7 +256,7 @@ bagIE2 <- check_bagIE(centerData)
 
 # check discharge accompanies sediment sample
 # Reports a summary of sediment samples that were missing discharge data. 
-hasQ2 <- check_hasQ(centerData)
+missingQ2 <- check_missingQ(centerData)
 
 # check for TSS samples without SSC per OSW memo 01.03
 # Reports a summary of sediment samples that had TSS data but no accompanying SSC data. 
