@@ -21,7 +21,7 @@ A dataframe containing sample pairs with SSC result values of point and cross-se
 Function to find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.
 }
 \details{
-Returns a dataframe of paired samples at given site_no for SSC (P80154). A summary count of all box coefficient pairs for all sites in
+Returns a dataframe of paired samples and calculated box coefficient at given site_no for SSC (P80154). A summary count of all box coefficient pairs for all sites in
 \code{x} can be found using the related function \code{summary_boxcoef}.
 
 Point samples are defined as samples where sampling method (P82398) is 30 (single vertical), 50 (point sample), 900 (SS pumping),
