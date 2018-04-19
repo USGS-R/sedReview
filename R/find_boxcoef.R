@@ -4,7 +4,7 @@
 #' @param site_no Character of a site number in the x \code{dataframe} from \code{get_localNWIS} if x contains more than one site. Default is NULL.
 #' @param timediff Number of hours to look before and after a point sample for a paired cross-section sample.
 #' Default is 1 (ie. look for a paired sample 1 hour before and 1 hour after a point sample timestamp)
-#' @details Returns a dataframe of paired samples at given site_no for SSC (P80154). A summary count of all box coefficient pairs for all sites in
+#' @details Returns a dataframe of paired samples and calculated box coefficient at given site_no for SSC (P80154). A summary count of all box coefficient pairs for all sites in
 #' \code{x} can be found using the related function \code{summary_boxcoef}. 
 #' @details Point samples are defined as samples where sampling method (P82398) is 30 (single vertical), 50 (point sample), 900 (SS pumping),
 #' or 920 (SS BSV DI att strctr). Or samples where sampler type (P84164) is 3070 (grab sample) or 4115 (auto-sampler).
@@ -103,6 +103,10 @@ find_boxcoef <- function(x, site_no = NULL, timediff = 1){
   sitePairs <- dplyr::left_join(sitePairs,qRecords, by = c("UID_xsection" = "UID"))
   sitePairs <- sitePairs[,c("UID","SITE_NO","STATION_NM","SAMPLE_START_DT_point","RESULT_VA_point",
                             "RESULT_VA_xsection","SAMPLE_START_DT_xsection","flow_cfs")]
+  
+  #Calculate box coefficient
+  sitePairs$calc_box_coef <- sitePairs$RESULT_VA_xsection / sitePairs$RESULT_VA_point
+  
   return(sitePairs)
 }
 
