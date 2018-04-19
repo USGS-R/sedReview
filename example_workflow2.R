@@ -232,15 +232,6 @@ centerData <- get_localNWIS(DSN = 'nwisco',
                             end.date = '2017-09-30')
 # You can quickly scan and review the data as needed.
 
-# view data that was reviewed and rejected using the rejected = TRUE option at the end of this function.
-centerData_rejected <- get_localNWIS(DSN = 'nwisco',
-                                     env.db = '01',
-                                     qa.db = '02',
-                                     STAIDS = sedSites,
-                                     begin.date = '2015-10-01',
-                                     end.date = '2017-09-30',
-                                     rejected = TRUE)
-
 
 # count DQI code status
 status2 <- count_sampleStatus(centerData)
