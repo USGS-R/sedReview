@@ -6,7 +6,7 @@ Package for USGS discrete sediment data review. IN DEVELOPMENT.
 # Package Status
 |Linux|Windows| Test Coverage | USGS Status |
 |----------|------------|------------|------------|
-[![Travis](https://travis-ci.org/USGS-R/sedReview.svg?branch=master)](https://travis-ci.org/USGS-R/sedReview)|[![Windows](https://ci.appveyor.com/api/projects/status/7ugloj20rqapx3e4?svg=true)](https://ci.appveyor.com/project/cpenn-usgs/sedreview)|[![Coverage Status](https://coveralls.io/repos/github/USGS-R/sedReview/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/sedReview?branch=master)|[![status](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
+[![Travis](https://travis-ci.org/USGS-R/sedReview.svg?branch=master)](https://travis-ci.org/USGS-R/sedReview)|[![Windows](https://ci.appveyor.com/api/projects/status/7xfp7x17bpwbdvh2?svg=true)](https://ci.appveyor.com/project/cpenn-usgs/sedreview)|[![Coverage Status](https://coveralls.io/repos/github/USGS-R/sedReview/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/sedReview?branch=master)|[![status](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
 This package is considered a 'support' package. For more information, see:
 [https://owi.usgs.gov/R/packages.html#support](https://owi.usgs.gov/R/packages.html#support)
