@@ -28,6 +28,8 @@ Point samples are defined as samples where sampling method (P82398) is 30 (singl
 or 920 (SS BSV DI att strctr). Or samples where sampler type (P84164) is 3070 (grab sample) or 4115 (auto-sampler).
 
 Cross-section samples are defined as samples where sampling method (P82398) is 10 (EWI), 15 (multiple verticals EWT), or 20 (EDI)
+
+Rejected samples are not included.
 }
 \examples{
 data("exampleData",package="sedReview")
