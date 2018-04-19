@@ -4,14 +4,10 @@
 \alias{calc_concSandFine}
 \title{calc_concSandFine. calculate sand/fine concentration based on SSC and sand/fine split value and output basic plots}
 \usage{
-calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
+calc_concSandFine(x)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
-
-\item{plotTime}{Logical, if \code{TRUE} basic timeseries plots of Conc vs. Time are created for each site with complete data, default is \code{FALSE}}
-
-\item{plotFlow}{Logical, if \code{TRUE} basic plots of Conc vs. Flow are created for each site with complete data, default is \code{FALSE}}
 }
 \value{
 A dataframe containing all samples with complete SSC, sand/fine split, and calculated sand and fine concentrations
