@@ -8,7 +8,7 @@
 #' @examples 
 #' data("exampleData",package="sedReview")
 #' x <- exampleData
-#' concSandFine <- calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
+#' concSandFine <- calc_concSandFine(x)
 #' 
 #' @importFrom dplyr left_join
 #' @export

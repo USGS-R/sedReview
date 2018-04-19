@@ -25,6 +25,6 @@ Rejected samples are not included.
 \examples{
 data("exampleData",package="sedReview")
 x <- exampleData
-concSandFine <- calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
+concSandFine <- calc_concSandFine(x)
 
 }
