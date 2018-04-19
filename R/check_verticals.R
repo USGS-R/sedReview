@@ -33,6 +33,12 @@ check_verticals <- function(x, returnAll = FALSE){
   EWI <- dplyr::left_join(EWI, verts, by = "UID")
   EDI <- dplyr::left_join(EDI, verts, by = "UID")
   
+  #get stream widths
+  stream <- x[x$PARM_CD == '00004',]
+  stream <- stream[c('UID','RESULT_VA')]
+  stream <- unique(stream[c('UID','RESULT_VA')])
+  names(stream) <- c('UID','stream_width_ft')
+  
   # set flags
   EWI$EWIvertflag[is.na(EWI$RESULT_VA)==TRUE] <- paste("flag # EWI verticals missing")
   EWI$EWIvertflag[EWI$RESULT_VA > 20 & is.na(EWI$RESULT_VA)==FALSE] <- paste("flag high # EWI verticals=", 
@@ -53,6 +59,7 @@ check_verticals <- function(x, returnAll = FALSE){
                                "STATION_NM",
                                "SAMPLE_START_DT",
                                "MEDIUM_CD")])
+  flaggedSamples <- dplyr::left_join(flaggedSamples, stream, by = "UID")
   flaggedSamples <- dplyr::left_join(flaggedSamples, EWI[c("UID", "EWIvertflag")], by = "UID")
   flaggedSamples <- dplyr::left_join(flaggedSamples, EDI[c("UID", "EDIvertflag")], by = "UID")
   if(returnAll == FALSE)
