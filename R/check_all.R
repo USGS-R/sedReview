@@ -82,7 +82,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   provisional <- find_provisional(x, view = FALSE)
   
   #Calculate sand and fines concentration
-  concSandFine <- calc_concSandFine(x, plotTime = FALSE, plotFlow = FALSE)
+  concSandFine <- calc_concSandFine(x)
   
   #Calculate summary statistics
   summaryStats <- calc_summaryStats(x)
