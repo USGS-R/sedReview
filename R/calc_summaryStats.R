@@ -31,10 +31,10 @@ calc_summaryStats <- function(x, pcodes = c("80154",
   #group by site, by pcode, by WY and calc stats
   temp <- dplyr::summarise(dplyr::group_by(statSamples,SITE_NO,STATION_NM,PARM_CD,PARM_NM,WY),
                            n = length(RESULT_VA),
-                           min = min(RESULT_VA),
-                           max = max(RESULT_VA),
-                           median = median(RESULT_VA),
-                           mean = mean(RESULT_VA),
+                           min = min(RESULT_VA, na.rm = T),
+                           max = max(RESULT_VA, na.rm = T),
+                           median = median(RESULT_VA, na.rm = T),
+                           mean = mean(RESULT_VA, na.rm = T),
                            stdev = sd(RESULT_VA, na.rm = T))
   temp$mean <- format(temp$mean, scientific = FALSE)
   
