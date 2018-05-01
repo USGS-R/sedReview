@@ -1,10 +1,10 @@
-#' calc_summaryStats. Calculate summary stats and tally non-detections and NA result values.
+#' calc_summaryStats. Calculate summary stats and tally non-detections and samples with no result values reported.
 #' @description Calculates summary statistics, and tallys non-detects and NA result values, grouped by site, parameter, and water year.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param pcodes A character vector of parameter codes of interest. Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
 #' @details Calculates number of samples, minimum, maximum, median, mean, and standard deviation (if applicable). Non-detects (REMARK_CD = "<") and Averages (REMARK_CD = "A") are not included in calculations.
-#' @details A count of the number of non-detect samples and samples where no result value (RESULT_VA = \code{NA}) is included in the summary. 
-#' Summary value "n" does not include non-detects or NA result samples.
+#' @details A count of the number of non-detect samples and samples where no result value was reported (RESULT_VA = \code{NA}) is included in the summary. 
+#' Summary value "n" does not include non-detects or no result reported samples.
 #' @details Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
 #' @details Rejected samples are not included.
 #' @examples
@@ -49,9 +49,9 @@ calc_summaryStats <- function(x, pcodes = c("80154",
   #count number of NA result samples and join to output
   naRes <- x[!(x$MEDIUM_CD == "OAQ") & x$PARM_CD %in% pcodes & is.na(x$RESULT_VA), ]
   naRes <- dplyr::summarise(dplyr::group_by(naRes,SITE_NO,PARM_CD,WY),
-                             NA_result_va = length(RESULT_VA))
+                             no_result_reported = length(RESULT_VA))
   temp <- dplyr::left_join(temp,naRes, by = c("SITE_NO"="SITE_NO","PARM_CD"="PARM_CD","WY"="WY"))
-  temp$NA_result_va[is.na(temp$NA_result_va)] <- 0
+  temp$no_result_reported[is.na(temp$no_result_reported)] <- 0
   
   return(temp)
   
