@@ -18,7 +18,8 @@
 #' @importFrom dplyr transmute
 #' @export
 #' @return A dataframe containing all samples with applicable flags
-#' @seealso \code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
+#' @seealso \code{\link[sedReview]{check_bagIE}},\code{\link[sedReview]{check_commentsNoResult}}, 
+#' \code{\link[sedReview]{check_missingQ}}, \code{\link[sedReview]{check_metaData}},
 #' \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, \code{\link[sedReview]{check_sedMass}}, 
 #' \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}, \code{\link[sedReview]{check_qaqcDB}}
 #' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}},
@@ -30,8 +31,12 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   #Bag IE
   bagIEFlags <- check_bagIE(x, returnAll = FALSE)
   
-  #has Q
-  hasQFlags <- check_missingQ(x, returnAll = FALSE)
+  #Comments and no results
+  comments <- check_commentsNoResult(x)
+  noResult <- comments[!is.na(comments$flag),] #for flag summary, not all comments mean there is a no result flag
+  
+  #missing Q
+  missingQFlags <- check_missingQ(x, returnAll = FALSE)
   
   #Coding and meta data
   metaDataFlags <- check_metaData(x, returnAll = FALSE)
@@ -96,7 +101,8 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   
   temp <- dplyr::summarize(dplyr::group_by(flaggedSamples,UID,PARM_CD),
                            bagIEFlags = ifelse(UID %in% bagIEFlags$UID,TRUE,FALSE),
-                           QFlags = ifelse(UID %in% hasQFlags$UID,TRUE,FALSE),
+                           noResultFlags = ifelse(UID %in% noResult$UID,TRUE,FALSE),
+                           QFlags = ifelse(UID %in% missingQFlags$UID,TRUE,FALSE),
                            metaDataFlags = ifelse(UID %in% metaDataFlags$UID,TRUE,FALSE),
                            samplePurpFlags = ifelse(UID %in% samplePurpFlags$UID,TRUE,FALSE),
                            samplerTypeFlags = ifelse(UID %in% samplerTypeFlags$UID,TRUE,FALSE),
@@ -104,7 +110,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                            tssFlags = ifelse(UID %in% tssFlags$UID,TRUE,FALSE),
                            verticalsFlags = ifelse(UID %in% verticalsFlags$UID,TRUE,FALSE),
                            qaqcFlags = ifelse(UID %in% qaqcFlags$UID,TRUE,FALSE),
-                           outliers = ifelse(UID %in% outliersUID,TRUE,FALSE)
+                           outliers = ifelse(UID %in% outliers$UID,TRUE,FALSE)
   )
   
   
@@ -113,6 +119,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   
   flaggedSamples <- dplyr::filter(flaggedSamples, 
                                   bagIEFlags == T | 
+                                    noResultFlags == T |
                                     QFlags == T | 
                                     metaDataFlags == T |
                                     samplePurpFlags == T |
@@ -130,6 +137,7 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
                             "SAMPLE_START_DT",
                             "MEDIUM_CD",
                             "bagIEFlags",
+                            "noResultFlags",
                             "QFlags",
                             "metaDataFlags",
                             "samplePurpFlags", 
@@ -149,7 +157,8 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   {
     return(list(flaggedSamples=flaggedSamples,
                 bagIEFlags = bagIEFlags,
-                hasQFlags = hasQFlags,
+                commentsNoResult = comments,
+                missingQFlags = missingQFlags,
                 metaDataFlags = metaDataFlags,
                 samplePurpFlags = samplePurpFlags,
                 samplerTypeFlags = samplerTypeFlags,
