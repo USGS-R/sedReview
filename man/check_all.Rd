@@ -32,7 +32,8 @@ view(allChecksList$flaggedSamples)
 }
 }
 \seealso{
-\code{\link[sedReview]{check_bagIE}}, \code{\link[sedReview]{check_hasQ}}, \code{\link[sedReview]{check_metaData}},
+\code{\link[sedReview]{check_bagIE}},\code{\link[sedReview]{check_commentsNoResult}}, 
+\code{\link[sedReview]{check_missingQ}}, \code{\link[sedReview]{check_metaData}},
 \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, \code{\link[sedReview]{check_sedMass}}, 
 \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}, \code{\link[sedReview]{check_qaqcDB}}
 \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}},
