@@ -17,14 +17,20 @@ Returns counts of samples by site, WY, sampling method, and sampler type.
 
 Returns total counts of SSC(P80154), Bedload(P80225), Bedload mass (P91145), and the following specifics:
 
-counts of SSC methode code (P82398) = 10, 20, or 60
+counts of SSC methode code (P82398)
 
-counts of SSC sampler type (P84164) = 3060, 3070, or 3071
+counts of SSC sampler type (P84164)
 
-counts of Bedload method code (P82398) = 1000, 1010, or 1020
+counts of Bedload method code (P82398)
+
+Note: Counts include rejected and no-results-reported samples. See \code{check_metaData}
+for samples missing method or sampler coding.
 }
 \examples{
 data("exampleData",package="sedReview")
 x <- exampleData
 count_methodsBySiteOut <- count_methodsBySite(x)
+}
+\seealso{
+\code{\link[sedReview]{check_metaData}}
 }

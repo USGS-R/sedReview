@@ -2,9 +2,11 @@
 #' 
 #' @description Returns counts of samples by site, WY, sampling method, and sampler type.
 #' @description Returns total counts of SSC(P80154), Bedload(P80225), Bedload mass (P91145), and the following specifics:
-#' @description counts of SSC methode code (P82398) = 10, 20, or 60
-#' @description counts of SSC sampler type (P84164) = 3060, 3070, or 3071
-#' @description counts of Bedload method code (P82398) = 1000, 1010, or 1020
+#' @description counts of SSC methode code (P82398)
+#' @description counts of SSC sampler type (P84164)
+#' @description counts of Bedload method code (P82398)
+#' @description Note: Counts include rejected and no-results-reported samples. See \code{check_metaData}
+#' for samples missing method or sampler coding.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @return A data.frame tabular summary of counts of samples by site, water year, and method
 #' @examples
@@ -15,7 +17,9 @@
 #' @importFrom dplyr ungroup
 #' @importFrom dplyr summarise
 #' @importFrom dplyr filter
+#' @importFrom reshape2 dcast
 #' @export
+#' @seealso \code{\link[sedReview]{check_metaData}}
 count_methodsBySite <- function(x) {
   
   #Get only required columns
@@ -47,26 +51,14 @@ count_methodsBySite <- function(x) {
   sscData <- sscData[sscData$PARM_CD == "82398",]
   
   ##summarize counts grouped by site
-  sumByMethod_SSC <- dplyr::summarise(dplyr::group_by(sscData,SITE_NO, WY),
-                           SSC_method_10 = length(RESULT_VA[RESULT_VA == 10]),
-                           SSC_method_20 = length(RESULT_VA[RESULT_VA == 20]),
-                           SSC_method_60 = length(RESULT_VA[RESULT_VA == 60])
-                           )
+  sumByMethod_SSC <- dplyr::summarise(dplyr::group_by(sscData,SITE_NO, WY, RESULT_VA),
+                                      n = length(RESULT_VA))
   
-  ##Check for no data and fill with NAs
-  if(nrow(sumByMethod_SSC) == 0) {
-    sumByMethod_SSC <- data.frame(SITE_NO = x$SITE_NO,
-                                  WY = x$WY,
-                                  SSC_method_10 = NA,
-                                  SSC_method_20 = NA,
-                                  SSC_method_60 = NA,
-                                  stringsAsFactors = F)
-    sumByMethod_SSC <- unique(sumByMethod_SSC[c("SITE_NO",
-                                                "WY",
-                                                "SSC_method_10",
-                                                "SSC_method_20",
-                                                "SSC_method_60")])
-  }
+  ##dast results for all methods by site and WY, rename columns
+  if(nrow(sumByMethod_SSC)>0){
+    sumByMethod_SSC <- reshape2::dcast(sumByMethod_SSC, SITE_NO + WY ~ RESULT_VA, value.var = 'n')
+    names(sumByMethod_SSC) <- paste("SSC_method", names(sumByMethod_SSC), sep = "_")
+  }else{warning("No SSC and Sample Method pairs")}
 
   ##########################
   #Summarize sampler type used for SSC
@@ -86,26 +78,14 @@ count_methodsBySite <- function(x) {
   sscData <- sscData[sscData$PARM_CD == "84164",]
   
   ##summarize counts grouped by site
-  sumBySampler_SSC <- dplyr::summarise(dplyr::group_by(sscData,SITE_NO, WY),
-                           SSC_sampler_3060 = length(RESULT_VA[RESULT_VA == 3060]),
-                           SSC_sampler_3070 = length(RESULT_VA[RESULT_VA == 3070]),
-                           SSC_sampler_3071 = length(RESULT_VA[RESULT_VA == 3071])
-  )
+  sumBySampler_SSC <- dplyr::summarise(dplyr::group_by(sscData,SITE_NO, WY, RESULT_VA),
+                                       n = length(RESULT_VA))
   
-  ##Check for no data and fill with NAs
-  if(nrow(sumBySampler_SSC) == 0) {
-    sumBySampler_SSC <- data.frame(SITE_NO = x$SITE_NO,
-                                   WY = x$WY,
-                                   SSC_sampler_3060 = NA,
-                                   SSC_sampler_3070 = NA,
-                                   SSC_sampler_3071 = NA,
-                                   stringsAsFactors = F)
-    sumBySampler_SSC <- unique(sumBySampler_SSC[c("SITE_NO",
-                                                  "WY",
-                                                  "SSC_sampler_3060",
-                                                  "SSC_sampler_3070",
-                                                  "SSC_sampler_3071")])
-  }
+  ##dast results for all methods by site and WY, rename columns
+  if(nrow(sumBySampler_SSC)>0){
+    sumBySampler_SSC <- reshape2::dcast(sumBySampler_SSC, SITE_NO + WY ~ RESULT_VA, value.var = 'n')
+    names(sumBySampler_SSC) <- paste("SSC_sampler", names(sumBySampler_SSC), sep = "_")
+  }else{warning("No SSC and Sampler Type pairs")}
   
   ##############################
   #Summarize methods used for bedload
@@ -115,8 +95,7 @@ count_methodsBySite <- function(x) {
   
   ##Group-wise filter of records that contain both SSC data (80225) AND a sampling method (82398)
   bedloadData <- dplyr::filter(dplyr::group_by(bedloadData,UID),
-                    all(c("80225","82398") %in% PARM_CD)
-  )
+                    all(c("80225","82398") %in% PARM_CD))
   
   ##Ungroup the data for full filter
   bedloadData <- dplyr::ungroup(bedloadData)
@@ -125,34 +104,26 @@ count_methodsBySite <- function(x) {
   bedloadData <- bedloadData[bedloadData$PARM_CD == "82398",]
   
   ##summarize counts grouped by site
-  sumByMethod_bedload <- dplyr::summarise(dplyr::group_by(bedloadData,SITE_NO, WY),
-                           bedload_method_1000 = length(RESULT_VA[RESULT_VA == 1000]),
-                           bedload_method_1010 = length(RESULT_VA[RESULT_VA == 1010]),
-                           bedload_method_1020 = length(RESULT_VA[RESULT_VA == 1020])
-  )
+  sumByMethod_bedload <- dplyr::summarise(dplyr::group_by(bedloadData,SITE_NO, WY, RESULT_VA),
+                                          n = length(RESULT_VA))
   
-  ##Check for no data and fill with NAs
-  if(nrow(sumByMethod_bedload) == 0) {
-    sumByMethod_bedload <- data.frame(SITE_NO = x$SITE_NO,
-                                      WY = x$WY,
-                                      bedload_method_1000 = NA,
-                                      bedload_method_1010 = NA,
-                                      bedload_method_1020 = NA,
-                                      stringsAsFactors = F)
-    sumByMethod_bedload <- unique(sumByMethod_bedload[c("SITE_NO",
-                                                        "WY",
-                                                        "bedload_method_1000",
-                                                        "bedload_method_1010",
-                                                        "bedload_method_1020")])
-    }
-  
+  ##dast results for all methods by site and WY, rename columns
+  if(nrow(sumByMethod_bedload)>0){
+    sumByMethod_bedload <- reshape2::dcast(sumByMethod_bedload, SITE_NO + WY ~ RESULT_VA, value.var = 'n')
+    names(sumByMethod_bedload) <- paste("bedload_method", names(sumByMethod_bedload), sep = "_")
+  }else{
+    warning("No bedload and Sample Method pairs")
+    sumByMethod_bedload <- NULL}
   
   ###########################
   #Join all summaries together by site
-  
-  sumOut <- dplyr::left_join(sumBySite,sumByMethod_SSC,by=c("SITE_NO"="SITE_NO", "WY"="WY"))
-  sumOut <- dplyr::left_join(sumOut,sumBySampler_SSC,by=c("SITE_NO"="SITE_NO", "WY"="WY"))
-  sumOut <- dplyr::left_join(sumOut,sumByMethod_bedload,by=c("SITE_NO"="SITE_NO", "WY"="WY"))
+  sumOut <- sumBySite
+  if(!is.null(sumByMethod_SSC)){
+    sumOut <- dplyr::left_join(sumOut,sumByMethod_SSC,by=c("SITE_NO"="SSC_method_SITE_NO", "WY"="SSC_method_WY"))}
+  if(!is.null(sumBySampler_SSC)){
+    sumOut <- dplyr::left_join(sumOut,sumBySampler_SSC,by=c("SITE_NO"="SSC_sampler_SITE_NO", "WY"="SSC_sampler_WY"))}
+  if(!is.null(sumByMethod_bedload)){
+    sumOut <- dplyr::left_join(sumOut,sumByMethod_bedload,by=c("SITE_NO"="SITE_NO", "WY"="WY"))}
   
   #Replace NAs with 0
   sumOut[is.na(sumOut)] <- 0
