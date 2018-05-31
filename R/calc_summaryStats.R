@@ -3,9 +3,10 @@
 #' and water year (or user-defined calendar year period).
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param pcodes A character vector of parameter codes of interest. 
+#' Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), 
+#' Bedload (80225), Bedload mass (91145)
 #' @param startMonth Numeric starting month (ex. 1 for January) for user-defined calendar year periods. Default is NULL.
 #' @param endMonth Numeric ending month (ex. 12 for December) for user-defined calendar year periods. Default is NULL. 
-#' Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
 #' @details Calculates number of samples, minimum, maximum, median, mean, and standard deviation (if applicable). 
 #' Non-detects (REMARK_CD = "<") and Averages (REMARK_CD = "A") are not included in calculations. Rejected samples are not included.
 #' @details A count of the number of non-detect samples and samples where no result value was reported (RESULT_VA = \code{NA})
@@ -16,8 +17,9 @@
 #' @details User-defined calendar year. If \code{startMonth} and \code{endMonth} are specified, statistics and counts 
 #' will be limited to calendar year samples within the months specified. Ex. If \code{startMonth = 9} and \code{endMonth = 11},
 #' only samples from September to November will be included in summary stats and counts, and they will be grouped by calendar year.
-#' @details Sample method groups. Cross section (X-section) is defined as sample method 10 (EWI), 15 (EWT), or 20 (EDI).
-#' Point or non-cross section (Pt/non-X-section) is defined as sample method 30 (single vertical), 40 (multiple verticals), 
+#' @details Sample method groups. Cross section (X-section) is defined as sample method 10 (EWI), 15 (EWT), or 
+#' 20 (EDI), 40 (multiple verticals).
+#' Point or non-cross section (Pt/non-X-section) is defined as sample method 30 (single vertical), 
 #' 50 (point sample), 55 (composite - multiple point samples), 60 (weighted bottle), 70 (grab sample - dip), 100 (Van Dorn), 
 #' 900 (SS pumping), 920 (SS BSV DI att), 930 (SS partial depth), 940 (SS partial width), 
 #' 4033 (suction lift peristaltic), 4080 (peristaltic pump). Samples with missing or other coded method are grouped together.
@@ -42,8 +44,8 @@ calc_summaryStats <- function(x, pcodes = c("80154",
   x <- x[!(x$DQI %in% c("Q","X")),]
   
   # identify xsection and non-xsection samples
-  xsection <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% c(10,15,20),]
-  nonxsection <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% c(30,40,50,55,60,70,100,900,920,930,940,4033,4080),]
+  xsection <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% c(10,15,20,40),]
+  nonxsection <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% c(30,50,55,60,70,100,900,920,930,940,4033,4080),]
   
   x$xsection[x$UID %in% xsection$UID] <- "X-Section"
   x$xsection[x$UID %in% nonxsection$UID] <- "Pt/non-X-section"

@@ -10,12 +10,13 @@ calc_summaryStats(x, pcodes = c("80154", "70331", "00530", "80155", "80225",
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
-\item{pcodes}{A character vector of parameter codes of interest.}
+\item{pcodes}{A character vector of parameter codes of interest. 
+Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), 
+Bedload (80225), Bedload mass (91145)}
 
 \item{startMonth}{Numeric starting month (ex. 1 for January) for user-defined calendar year periods. Default is NULL.}
 
-\item{endMonth}{Numeric ending month (ex. 12 for December) for user-defined calendar year periods. Default is NULL. 
-Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)}
+\item{endMonth}{Numeric ending month (ex. 12 for December) for user-defined calendar year periods. Default is NULL.}
 }
 \value{
 A dataframe of summary statistics
@@ -40,8 +41,9 @@ User-defined calendar year. If \code{startMonth} and \code{endMonth} are specifi
 will be limited to calendar year samples within the months specified. Ex. If \code{startMonth = 9} and \code{endMonth = 11},
 only samples from September to November will be included in summary stats and counts, and they will be grouped by calendar year.
 
-Sample method groups. Cross section (X-section) is defined as sample method 10 (EWI), 15 (EWT), or 20 (EDI).
-Point or non-cross section (Pt/non-X-section) is defined as sample method 30 (single vertical), 40 (multiple verticals), 
+Sample method groups. Cross section (X-section) is defined as sample method 10 (EWI), 15 (EWT), or 
+20 (EDI), 40 (multiple verticals).
+Point or non-cross section (Pt/non-X-section) is defined as sample method 30 (single vertical), 
 50 (point sample), 55 (composite - multiple point samples), 60 (weighted bottle), 70 (grab sample - dip), 100 (Van Dorn), 
 900 (SS pumping), 920 (SS BSV DI att), 930 (SS partial depth), 940 (SS partial width), 
 4033 (suction lift peristaltic), 4080 (peristaltic pump). Samples with missing or other coded method are grouped together.
