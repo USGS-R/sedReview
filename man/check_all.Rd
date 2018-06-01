@@ -4,12 +4,15 @@
 \alias{check_all}
 \title{check_all. Run all project level review checks, counts, finds, and calcs on a dataset.}
 \usage{
-check_all(x, qa.db = "02", returnAllTables = FALSE)
+check_all(x, qa.db = "02", includeUV = FALSE, returnAllTables = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
 \item{qa.db}{A character string containing the database number of QA samples (for check_qaqcDB function), should be same QA DB used in \code{get_localNWIS}}
+
+\item{includeUV}{Logical. If \code{x} was returned from \code{get_UVflow}. 
+Run optional flagging in \code{check_Q}.}
 
 \item{returnAllTables}{Return all tables of flagged results}
 }
@@ -33,7 +36,7 @@ view(allChecksList$flaggedSamples)
 }
 \seealso{
 \code{\link[sedReview]{check_bagIE}},\code{\link[sedReview]{check_commentsNoResult}}, 
-\code{\link[sedReview]{check_missingQ}}, \code{\link[sedReview]{check_metaData}},
+\code{\link[sedReview]{check_Q}}, \code{\link[sedReview]{check_metaData}},
 \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, \code{\link[sedReview]{check_sedMass}}, 
 \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}, \code{\link[sedReview]{check_qaqcDB}}
 \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}},

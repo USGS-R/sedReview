@@ -2,11 +2,11 @@
 
 export(calc_concSandFine)
 export(calc_summaryStats)
+export(check_Q)
 export(check_all)
 export(check_bagIE)
 export(check_commentsNoResult)
 export(check_metaData)
-export(check_missingQ)
 export(check_qaqcDB)
 export(check_samplePurp)
 export(check_samplerType)
