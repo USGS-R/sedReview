@@ -7,7 +7,7 @@ test_that("Return values check", {
   # saveRDS(check_allOut, "tests/testthat/data/check_allOut.rds")
   # 
   # check_allOut <- readRDS("tests/testthat/data/check_allOut.rds")
-  
+
   check_allOut <- readRDS("data/check_allOut.rds")
   check_allOutTest <- check_all(exampleData, returnAllTables = TRUE)
   expect_equal(check_allOut, check_allOutTest)
