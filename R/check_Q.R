@@ -1,7 +1,7 @@
 #' check_Q. Searches for samples that were collected for sediment data but are missing discharge measurements
 #' 
 #' @description Searches for samples that were collected for sediment data but are missing discharge measurements.
-#' Additional options flag Instantaneous Discharge (P00061) in NWIS that are >10% different from Approved Unit Value discharge.
+#' Additional option flags Instantaneous Discharge (P00061) in NWIS that are >10\% different from Approved Unit Value discharge.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param includeUV Logical. If \code{x} was returned from \code{get_UVflow}. 
 #' Run optional flagging for records with P00061 >10\% different from Approved UV flow. Default is \code{FALSE}.
