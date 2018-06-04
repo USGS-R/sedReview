@@ -15,7 +15,7 @@ count_sampleStatus(x, bySite = TRUE)
 A data.frame tabular summary of counts of sample status (DQI_CD) by parameter
 }
 \description{
-Returns counts of sample status (DQI_CD) by parameter for each site or for multiple sites together
+Returns counts of sample status (DQI_CD) by parameter for each site/WY or for multiple sites together
 }
 \examples{
 data("exampleData",package="sedReview")

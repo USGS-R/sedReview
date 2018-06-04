@@ -2,9 +2,12 @@
 % Please edit documentation in R/find_boxcoef.R
 \name{find_boxcoef}
 \alias{find_boxcoef}
-\title{find_boxcoef. Find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.}
+\title{find_boxcoef. Find box coefficient pairs between SSC non-cross section/point samples and 
+SSC cross section samples at a site.}
 \usage{
-find_boxcoef(x, site_no = NULL, timediff = 1)
+find_boxcoef(x, site_no = NULL, timediff = 1, methods_NX = c(30, 40, 50,
+  55, 70, 100, 900, 920, 930, 940, 4033, 4080), methods_X = c(10, 15, 20),
+  includeUV = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
@@ -12,7 +15,20 @@ find_boxcoef(x, site_no = NULL, timediff = 1)
 \item{site_no}{Character of a site number in the x \code{dataframe} from \code{get_localNWIS} if x contains more than one site. Default is NULL.}
 
 \item{timediff}{Number of hours to look before and after a point sample for a paired cross-section sample.
-Default is 1 (ie. look for a paired sample 1 hour before and 1 hour after a point sample timestamp)}
+Default is 1 (ie. look for a paired samples 1 hour before and 1 hour after a non-cross section/point sample timestamp)}
+
+\item{methods_NX}{Vector of Sampling Method (P82398) values that define non-cross section/point samples of the box coefficient.
+Default is:\cr\cr methods_NX = c(30,40,50,55,70,100,900,920,930,940,4033,4080)\cr\cr 
+30 (single vertical), 40 (multiple verticals), 50 (point sample), 55 (composite - multiple point samples), 
+60 (weighted bottle), 70 (grab sample - dip), 100 (Van Dorn), 900 (SS pumping), 
+920 (SS BSV DI att), 930 (SS partial depth), 940 (SS partial width), 4033 (suction lift peristaltic), 4080 (peristaltic pump).}
+
+\item{methods_X}{Vector of Sampling Method (P82398) values that define cross section samples of the box coefficient.
+Default is:\cr\cr methods_X = c(10,15,20)\cr\cr
+10 (EWI), 15 (multiple verticals non-isokinetic EWT), or 20 (EDI).}
+
+\item{includeUV}{Logical. If \code{x} was returned from \code{get_UVflow}, 
+run optional addition of available Approved Unit Value discharge to output table. Default is \code{FALSE}.}
 }
 \value{
 A dataframe containing sample pairs with SSC result values of point and cross-section sample, with date/time stamps.
@@ -21,13 +37,13 @@ A dataframe containing sample pairs with SSC result values of point and cross-se
 Function to find box coefficient pairs between SSC point samples (pumped or grab) and SSC cross-section samples (EWI,EDI,EWT) at a site.
 }
 \details{
-Returns a dataframe of paired samples and calculated box coefficient at given site_no for SSC (P80154). A summary count of all box coefficient pairs for all sites in
+Returns a dataframe of paired samples, flow values, and calculated box coefficient at given site_no for SSC (P80154). 
+A summary count of all box coefficient pairs for all sites in
 \code{x} can be found using the related function \code{summary_boxcoef}.
 
-Point samples are defined as samples where sampling method (P82398) is 30 (single vertical), 50 (point sample), 900 (SS pumping),
-or 920 (SS BSV DI att strctr). Or samples where sampler type (P84164) is 3070 (grab sample) or 4115 (auto-sampler).
-
-Cross-section samples are defined as samples where sampling method (P82398) is 10 (EWI), 15 (multiple verticals EWT), or 20 (EDI)
+The function finds non-cross section/point samples defined by \code{methods_NX} and all possible cross section pairs
+within the time window (ex. a grab sample and 2 EWI passes (A and B passes) would yield 2 pairs. It is up to the user to
+determine which box coefficients to utilize based on timing, flow conditions, and other considerations.
 
 Rejected samples are not included.
 }
@@ -43,5 +59,5 @@ boxcoef_05586300 <- find_boxcoef(x, site_no = "05586300")
 boxcoef_06934500 <- find_boxcoef(x, site_no = "06934500", timediff = 2)
 }
 \seealso{
-\code{\link[sedReview]{get_localNWIS}}, \code{\link[sedReview]{summary_boxcoef}}
+\code{\link[sedReview]{get_localNWIS}}, \code{\link[sedReview]{get_UVflow}}, \code{\link[sedReview]{summary_boxcoef}}
 }

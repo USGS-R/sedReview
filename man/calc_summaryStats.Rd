@@ -5,28 +5,48 @@
 \title{calc_summaryStats. Calculate summary stats and tally non-detections and samples with no result values reported.}
 \usage{
 calc_summaryStats(x, pcodes = c("80154", "70331", "00530", "80155", "80225",
-  "91145"))
+  "91145"), startMonth = NULL, endMonth = NULL)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
-\item{pcodes}{A character vector of parameter codes of interest. Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)}
+\item{pcodes}{A character vector of parameter codes of interest. 
+Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), 
+Bedload (80225), Bedload mass (91145)}
+
+\item{startMonth}{Numeric starting month (ex. 1 for January) for user-defined calendar year periods. Default is NULL.}
+
+\item{endMonth}{Numeric ending month (ex. 12 for December) for user-defined calendar year periods. Default is NULL.}
 }
 \value{
 A dataframe of summary statistics
 }
 \description{
-Calculates summary statistics, and tallys non-detects and NA result values, grouped by site, parameter, and water year.
+Calculates summary statistics, and tallys non-detects and NA result values, grouped by site, parameter, 
+and water year (or user-defined calendar year period).
 }
 \details{
-Calculates number of samples, minimum, maximum, median, mean, and standard deviation (if applicable). Non-detects (REMARK_CD = "<") and Averages (REMARK_CD = "A") are not included in calculations.
+Calculates number of samples, minimum, maximum, median, mean, and standard deviation (if applicable). 
+Non-detects (REMARK_CD = "<") and Averages (REMARK_CD = "A") are not included in calculations. Rejected samples are not included.
 
-A count of the number of non-detect samples and samples where no result value was reported (RESULT_VA = \code{NA}) is included in the summary. 
-Summary value "n" does not include non-detects or no result reported samples.
+A count of the number of non-detect samples and samples where no result value was reported (RESULT_VA = \code{NA})
+ is included in the summary. Summary value "n" does not include non-detects or no result reported samples.
 
-Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), Bedload (80225), Bedload mass (91145)
+Default pcodes are SSC (80154), Sand/silt break on suspended (70331), TSS (00530), SSL (80155), 
+Bedload (80225), Bedload mass (91145)
 
-Rejected samples are not included.
+Statistics are separated by site, parameter, year (WY or user defined CY), and sample method group.
+
+User-defined calendar year. If \code{startMonth} and \code{endMonth} are specified, statistics and counts 
+will be limited to calendar year samples within the months specified. Ex. If \code{startMonth = 9} and \code{endMonth = 11},
+only samples from September to November will be included in summary stats and counts, and they will be grouped by calendar year.
+
+Sample method groups. Cross section (X-section) is defined as sample method 10 (EWI), 15 (EWT), or 
+20 (EDI), 40 (multiple verticals).
+Point or non-cross section (Pt/non-X-section) is defined as sample method 30 (single vertical), 
+50 (point sample), 55 (composite - multiple point samples), 60 (weighted bottle), 70 (grab sample - dip), 100 (Van Dorn), 
+900 (SS pumping), 920 (SS BSV DI att), 930 (SS partial depth), 940 (SS partial width), 
+4033 (suction lift peristaltic), 4080 (peristaltic pump). Samples with missing or other coded method are grouped together.
 }
 \examples{
 data('exampleData', package = "sedReview")

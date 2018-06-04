@@ -2,6 +2,8 @@
 #' @description Function to run all project level review checks, counts, finds, and calcs on a dataset.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param qa.db A character string containing the database number of QA samples (for check_qaqcDB function), should be same QA DB used in \code{get_localNWIS}
+#' @param includeUV Logical. If \code{x} was returned from \code{get_UVflow}. 
+#' Run optional flagging in \code{check_Q}.
 #' @param returnAllTables Return all tables of flagged results
 #' @details Runs all check_, count_, and find_ functions and outputs a summary dataframe of flagged samples or a list of all flag results if \code{returnAllTables = TRUE}
 #' @examples 
@@ -19,14 +21,14 @@
 #' @export
 #' @return A dataframe containing all samples with applicable flags
 #' @seealso \code{\link[sedReview]{check_bagIE}},\code{\link[sedReview]{check_commentsNoResult}}, 
-#' \code{\link[sedReview]{check_missingQ}}, \code{\link[sedReview]{check_metaData}},
+#' \code{\link[sedReview]{check_Q}}, \code{\link[sedReview]{check_metaData}},
 #' \code{\link[sedReview]{check_samplePurp}}, \code{\link[sedReview]{check_samplerType}}, \code{\link[sedReview]{check_sedMass}}, 
 #' \code{\link[sedReview]{check_tss}}, \code{\link[sedReview]{check_verticals}}, \code{\link[sedReview]{check_qaqcDB}}
 #' \code{\link[sedReview]{count_methodsBySite}}, \code{\link[sedReview]{count_sampleStatus}},
 #' \code{\link[sedReview]{find_boxcoef}} \code{\link[sedReview]{find_outliers}},
 #' \code{\link[sedReview]{find_provisional}}, \code{\link[sedReview]{calc_concSandFine}}, \code{\link[sedReview]{calc_summaryStats}}
 
-check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
+check_all <- function(x, qa.db = "02", includeUV = FALSE, returnAllTables = FALSE)
 {
   #Bag IE
   bagIEFlags <- check_bagIE(x, returnAll = FALSE)
@@ -36,7 +38,10 @@ check_all <- function(x, qa.db = "02", returnAllTables = FALSE)
   noResult <- comments[!is.na(comments$flag),] #for flag summary, not all comments mean there is a no result flag
   
   #missing Q
-  missingQFlags <- check_missingQ(x, returnAll = FALSE)
+  if(includeUV == TRUE){
+    missingQFlags <- check_Q(x, includeUV = TRUE, returnAll = FALSE)
+  }else{missingQFlags <- check_Q(x, includeUV = FALSE, returnAll = FALSE)}
+  
   
   #Coding and meta data
   metaDataFlags <- check_metaData(x, returnAll = FALSE)
