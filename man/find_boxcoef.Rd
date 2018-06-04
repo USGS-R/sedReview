@@ -18,12 +18,14 @@ find_boxcoef(x, site_no = NULL, timediff = 1, methods_NX = c(30, 40, 50,
 Default is 1 (ie. look for a paired samples 1 hour before and 1 hour after a non-cross section/point sample timestamp)}
 
 \item{methods_NX}{Vector of Sampling Method (P82398) values that define non-cross section/point samples of the box coefficient.
-Default is 30 (single vertical), 40 (multiple verticals), 50 (point sample), 55 (composite - multiple point samples), 
+Default is:\cr\cr methods_NX = c(30,40,50,55,70,100,900,920,930,940,4033,4080)\cr\cr 
+30 (single vertical), 40 (multiple verticals), 50 (point sample), 55 (composite - multiple point samples), 
 60 (weighted bottle), 70 (grab sample - dip), 100 (Van Dorn), 900 (SS pumping), 
 920 (SS BSV DI att), 930 (SS partial depth), 940 (SS partial width), 4033 (suction lift peristaltic), 4080 (peristaltic pump).}
 
 \item{methods_X}{Vector of Sampling Method (P82398) values that define cross section samples of the box coefficient.
-Default is 10 (EWI), 15 (multiple verticals non-isokinetic EWT), or 20 (EDI).}
+Default is:\cr\cr methods_X = c(10,15,20)\cr\cr
+10 (EWI), 15 (multiple verticals non-isokinetic EWT), or 20 (EDI).}
 
 \item{includeUV}{Logical. If \code{x} was returned from \code{get_UVflow}, 
 run optional addition of available Approved Unit Value discharge to output table. Default is \code{FALSE}.}
