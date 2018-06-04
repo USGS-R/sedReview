@@ -17,7 +17,7 @@ A dataframe containing all data originally in dataframe \code{x},
 with available Approved Unit Value discharge appended from NWISweb.
 }
 \description{
-Joins UV flow data from NWISweb to SED data from local NWIS database. Note this function can take a while to run.
+Joins UV flow data from NWISweb to SED data from local NWIS database. Note this function can take several minutes to run.
 }
 \details{
 This function utilizes the \code{dataRetrieval::readSWISuv} to pull Approved unit value discharge values from NWISweb
@@ -27,7 +27,7 @@ Options utlizing the UV flow are contained in the \code{check_Q} and \code{find_
 
 NOTE: the \code{dataRetrieval::readWISuv} utilizes all sites and the maximum date range in 
 dataframe \code{x} from \code{get_localNWIS}.
-Large numbers of sites or long date ranges can take several minutes to complete.
+Large numbers of sites or long date ranges can take several minutes to complete (ex. 4 sites and 2 WY completed in 2.5 minutes)
 
 The format for \code{max.diff} should be a numeric value followed by a description of the time span.
 The time span must be one of "secs", "mins", "hours", "days", or "weeks" for seconds, minutes, hours, days, or weeks, respectively.

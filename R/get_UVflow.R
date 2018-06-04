@@ -1,5 +1,5 @@
 #' get_UVflow. Joins UV flow data from NWISweb to SED data from local NWIS database.
-#' @description Joins UV flow data from NWISweb to SED data from local NWIS database. Note this function can take a while to run.
+#' @description Joins UV flow data from NWISweb to SED data from local NWIS database. Note this function can take several minutes to run.
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param max.diff the maximum allowable difference in time for a match. See \bold{Details}.
 #' Default is "1 hour" (ie. look for a paired UV 1 hour before and 1 hour after a SED sample timestamp)
@@ -8,7 +8,7 @@
 #' @details Options utlizing the UV flow are contained in the \code{check_Q} and \code{find_boxcoef} functions.
 #' @details NOTE: the \code{dataRetrieval::readWISuv} utilizes all sites and the maximum date range in 
 #' dataframe \code{x} from \code{get_localNWIS}.
-#' Large numbers of sites or long date ranges can take several minutes to complete.
+#' Large numbers of sites or long date ranges can take several minutes to complete (ex. 4 sites and 2 WY completed in 2.5 minutes)
 #' @details The format for \code{max.diff} should be a numeric value followed by a description of the time span.
 #' The time span must be one of "secs", "mins", "hours", "days", or "weeks" for seconds, minutes, hours, days, or weeks, respectively.
 #' @details The merge of data by time borrows code from \code{smwr::Base}, but the package is not a dependency.
