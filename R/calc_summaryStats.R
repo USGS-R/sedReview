@@ -62,6 +62,8 @@ calc_summaryStats <- function(x, pcodes = c("80154",
       stop("Start Month must be less than End Month")
     }
   }
+  if(!is.null(startMonth) & is.null(endMonth)){warning("endMonth not set, reverting to stats by WY")}
+  if(is.null(startMonth) & !is.null(endMonth)){warning("startMonth not set, reverting to stats by WY")}
 
   
   #limit data to pcodes of interest, no blanks, and no non-detect or averages, and no samples where no result value reported
