@@ -19,7 +19,7 @@ A data.frame of samples, what sediment data are available, and then a flag for m
 }
 \description{
 Searches for samples that were collected for sediment data but are missing discharge measurements.
-Additional options flag Instantaneous Discharge (P00061) in NWIS that are >10% different from Approved Unit Value discharge.
+Additional option flags Instantaneous Discharge (P00061) in NWIS that are >10\% different from Approved Unit Value discharge.
 }
 \examples{
 data("exampleData",package="sedReview")

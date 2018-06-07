@@ -7,7 +7,7 @@ Pulls data from NWIS internal servers using ODBC connection and returns a longta
 \usage{
 get_localNWIS(DSN, env.db = "01", qa.db = "02", STAIDS, begin.date = NA,
   end.date = NA, projectCd = NULL, resultAsText = FALSE,
-  rejected = FALSE)
+  approval = "All")
 }
 \arguments{
 \item{DSN}{A character string containing the DSN for your local server}
@@ -25,6 +25,11 @@ get_localNWIS(DSN, env.db = "01", qa.db = "02", STAIDS, begin.date = NA,
 \item{projectCd}{Character vector containing project codes to subset data by.}
 
 \item{resultAsText}{Output results as character instead of numeric. Used for literal output of results from NWIS that are no affected by class coerrcion, such as dropping zeros after decimal point. Default is False.}
+
+\item{approval}{A character string indicating which DQI samples to pull.\cr
+Default is 'All', which includes approved, rejected, and in-review samples.\cr Other options are:\cr
+"Rejected" which pulls only samples with DQI = "Q","X", or "U".\cr 
+"Non-rejected" which includes any historical, approved, provisional, and in-review samples.}
 }
 \value{
 Returns a dataframe of samples. 
@@ -64,6 +69,7 @@ qw.data <- get_localNWIS(DSN="NWISCO",
                              begin.date = "2005-01-01",
                              end.date = "2015-10-27",
                              projectCd = NULL,
-                             resultAsText = FALSE)
+                             resultAsText = FALSE,
+                             approval = 'All')
 }
 }
