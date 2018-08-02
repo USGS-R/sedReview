@@ -172,6 +172,9 @@ count_activeSed <- function(DSN,
                             SandSilt_70331 = length(RECORD_NO[PARM_CD == "70331"]),
                             TSS_00530 = length(RECORD_NO[PARM_CD == "00530"]),
                             bedload_80225 = length(RECORD_NO[PARM_CD == "80225"]))
+  ###Remove trailing spaces on site IDs
+  
+  Table$SITE_NO <- gsub(" ","",Table$SITE_NO)
   
   return(Table)
 }
