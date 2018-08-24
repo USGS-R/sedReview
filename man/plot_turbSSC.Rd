@@ -4,13 +4,13 @@
 \alias{plot_turbSSC}
 \title{plot_turbSSC. Create plots of sediment vs. turbidity.}
 \usage{
-plot_turbSSC(x, log.P80154 = FALSE, log.turb = FALSE, siteSelect = NULL,
+plot_turbSSC(x, log.SSC = FALSE, log.turb = FALSE, siteSelect = NULL,
   PDFout = NULL)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
-\item{log.P80154}{Logical, if \code{TRUE}, SSC y axis will be log10. Default is \code{FALSE}.}
+\item{log.SSC}{Logical, if \code{TRUE}, SSC y axis will be log10. Default is \code{FALSE}.}
 
 \item{log.turb}{Logical, if \code{TRUE}, Turbidity parameter x axis will be log10. Default is \code{FALSE}.}
 
