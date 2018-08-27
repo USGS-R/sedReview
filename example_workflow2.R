@@ -242,7 +242,8 @@ sedMass2 <- check_sedMass(centerData)
 
 # get summary of boxcoefficient pairs at all the sites
 # This helps determine how often the WSC performs a comparison between pumped samples and cross section (EWI/EDI) samples, to evaluate the representativeness of the pumped sampler intake location. Reports the number of paired samples collected, grouped by site and water year. 
-boxcoefSum <- summary_boxcoef(centerData)
+boxcoefSum1 <- summary_boxcoef(centerData)
+boxcoefSum3 <- summary_boxcoef(centerData, timediff = 3)
 #### you can also output the boxcoefficient summary and the data for all sites as an R list. Access list elements using $ operator
 boxcoefSum_all <- summary_boxcoef(centerData, returnAllTables = TRUE)
 fountain_boxcoef <- boxcoefSum_all$`07106300`
