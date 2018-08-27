@@ -5,8 +5,8 @@
 \title{plot_sedTS. Create timeseries plots for sediment parameters.}
 \usage{
 plot_sedTS(x, log.P80154 = FALSE, log.P70331 = FALSE, log.P80155 = FALSE,
-  log.P80225 = FALSE, log.P91145 = FALSE, siteSelect = NULL,
-  PDFout = NULL)
+  log.P80225 = FALSE, log.P91145 = FALSE, log.P00530 = FALSE,
+  siteSelect = NULL, PDFout = NULL)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
@@ -21,6 +21,8 @@ plot_sedTS(x, log.P80154 = FALSE, log.P70331 = FALSE, log.P80155 = FALSE,
 
 \item{log.P91145}{Logical, if \code{TRUE}, bedload mass y axis will be log10. Default is \code{FALSE}.}
 
+\item{log.P00530}{Logical, if \code{TRUE}, TSS y axis will be log10. Default is \code{FALSE}.}
+
 \item{siteSelect}{Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.}
 
 \item{PDFout}{Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.}
@@ -32,7 +34,7 @@ If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} speci
 Function to output timeseries plots for sediment parameters. Output is a list of plots or write to PDF.
 }
 \details{
-Timeseries plots of SSC (P80154), sand/silt break (P70331), SSL (P80155), bedload (P80255) and bedload mass (P91145).
+Timeseries plots of SSC (P80154), sand/silt break (P70331), SSL (P80155), bedload (P80255), bedload mass (P91145) and TSS (P00530).
 Not all parameters need to be present in \code{x} for plots to be created (eg. if only SSC present than only SSC timeseries plot returned)
 
 If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are specified above. See example for more details.

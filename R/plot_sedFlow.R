@@ -5,10 +5,11 @@
 #' @param log.P80154 Logical, if \code{TRUE}, SSC y axis will be log10. Default is \code{FALSE}.
 #' @param log.P70331 Logical, if \code{TRUE}, sand/silt break y axis will be log10. Default is \code{FALSE}.
 #' @param log.P80225 Logical, if \code{TRUE}, bedload y axis will be log10. Default is \code{FALSE}.
+#' @param log.P00530 Logical, if \code{TRUE}, TSS y axis will be log10. Default is \code{FALSE}
 #' @param log.Q Logical, if \code{TRUE}, flow x axis will be log10 for all parameters present. Default is \code{FALSE}.
 #' @param siteSelect Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.
 #' @param PDFout Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.
-#' @details Scatterplots of SSC (P80154), sand/silt break (P70331), bedload (P80225) vs. flow (all discharge reported or converted to cfs).
+#' @details Scatterplots of SSC (P80154), sand/silt break (P70331), bedload (P80225), TSS (P00530) vs. flow (all discharge reported or converted to cfs).
 #' Not all parameters need to be present in \code{x} for plots to be created (eg. if only SSC present than only SSC vs. flow plot returned)  
 #' @details If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are specified above. See example for more details.
 #' @examples 
@@ -32,6 +33,7 @@ plot_sedFlow <- function(x,
                          log.P80154 = FALSE,
                          log.P70331 = FALSE,
                          log.P80225 = FALSE,
+                         log.P00530 = FALSE,
                          log.Q = FALSE,
                          siteSelect = NULL,
                          PDFout = NULL){
@@ -51,7 +53,7 @@ plot_sedFlow <- function(x,
   qRecords <- unique(qRecords[c("UID", "RESULT_VA")])
   
   # sediment pcodes to plot
-  pcodes <- c('80154','70331','80225')
+  pcodes <- c('80154','70331','80225','00530')
   
   # subset data to site
   if(is.null(siteSelect)){
@@ -62,16 +64,18 @@ plot_sedFlow <- function(x,
   if(length(unique(x$SITE_NO)) > 1){
     stop("More than one site in input dataframe x. Subset data to one site_no with siteSelect.")
   }
-  
+  title <- paste(unique(x$SITE_NO),"\n",unique(x$STATION_NM))
   # SSC plot
-  plotData1 <- x[x$PARM_CD %in% c('80154') & !(x$MEDIUM_CD == 'OAQ'),c("UID","PARM_CD","PARM_NM","RESULT_VA")]
+  plotData1 <- x[x$PARM_CD %in% c('80154') & !(x$MEDIUM_CD == 'OAQ'),c("UID","PARM_CD","PARM_NM","PARM_DS","RESULT_VA")]
   plotData1 <- dplyr::left_join(plotData1, qRecords, by = "UID")
   plotData1 <- plotData1[!(is.na(plotData1$RESULT_VA.y)),]
-  if(nrow(plotData1) == 0){warning("No SSC data to plot")
+  if(nrow(plotData1) == 0){warning("No SSC and flow data to plot")
   }else{
     p1 <- ggplot(data = plotData1, aes(x=RESULT_VA.y, y=RESULT_VA.x))
-    p1 <- p1 + geom_point() + 
-      xlab("Discharge (cfs)") + ylab("SSC_80154 (mg/L)")
+    p1 <- p1 + geom_point(size = 3, color = 'blue') + 
+      xlab("Discharge (cfs)") + ylab("SSC_80154 (mg/L)") + theme_bw() + 
+      labs(caption = paste(unique(plotData1$PARM_CD),unique(plotData1$PARM_DS))) + 
+      labs(title = title)
     if(log.P80154 == TRUE){
       p1 <- p1 + scale_y_log10()
     }
@@ -81,14 +85,16 @@ plot_sedFlow <- function(x,
   }
   
   # Sand/Silt break plot
-  plotData2 <- x[x$PARM_CD %in% c('70331') & !(x$MEDIUM_CD == 'OAQ'),c("UID","PARM_CD","PARM_NM","RESULT_VA")]
+  plotData2 <- x[x$PARM_CD %in% c('70331') & !(x$MEDIUM_CD == 'OAQ'),c("UID","PARM_CD","PARM_NM","PARM_DS","RESULT_VA")]
   plotData2 <- dplyr::left_join(plotData2, qRecords, by = "UID")
   plotData2 <- plotData2[!(is.na(plotData2$RESULT_VA.y)),]
-  if(nrow(plotData2) == 0){warning("No Sand/Silt break data to plot")
+  if(nrow(plotData2) == 0){warning("No Sand/Silt break and flow data to plot")
   }else{
     p2 <- ggplot(data = plotData2, aes(x=RESULT_VA.y, y=RESULT_VA.x))
-    p2 <- p2 + geom_point() + 
-      xlab("Discharge (cfs)") + ylab("70331 Sus Sed % smaller than 0.0625mm")
+    p2 <- p2 + geom_point(size = 3, color = 'tan') + 
+      xlab("Discharge (cfs)") + ylab("70331 Sus Sed % smaller than 0.0625mm") + theme_bw() + 
+      labs(caption = paste(unique(plotData2$PARM_CD),unique(plotData2$PARM_DS))) + 
+      labs(title = title)
     if(log.P70331 == TRUE){
       p2 <- p2 + scale_y_log10()
     }
@@ -98,19 +104,40 @@ plot_sedFlow <- function(x,
   }
   
   # bedload plot
-  plotData3 <- x[x$PARM_CD %in% c('80225') & !(x$MEDIUM_CD == 'OAQ'),c("UID","PARM_CD","PARM_NM","RESULT_VA")]
+  plotData3 <- x[x$PARM_CD %in% c('80225') & !(x$MEDIUM_CD == 'OAQ'),c("UID","PARM_CD","PARM_NM","PARM_DS","RESULT_VA")]
   plotData3 <- dplyr::left_join(plotData3, qRecords, by = "UID")
   plotData3 <- plotData3[!(is.na(plotData3$RESULT_VA.y)),]
-  if(nrow(plotData3) == 0){warning("No bedload data to plot")
+  if(nrow(plotData3) == 0){warning("No bedload and flow data to plot")
   }else{
     p3 <- ggplot(data = plotData3, aes(x=RESULT_VA.y, y=RESULT_VA.x))
-    p3 <- p3 + geom_point() + 
-      xlab("Discharge (cfs)") + ylab("Bedload_80225 (mg/L)")
+    p3 <- p3 + geom_point(size = 3, color = 'green') + 
+      xlab("Discharge (cfs)") + ylab("Bedload_80225 (tons/day)") + theme_bw() + 
+      labs(caption = paste(unique(plotData3$PARM_CD),unique(plotData3$PARM_DS))) + 
+      labs(title = title)
     if(log.P80225 == TRUE){
       p3 <- p3 + scale_y_log10()
     }
     if(log.Q == TRUE){
       p3 <- p3 + scale_x_log10()
+    }
+  }
+  
+  # TSS plot
+  plotData4 <- x[x$PARM_CD %in% c('00530') & !(x$MEDIUM_CD == 'OAQ'),c("UID","PARM_CD","PARM_NM","PARM_DS","RESULT_VA")]
+  plotData4 <- dplyr::left_join(plotData4, qRecords, by = "UID")
+  plotData4 <- plotData4[!(is.na(plotData4$RESULT_VA.y)),]
+  if(nrow(plotData4) == 0){warning("No TSS and flow data to plot")
+  }else{
+    p4 <- ggplot(data = plotData4, aes(x=RESULT_VA.y, y=RESULT_VA.x))
+    p4 <- p4 + geom_point(size = 3, color = 'black') + 
+      xlab("Discharge (cfs)") + ylab("TSS_00530 (mg/L)") + theme_bw() + 
+      labs(caption = paste(unique(plotData4$PARM_CD),unique(plotData4$PARM_DS))) + 
+      labs(title = title)
+    if(log.P00530 == TRUE){
+      p4 <- p4 + scale_y_log10()
+    }
+    if(log.Q == TRUE){
+      p4 <- p4 + scale_x_log10()
     }
   }
   
@@ -120,6 +147,7 @@ plot_sedFlow <- function(x,
     names(plotList) <- 'SSC'  
     if(exists('p2')){plotList$ssbreak <- p2}
     if(exists('p3')){plotList$bedload <- p3}
+    if(exists('p4')){plotList$TSS <- p4}
     return(plotList)
   }else{
     pdf(file = PDFout)
@@ -130,6 +158,7 @@ plot_sedFlow <- function(x,
     if(exists('p1')){print(p1)}
     if(exists('p2')){print(p2)}
     if(exists('p3')){print(p3)}
+    if(exists('p4')){print(p4)}
     dev.off()
   }
   

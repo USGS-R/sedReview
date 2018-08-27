@@ -2,7 +2,7 @@ context('plot_sedTS')
 
 test_that("Return values check", {
   data('exampleData', package = "sedReview")
-  
+
   # plot_sedTSOut <- plot_sedTS(exampleData, siteSelect = "05586300")
   # saveRDS(plot_sedTSOut, "tests/testthat/data/plot_sedTSOut.rds")
   
