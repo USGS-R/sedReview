@@ -4,31 +4,29 @@
 \alias{plot_turbSSC}
 \title{plot_turbSSC. Create plots of sediment vs. turbidity.}
 \usage{
-plot_turbSSC(x, log.P80154 = FALSE, log.turb = FALSE, siteSelect = NULL,
+plot_turbSSC(x, log.SSC = FALSE, log.turb = FALSE, siteSelect = NULL,
   PDFout = NULL)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
-\item{log.P80154}{Logical, if \code{TRUE}, SSC y axis will be log10. Default is \code{FALSE}.}
+\item{log.SSC}{Logical, if \code{TRUE}, SSC y axis will be log10. Default is \code{FALSE}.}
 
 \item{log.turb}{Logical, if \code{TRUE}, Turbidity parameter x axis will be log10. Default is \code{FALSE}.}
 
 \item{siteSelect}{Character, site number to create plots for if \code{x} contains multiple sites. Default is \code{NULL}.}
 
-\item{PDFout}{Character. File or full path name of file for plots. If \code{NULL}, the default, a list of the plots will be returned in R instead.}
+\item{PDFout}{Character. File or full path name of file for plot. If \code{NULL}, the default, a plot will be returned in R instead.}
 }
 \value{
 If \code{PDFout = NULL}, list containing ggplot elements. If \code{PDFout} specified, a PDF document containing the plots.
 }
 \description{
-Function to output scatterplots of SSC vs. turbidity. Output is a list of plots or write to PDF.
+Function to output scatterplot of SSC vs. turbidity. Output is a single plot or write to PDF.
 }
 \details{
-Scatterplots of SSC (P80154) vs. Turbidity (Parameter codes 00076, 61028, 63675, 63676, 63677, 63679, 63680, 63681, 
-63682, 63683, 63684, 72188, 72208, 72209, 72213, 82079, 99872). A scatterplot is created for each unique turbidity parameter code present.
-
-If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are specified above. See example for more details.
+Scatterplot of SSC (P80154) vs. Turbidity (Parameter codes 00076, 61028, 63675, 63676, 63677, 63679, 63680, 63681, 
+63682, 63683, 63684, 72188, 72208, 72209, 72213, 82079, 99872).
 }
 \examples{
 data("exampleData2",package="sedReview")
@@ -36,7 +34,7 @@ x <- exampleData2
 turbSSC <- plot_turbSSC(exampleData2, siteSelect = "09163500")
 \dontrun{
 # view plot in Rstudio
-turbSSC$Turbidity_00076
+print(turbSSC)
 
 # output to file on D drive
 plot_turbSSC(exampleData2, siteSelect = "09163500", PDFout = "D:/turbidity.pdf")

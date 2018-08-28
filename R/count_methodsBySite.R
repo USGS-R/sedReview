@@ -123,7 +123,7 @@ count_methodsBySite <- function(x) {
   if(!is.null(sumBySampler_SSC)){
     sumOut <- dplyr::left_join(sumOut,sumBySampler_SSC,by=c("SITE_NO"="SSC_sampler_SITE_NO", "WY"="SSC_sampler_WY"))}
   if(!is.null(sumByMethod_bedload)){
-    sumOut <- dplyr::left_join(sumOut,sumByMethod_bedload,by=c("SITE_NO"="SITE_NO", "WY"="WY"))}
+    sumOut <- dplyr::left_join(sumOut,sumByMethod_bedload,by=c("SITE_NO"="bedload_method_SITE_NO", "WY"="bedload_method_WY"))}
   
   #Replace NAs with 0
   sumOut[is.na(sumOut)] <- 0

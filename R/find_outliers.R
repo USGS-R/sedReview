@@ -29,7 +29,6 @@ find_outliers <- function(x, site_no = NULL, lowThreshold = 0.1, highThreshold =
       stop("Site number not in input data.")
     }
     x <- x[x$SITE_NO == site_no,]
-    
   }
   if(length(unique(x$SITE_NO))>1){
     stop("More than one site, please specify 'site_no'")}
@@ -79,10 +78,15 @@ find_outliers <- function(x, site_no = NULL, lowThreshold = 0.1, highThreshold =
   
   # rename flag column
   names(SSC)[names(SSC) == "flag"] <- "SSC_flag"
+  names(SSC)[names(SSC) == 'RESULT_VA'] <- "SSC_RESULT_VA"
   names(SSL)[names(SSL) == "flag"] <- "SSL_flag"
+  names(SSL)[names(SSL) == 'RESULT_VA'] <- "SSL_RESULT_VA"
   names(bedLOI)[names(bedLOI) == "flag"] <- "bedSedLOI_flag"
+  names(bedLOI)[names(bedLOI) == 'RESULT_VA'] <- "bedSedLOI_RESULT_VA"
   names(watLOI)[names(watLOI) == "flag"] <- "susSedLOI_flag"
+  names(watLOI)[names(watLOI) == 'RESULT_VA'] <- "susSedLOI_RESULT_VA"
   names(ssbreak)[names(ssbreak) == "flag"] <- "SandSiltBreak_flag"
+  names(ssbreak)[names(ssbreak) == 'RESULT_VA'] <- "SandSiltBreak_RESULT_VA"
   
   # list of flagged samples
   ### data frame of all samples with flags
@@ -93,11 +97,11 @@ find_outliers <- function(x, site_no = NULL, lowThreshold = 0.1, highThreshold =
                                "SAMPLE_START_DT",
                                "MEDIUM_CD")])
   # append flags
-  flaggedSamples <- dplyr::left_join(flaggedSamples, SSC[c("UID", "SSC_flag")], by = "UID")
-  flaggedSamples <- dplyr::left_join(flaggedSamples, SSL[c("UID", "SSL_flag")], by = "UID")
-  flaggedSamples <- dplyr::left_join(flaggedSamples, bedLOI[c("UID", "bedSedLOI_flag")], by = "UID")
-  flaggedSamples <- dplyr::left_join(flaggedSamples, watLOI[c("UID", "susSedLOI_flag")], by = "UID")
-  flaggedSamples <- dplyr::left_join(flaggedSamples, ssbreak[c("UID", "SandSiltBreak_flag")], by = "UID")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, SSC[c("UID","SSC_RESULT_VA","SSC_flag")], by = "UID")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, SSL[c("UID","SSL_RESULT_VA","SSL_flag")], by = "UID")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, bedLOI[c("UID","bedSedLOI_RESULT_VA","bedSedLOI_flag")], by = "UID")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, watLOI[c("UID","susSedLOI_RESULT_VA","susSedLOI_flag")], by = "UID")
+  flaggedSamples <- dplyr::left_join(flaggedSamples, ssbreak[c("UID","SandSiltBreak_RESULT_VA","SandSiltBreak_flag")], by = "UID")
   if(returnAll == FALSE)
   {
     flaggedSamples <- flaggedSamples[is.na(flaggedSamples$SSC_flag)==FALSE | 

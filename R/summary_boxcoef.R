@@ -66,6 +66,30 @@ summary_boxcoef <- function(x,
   }
   summary$numPairs[is.na(summary$numPairs)] <- 0
   
+  #Count number of nonXS and XS samples in each WY
+  #SSC samples
+  SSC <- x[x$PARM_CD == "80154",c("UID","SITE_NO")]
+  SSC <- unique(SSC)
+  
+  #Samples with point or non-cross-section method and corresponds to an SSC sample
+  methodNX <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% methods_NX 
+                & x$UID %in% SSC$UID, 
+                c("UID","SITE_NO","WY")]
+  methodNX <- unique(methodNX)
+  summaryNX <- dplyr::summarise(dplyr::group_by(methodNX, SITE_NO, WY),
+                                nonXS_samples = length(UID))
+  
+  #Samples with EWI,EWT,EDI method and corresponds to an SSC sample. Call it x-section sample
+  methodX <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% methods_X & x$UID %in% SSC$UID, c("UID","SITE_NO","WY")]
+  methodX <- unique(methodX)
+  summaryX <- dplyr::summarise(dplyr::group_by(methodX,SITE_NO,WY),
+                               XS_samples = length(UID))
+  
+  #Join number of nonXS and XS samples
+  summary <- dplyr::left_join(summary, summaryNX, by = c('SITE_NO','WY'))
+  summary <- dplyr::left_join(summary, summaryX, by = c('SITE_NO','WY'))
+  summary[is.na(summary)] <- 0
+  
   #Return all the box coefficient tables if TRUE
   if(returnAllTables == TRUE){
     summary <- modifyList(list(summary), allBC)

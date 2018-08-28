@@ -239,10 +239,12 @@ status2 <- count_sampleStatus(centerData)
 
 # check and flag sediment mass samples < 2mg
 sedMass2 <- check_sedMass(centerData)
-
+sedMassSummary <- check_sedMass(centerData, reviewSummary = TRUE)
 # get summary of boxcoefficient pairs at all the sites
 # This helps determine how often the WSC performs a comparison between pumped samples and cross section (EWI/EDI) samples, to evaluate the representativeness of the pumped sampler intake location. Reports the number of paired samples collected, grouped by site and water year. 
-boxcoefSum <- summary_boxcoef(centerData)
+boxcoefSum1 <- summary_boxcoef(centerData)
+boxcoefSum3 <- summary_boxcoef(centerData, timediff = 3)
+
 #### you can also output the boxcoefficient summary and the data for all sites as an R list. Access list elements using $ operator
 boxcoefSum_all <- summary_boxcoef(centerData, returnAllTables = TRUE)
 fountain_boxcoef <- boxcoefSum_all$`07106300`
@@ -250,18 +252,22 @@ fountain_boxcoef <- boxcoefSum_all$`07106300`
 # check EWI/EDI sample verticals
 # Reports a summary of sediment samples that were flagged with # verticals outside the normal ranges for EWI and EDI or where # verticals was missing in the metadata.
 verticals2 <- check_verticals(centerData)
+verticalsSummary <- check_verticals(centerData, reviewSummary = TRUE)
 
 # check bag intake efficiency
 # Reports a summary of samples that were missing intake efficiency test results if a bag suspended sediment sampler was used. 
 bagIE2 <- check_bagIE(centerData)
+bagIESummary <- check_bagIE(centerData, reviewSummary = TRUE)
+bagIESummary2 <- check_bagIE(exampleData2, reviewSummary = TRUE)
 
 # check discharge accompanies sediment sample
 # Reports a summary of sediment samples that were missing discharge data. 
-missingQ2 <- check_missingQ(centerData)
+missingQ2 <- check_Q(centerData)
 
 # check for TSS samples without SSC per OSW memo 01.03
 # Reports a summary of sediment samples that had TSS data but no accompanying SSC data. 
 unpairedTSS2 <- check_tss(centerData)
+unpairedTSSsummary <- check_tss(centerData, reviewSummary = TRUE)
 
 # count methods and total number of samples
 # Reports a summary of the total number of sediment samples collected by type and method used, organized by site and water year.  
@@ -270,7 +276,7 @@ methods2 <- count_methodsBySite(centerData)
 # check for sediment samples that have been coded into the QAQC database
 # As discussed above, this checks for any sediment samples in the QA database. This indicates samples were entered by some means other than SedLogin. Edit the QA database number as needed.
 qaqc2 <- check_qaqcDB(centerData, qa.db = '02')
-
+qaqcSummary <- check_qaqcDB(centerData, qa.db = '02', reviewSummary = TRUE)
 
 #########################################
 #########################################

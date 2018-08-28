@@ -21,7 +21,8 @@ Function to output individual and side-by-side boxplots, and scatterplot, for SS
 }
 \details{
 Boxplots of SSC (P80154) and TSS (P00530). Box contains lower, median, and upper quartile. Whiskers extend to farthest point
-within +/- 1.5 IQR. Any points outside of +/- 1.5 IQR are plotted as outlier points.
+within +/- 1.5 IQR. Any points outside of +/- 1.5 IQR are plotted as outlier points. Boxplots in the side-by-side plot are set
+to a common axis range.
 Both parameters do not need to be present in \code{x} for plots to be created (eg. if only SSC present then only a boxplot of SSC is returned)
 
 If PDFout is not specified, than a list of the plots is returned. Plots (if applicable) are boxplot of SSC, boxplot of TSS,

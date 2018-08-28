@@ -4,12 +4,15 @@
 \alias{check_bagIE}
 \title{check_bagIE. Check and flag bag intake efficiency parameters, and calculate and flag the bag efficiency}
 \usage{
-check_bagIE(x, returnAll = FALSE)
+check_bagIE(x, returnAll = FALSE, reviewSummary = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
 \item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE}
+
+\item{reviewSummary}{logical, for center-level review, if \code{TRUE} a summary count of flags by site and water year is returned
+instead of individual flagged samples.}
 }
 \value{
 A dataframe containing all samples with applicable flags

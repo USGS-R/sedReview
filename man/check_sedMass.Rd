@@ -4,12 +4,15 @@
 \alias{check_sedMass}
 \title{check_sedMass. Check and flag sediment mass (P91157) less than 2mg}
 \usage{
-check_sedMass(x, returnAll = FALSE)
+check_sedMass(x, returnAll = FALSE, reviewSummary = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
 \item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Default is FALSE}
+
+\item{reviewSummary}{logical, for center-level review, if \code{TRUE} a summary count of flags by site and water year is returned
+instead of individual flagged samples.}
 }
 \value{
 A dataframe containing all samples with applicable flags
