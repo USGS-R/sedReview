@@ -2,6 +2,8 @@
 #' @description Function to check and flag bag intake efficiency parameters, and calculate and flag the bag efficiency
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @param returnAll logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE
+#' @param reviewSummary logical, for center-level review, if \code{TRUE} a summary count of flags by site and water year is returned
+#' instead of individual flagged samples.
 #' @details checks and calculates bag intake efficiency under OSW Tech Memo 2013.03 \url{https://water.usgs.gov/admin/memo/SW/sw13.03.pdf}
 #' @details P72217 - Duration sampler collected water, seconds
 #' @details P72218 - Sample volume to compute isokinetic transit rate, milliliters
@@ -18,7 +20,7 @@
 #' @export
 #' @return A dataframe containing all samples with applicable flags
 
-check_bagIE <- function(x, returnAll = FALSE){
+check_bagIE <- function(x, returnAll = FALSE, reviewSummary = FALSE){
   # remove rejected samples
   x <- x[!(x$DQI %in% c("Q","X")),]
   
@@ -74,14 +76,14 @@ check_bagIE <- function(x, returnAll = FALSE){
   bagSamp$calcIEflag[bagSamp$calcIE < 0.75] <- paste("flag low calc IE")
   bagSamp$calcIEflag[bagSamp$calcIE > 1.25] <- paste("flag high calc IE")
   bagSamp$calcIEflag[is.na(bagSamp$calcIE)==TRUE] <- paste("flag missing bag IE test results")
-
+  
   # list of flagged samples
   ### data frame of all samples with flags
   flaggedSamples <- unique(x[c("UID",
                                "RECORD_NO",
                                "SITE_NO",
                                "STATION_NM",
-                               "SAMPLE_START_DT",
+                               "SAMPLE_START_DT","WY",
                                "MEDIUM_CD")])
   # append flags
   flaggedSamples <- dplyr::left_join(flaggedSamples, bagSamp, by = "UID")
@@ -90,6 +92,42 @@ check_bagIE <- function(x, returnAll = FALSE){
     flaggedSamples <- flaggedSamples[is.na(flaggedSamples$IEflag)==FALSE | is.na(flaggedSamples$calcIEflag)==FALSE, ]
   }
   
+  if(reviewSummary == TRUE){
+    bagSamp$IEsumflag[bagSamp$calcIE < 0.75] <- -1
+    bagSamp$IEsumflag[bagSamp$calcIE > 1.25] <- 1
+    bagSamp$IEsumflag[is.na(bagSamp$calcIE)==TRUE] <- 0
+    
+    flaggedSamples <- flaggedSamples[is.na(flaggedSamples$IEflag)==FALSE | is.na(flaggedSamples$calcIEflag)==FALSE, ]
+    flaggedSamples <- dplyr::left_join(flaggedSamples, bagSamp[,c('UID','IEsumflag')], by = 'UID')
+    
+    flagSummary <- unique(x[c('SITE_NO',
+                              'STATION_NM',
+                              'WY')])
+    
+    missingIE <- flaggedSamples[flaggedSamples$IEsumflag == 0 & !is.na(flaggedSamples$IEsumflag),]
+    if(nrow(missingIE)>0){
+      missingIE <- dplyr::summarise(dplyr::group_by(missingIE,SITE_NO, STATION_NM, WY),
+                                     IE_missing_info = length(IEsumflag))
+      flagSummary <- dplyr::left_join(flagSummary, missingIE, by = c('SITE_NO','STATION_NM','WY'))
+    }else{flagSummary$IE_missing_info <- NA}
+    
+    highIE <- flaggedSamples[flaggedSamples$IEsumflag == 1 & !is.na(flaggedSamples$IEsumflag),]
+    if(nrow(highIE)>0){
+      highIE <- dplyr::summarise(dplyr::group_by(highIE,SITE_NO, STATION_NM, WY),
+                                  high_IE = length(IEsumflag))
+      flagSummary <- dplyr::left_join(flagSummary, highIE, by = c('SITE_NO','STATION_NM','WY'))
+    }else{flagSummary$high_IE <- NA}
+    
+    lowIE <- flaggedSamples[flaggedSamples$IEsumflag == -1 & !is.na(flaggedSamples$IEsumflag),]
+    if(nrow(lowIE)>0){
+      lowIE <- dplyr::summarise(dplyr::group_by(lowIE,SITE_NO, STATION_NM, WY),
+                                 low_IE = length(IEsumflag))
+      flagSummary <- dplyr::left_join(flagSummary, lowIE, by = c('SITE_NO','STATION_NM','WY'))
+    }else{flagSummary$low_IE <- NA}
+    
+    flagSummary[is.na(flagSummary)] <- 0
+    return(flagSummary)
+  }
   
   return(flaggedSamples)
 }

@@ -4,12 +4,15 @@
 \alias{check_tss}
 \title{check_tss. Flag TSS results without an accompanying SSC result}
 \usage{
-check_tss(x, returnAll = FALSE)
+check_tss(x, returnAll = FALSE, reviewSummary = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
-\item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE}
+\item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Default is FALSE}
+
+\item{reviewSummary}{logical, for center-level review, if \code{TRUE} a summary count of flags by site and water year is returned
+instead of individual flagged samples.}
 }
 \value{
 A dataframe containing all samples with applicable flags

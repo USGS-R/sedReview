@@ -4,7 +4,7 @@
 \alias{check_Q}
 \title{check_Q. Searches for samples that were collected for sediment data but are missing discharge measurements}
 \usage{
-check_Q(x, includeUV = FALSE, returnAll = FALSE)
+check_Q(x, includeUV = FALSE, returnAll = FALSE, reviewSummary = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
@@ -13,6 +13,9 @@ check_Q(x, includeUV = FALSE, returnAll = FALSE)
 Run optional flagging for records with P00061 >10\% different from Approved UV flow. Default is \code{FALSE}.}
 
 \item{returnAll}{Logical. Return dataframe containing all samples if \code{TRUE} or only return samples missing discharge if \code{FALSE}. Default is \code{FALSE}}
+
+\item{reviewSummary}{logical, for center-level review, if \code{TRUE} a summary count of flags by site and water year is returned
+instead of individual flagged samples.}
 }
 \value{
 A data.frame of samples, what sediment data are available, and then a flag for missing discharge along with what discharge parameter are present

@@ -5,14 +5,17 @@
 \title{check_qaqcDB.
 Check if SSC, bedload, or bedload mass are coded as WSQ and in the QA/QC database}
 \usage{
-check_qaqcDB(x, qa.db = "02", returnAll = FALSE)
+check_qaqcDB(x, qa.db = "02", returnAll = FALSE, reviewSummary = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
 
 \item{qa.db}{A character string containing the database number of QA samples}
 
-\item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Defualt is FALSE}
+\item{returnAll}{logical, return dataframe containing all results or only return flagged samples. Default is FALSE}
+
+\item{reviewSummary}{logical, for center-level review, if \code{TRUE} a summary count of flags by site and water year is returned
+instead of individual flagged samples.}
 }
 \value{
 A dataframe containing all samples with applicable flags
