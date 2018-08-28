@@ -660,12 +660,14 @@ get_localNWIS <- function(DSN,
                            "COLL_ENT_CD","SIDNO_PARTY_CD",
                            "HUC_CD","SITE_TP_CD", "SAMPLE_MONTH","DOY", "WY")]
   
-  ### Calculate SSL 80154 according to NWIS algorithm
-  SSC <- exampleData2[exampleData2$PARM_CD == '80154',]
+  ### Calculate SSL 80155 according to NWIS algorithm
+  existingSSL <- longTable$UID[longTable$PARM_CD == '80155']
+  SSC <- longTable[longTable$PARM_CD == '80154',]
   SSC$SSC_mgL <- SSC$RESULT_VA
-  Q <- exampleData2[exampleData2$PARM_CD == '00061',]
+  Q <- longTable[longTable$PARM_CD == '00061',]
   names(Q)[names(Q) == 'RESULT_VA'] <- 'Q_cfs'
   SSL <- dplyr::left_join(SSC,Q[,c('UID','Q_cfs')], by = 'UID')
+  SSL <- SSL[!(SSL$UID %in% existingSSL),]
   SSL$RESULT_VA <- SSL$SSC_mgL * SSL$Q_cfs * 0.0027
   SSL <- SSL[!is.na(SSL$RESULT_VA),]
   SSL$RESULT_VA[SSL$RESULT_VA < 100] <- signif(SSL$RESULT_VA[SSL$RESULT_VA < 100], 2)
@@ -674,8 +676,10 @@ get_localNWIS <- function(DSN,
   SSL$PARM_NM <- 'Suspnd sedmnt disch'
   SSL$METH_CD <- 'ALGOR'
   SSL$PARM_DS <- 'Suspended sediment discharge, short tons per day'
+  SSL$Val_qual <- paste(SSL$RESULT_VA,SSL$REMARK_CD, sep = " ")
+  SSL$Val_qual <- gsub("Sample","",SSL$Val_qual)
   SSL <- SSL[,1:79]
-  exampleData2 <- rbind(exampleData2, SSL)
+  longTable <- rbind(longTable, SSL)
   
   ### Subset to samples based on approval flag setting
   if(!(approval %in% c('All','Rejected','Non-rejected'))){
