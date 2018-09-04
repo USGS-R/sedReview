@@ -98,9 +98,11 @@ check_all <- function(x, qa.db = "02", includeUV = FALSE, returnAllTables = FALS
   summaryStats <- calc_summaryStats(x)
   
   
-  flaggedSamples <- x[x$DQI_CD %in% c("I","S","P"),
-                      c("UID","RECORD_NO","SITE_NO","STATION_NM","SAMPLE_START_DT","MEDIUM_CD","PARM_CD","PARM_NM","PARM_SEQ_GRP_CD","DQI_CD")]
-  
+  # flaggedSamples <- x[x$DQI_CD %in% c("I","S","P"),
+  #                     c("UID","RECORD_NO","SITE_NO","STATION_NM","SAMPLE_START_DT","MEDIUM_CD",
+  #                       "PARM_CD","PARM_NM","PARM_SEQ_GRP_CD","DQI_CD")]
+  flaggedSamples <- x[c("UID","RECORD_NO","SITE_NO","STATION_NM","SAMPLE_START_DT","MEDIUM_CD",
+                        "PARM_CD","PARM_NM","PARM_SEQ_GRP_CD","DQI_CD")]
   
   flaggedSamples <- unique(flaggedSamples)
   
@@ -152,8 +154,10 @@ check_all <- function(x, qa.db = "02", includeUV = FALSE, returnAllTables = FALS
                             "verticalsFlags",
                             "qaqcFlags",
                             "outliers")])
-  flaggedSamples[flaggedSamples == FALSE] <- ""
-  flaggedSamples[flaggedSamples == TRUE] <- "flags present"
+  if(nrow(flaggedSamples > 0)){
+    flaggedSamples[flaggedSamples == FALSE] <- ""
+    flaggedSamples[flaggedSamples == TRUE] <- "flags present"
+  }else
   # sort summary flags by site, date/time
   flaggedSamples <- flaggedSamples[order(flaggedSamples$SITE_NO, flaggedSamples$SAMPLE_START_DT),]
 
