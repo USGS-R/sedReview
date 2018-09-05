@@ -111,7 +111,7 @@ check_metaData <- function(x, returnAll = FALSE)
   sampPurp <- unique(sampPurp$RECORD_NO)
   missingPurp <- x[!(x$RECORD_NO %in% sampPurp) & x$SAMPLE_START_DT > as.POSIXct("2001-09-30"),]
   if(nrow(missingPurp)>0){
-    missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose")
+    missingPurp$check_20.61 <- paste("flag missing P71999 (Sample Purpose)")
   }else{missingPurp$check_20.61 <- character(0)}
   missingPurp <- unique(missingPurp[c("UID", "check_20.61")])
   

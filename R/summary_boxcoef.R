@@ -8,9 +8,13 @@
 #' 30 (single vertical), 40 (multiple verticals), 50 (point sample), 55 (composite - multiple point samples), 
 #' 60 (weighted bottle), 70 (grab sample - dip), 100 (Van Dorn), 900 (SS pumping), 
 #' 920 (SS BSV DI att), 930 (SS partial depth), 940 (SS partial width), 4033 (suction lift peristaltic), 4080 (peristaltic pump).
+#' \cr\cr The option 'missing' can be added to include samples that have no associated sampling method for the record number,
+#' or a blank sampling method value
 #' @param methods_X Vector of Sampling Method (P82398) values that define cross section samples of the box coefficient.
 #' Default is:\cr\cr methods_X = c(10,15,20)\cr\cr
 #' 10 (EWI), 15 (multiple verticals non-isokinetic EWT), or 20 (EDI).
+#' \cr\cr The option 'missing' can be added to include samples that have no associated sampling method for the record number,
+#' or a blank sampling method value
 #' @param includeUV Logical. If \code{x} was returned from \code{get_UVflow}, 
 #' run optional addition of available Approved Unit Value discharge to output table. Default is \code{FALSE}.
 #' @param returnAllTables Logical. If \code{TRUE}, return a list with the summary table and all individual site tables from the find_boxcoef function used internally.
@@ -67,21 +71,46 @@ summary_boxcoef <- function(x,
   summary$numPairs[is.na(summary$numPairs)] <- 0
   
   #Count number of nonXS and XS samples in each WY
+  methods <- setNames(c('single vertical', 'multiple verticals', 'point sample', 'composite - multiple point samples',
+                        'weighted bottle', 'grab sample - dip', 'Van Dorn', 'SS pumping', 'SS BSV DI att', 'SS partial depth',
+                        'SS partial width', 'suction lift peristaltic', 'peristaltic pump',
+                        'EWI', 'multiple verticals non-isokinetic EWT', 'EDI'),
+                      c(30, 40, 50, 55, 60, 70, 100, 900, 920, 930, 940, 4033, 4080,
+                        10, 15, 20))
+  x$method[x$PARM_CD == '82398'] <- methods[as.character(x$RESULT_VA[x$PARM_CD == '82398'])]
   #SSC samples
-  SSC <- x[x$PARM_CD == "80154",c("UID","SITE_NO")]
+  SSC <- x[x$PARM_CD == "80154",c("UID","SITE_NO",'WY')]
   SSC <- unique(SSC)
+  
+  #All methods
+  methodAll <- x[x$PARM_CD == "82398" & x$UID %in% SSC$UID, 
+                 c("UID","SITE_NO","WY","method")]
+  methodAll$method[is.na(methodAll$method)] <- 'method missing'
+  
+  #SSC with no associated method
+  noMethod <- SSC[!(SSC$UID %in% methodAll$UID),c("UID","SITE_NO","WY")]
   
   #Samples with point or non-cross-section method and corresponds to an SSC sample
   methodNX <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% methods_NX 
                 & x$UID %in% SSC$UID, 
                 c("UID","SITE_NO","WY")]
   methodNX <- unique(methodNX)
+  ##if 'missing' option is in methods_NX vector, add those rows
+  if('missing' %in% methods_NX){
+    methodNX <- rbind(methodNX, noMethod)
+    methodNX <- rbind(methodNX, methodAll[methodAll$method == 'method missing',c("UID","SITE_NO","WY")])
+  }
   summaryNX <- dplyr::summarise(dplyr::group_by(methodNX, SITE_NO, WY),
                                 nonXS_samples = length(UID))
   
   #Samples with EWI,EWT,EDI method and corresponds to an SSC sample. Call it x-section sample
   methodX <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% methods_X & x$UID %in% SSC$UID, c("UID","SITE_NO","WY")]
   methodX <- unique(methodX)
+  ##if 'missing' option is in methods_X vector, add those rows
+  if('missing' %in% methods_X){
+    methodX <- rbind(methodX, noMethod)
+    methodX <- rbind(methodX, methodAll[methodAll$method == 'method missing',c("UID","SITE_NO","WY")])
+  }
   summaryX <- dplyr::summarise(dplyr::group_by(methodX,SITE_NO,WY),
                                XS_samples = length(UID))
   

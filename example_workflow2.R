@@ -194,13 +194,13 @@ ssctss_monument$scatter
 plot_SSCTSS(monument, PDFout = 'D:/ex_monument_ssctss.pdf')
 
 # plot turb versus SSC
-turbSSC_09163500 <- plot_turbSSC(siteData, siteSelect = '09163500', log.turb = T, log.P80154 = T)
-turbSSC_09163500$Turbidity_63676
+turbSSC_09163500 <- plot_turbSSC(siteData, siteSelect = '09163500', log.turb = T)
+turbSSC_09163500
 # Note the number after turbidity is the turbidity parameter code; it should be edited depending on what you are using to measure turbidity. See parameter codes listed at: https://nwis.waterdata.usgs.gov/nwis/pmcodes/pmcodes?radio_pm_search=pm_search&pm_search=turbidity&casrn_search=&srsname_search=&format=html_table&show=parameter_group_nm&show=parameter_nm&show=casrn&show=srsname&show=parameter_units
 
 turbSSC_monument <- plot_turbSSC(monument)
-turbSSC_monument$Turbidity_63680
-turbSSC_monument$Turbidity_63676
+turbSSC_monument
+turbSSC_monument
 plot_turbSSC(monument, PDFout = 'D:/ex_monument_turbSSC.pdf')
 # This creates a nice pdf packet of SSC~TSS comparison plots for your site.
 
@@ -263,7 +263,7 @@ bagIESummary2 <- check_bagIE(exampleData2, reviewSummary = TRUE)
 # check discharge accompanies sediment sample
 # Reports a summary of sediment samples that were missing discharge data. 
 missingQ2 <- check_Q(centerData)
-
+missingQ3 <- check_Q(centerData, reviewSummary = TRUE)
 # check for TSS samples without SSC per OSW memo 01.03
 # Reports a summary of sediment samples that had TSS data but no accompanying SSC data. 
 unpairedTSS2 <- check_tss(centerData)
