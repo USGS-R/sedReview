@@ -10,9 +10,13 @@
 #' 30 (single vertical), 40 (multiple verticals), 50 (point sample), 55 (composite - multiple point samples), 
 #' 60 (weighted bottle), 70 (grab sample - dip), 100 (Van Dorn), 900 (SS pumping), 
 #' 920 (SS BSV DI att), 930 (SS partial depth), 940 (SS partial width), 4033 (suction lift peristaltic), 4080 (peristaltic pump).
+#' \cr\cr The option 'missing' can be added to include samples that have no associated sampling method for the record number,
+#' or a blank sampling method value
 #' @param methods_X Vector of Sampling Method (P82398) values that define cross section samples of the box coefficient.
 #' Default is:\cr\cr methods_X = c(10,15,20)\cr\cr
 #' 10 (EWI), 15 (multiple verticals non-isokinetic EWT), or 20 (EDI).
+#' \cr\cr The option 'missing' can be added to include samples that have no associated sampling method for the record number,
+#' or a blank sampling method value
 #' @param includeUV Logical. If \code{x} was returned from \code{get_UVflow}, 
 #' run optional addition of available Approved Unit Value discharge to output table. Default is \code{FALSE}.
 #' @details Returns a dataframe of paired samples, flow values, and calculated box coefficient at given site_no for SSC (P80154). 
@@ -41,6 +45,7 @@ find_boxcoef <- function(x, site_no = NULL, timediff = 1,
                          methods_NX = c(30,40,50,55,70,100,900,920,930,940,4033,4080),
                          methods_X = c(10,15,20),
                          includeUV = FALSE){
+
   # remove rejected samples
   x <- x[!(x$DQI %in% c("Q","X")),]
   
@@ -64,22 +69,43 @@ find_boxcoef <- function(x, site_no = NULL, timediff = 1,
                       c(30, 40, 50, 55, 60, 70, 100, 900, 920, 930, 940, 4033, 4080,
                         10, 15, 20))
   x$method[x$PARM_CD == '82398'] <- methods[as.character(x$RESULT_VA[x$PARM_CD == '82398'])]
-  
+
   
   #SSC samples
   SSC <- x[x$PARM_CD == "80154",c("UID","SITE_NO","STATION_NM","SAMPLE_START_DT","RESULT_VA")]
   SSC <- unique(SSC)
+  
+  #All methods
+  methodAll <- x[x$PARM_CD == "82398" & x$UID %in% SSC$UID, 
+                 c("UID","SITE_NO","STATION_NM","SAMPLE_START_DT","method")]
+  methodAll$method[is.na(methodAll$method)] <- 'method missing'
+  
+  #SSC with no associated method
+  noMethod <- SSC[!(SSC$UID %in% methodAll$UID),c("UID","SITE_NO","STATION_NM","SAMPLE_START_DT")]
+  noMethod$method <- 'method missing'
   
   #Samples with point or non-cross-section method and corresponds to an SSC sample
   methodNX <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% methods_NX 
                 & x$UID %in% SSC$UID, 
                 c("UID","SITE_NO","STATION_NM","SAMPLE_START_DT","method")]
   methodNX <- unique(methodNX)
+  ##if 'missing' option is in methods_NX vector, add those rows
+  if('missing' %in% methods_NX){
+    methodNX <- rbind(methodNX, noMethod)
+    methodNX <- rbind(methodNX, methodAll[methodAll$method == 'method missing',])
+  }
   
   #Samples with EWI,EWT,EDI method and corresponds to an SSC sample. Call it x-section sample
   methodX <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% methods_X & x$UID %in% SSC$UID, c("UID","SAMPLE_START_DT","method")]
   methodX <- unique(methodX)
+  ##if 'missing' option is in methods_X vector, add those rows
+  if('missing' %in% methods_X){
+    methodX <- rbind(methodX, noMethod[c("UID","SAMPLE_START_DT","method")])
+    methodX <- rbind(methodX, methodAll[methodAll$method == 'method missing',c("UID","SAMPLE_START_DT","method")])
+  }
   
+  
+  # if no pairs possible, return empty dataframe
   if(nrow(methodNX) == 0 | nrow(methodX) == 0){
     sitePairs <- as.data.frame(matrix(nrow = 0,ncol = 10))
     names(sitePairs) <- c("SITE_NO","STATION_NM","UID_nonXS","SAMPLE_START_DT_nonXS","method_nonXS","RESULT_VA_nonXS",
