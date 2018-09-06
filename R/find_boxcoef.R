@@ -82,7 +82,8 @@ find_boxcoef <- function(x, site_no = NULL, timediff = 1,
   
   #SSC with no associated method
   noMethod <- SSC[!(SSC$UID %in% methodAll$UID),c("UID","SITE_NO","STATION_NM","SAMPLE_START_DT")]
-  noMethod$method <- 'method missing'
+  if(nrow(noMethod) > 0){noMethod$method <- 'method missing'}
+  else {noMethod$method <- NULL}
   
   #Samples with point or non-cross-section method and corresponds to an SSC sample
   methodNX <- x[x$PARM_CD == "82398" & x$RESULT_VA %in% methods_NX 
@@ -173,7 +174,7 @@ find_boxcoef <- function(x, site_no = NULL, timediff = 1,
   }
   
   #Calculate box coefficient
-  sitePairs$calc_box_coef <- sitePairs$RESULT_VA_xsection / sitePairs$RESULT_VA_nonXS
+  sitePairs$calc_box_coef <- round((sitePairs$RESULT_VA_xsection / sitePairs$RESULT_VA_nonXS), digits = 2)
   
   return(sitePairs)
 }

@@ -127,6 +127,9 @@ count_methodsBySite <- function(x) {
   
   #Replace NAs with 0
   sumOut[is.na(sumOut)] <- 0
+  # output only sites with a SED method count
+  sumOut$methCount <- rowSums(sumOut[4:ncol(sumOut)])
+  sumOut <- sumOut[sumOut$methCount > 0, 1:(ncol(sumOut)-1)]
 
 
   

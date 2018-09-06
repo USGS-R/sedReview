@@ -55,6 +55,7 @@ check_Q <- function(x, includeUV = FALSE, returnAll = FALSE, reviewSummary = FAL
                                                                                               instQ$UV_flow_cfs[(instQ$RESULT_VA - instQ$UV_flow_cfs) < -(0.10*instQ$UV_flow_cfs)
                                                                                                                 & !is.na(instQ$UV_flow_cfs)], 
                                                                                               "cfs")
+    instQ$UV_flag[is.na(instQ$UV_flow_cfs)] <- "no Approved UV flow"
 
   }
   
@@ -102,7 +103,7 @@ check_Q <- function(x, includeUV = FALSE, returnAll = FALSE, reviewSummary = FAL
                               'WY')])
     
     if(includeUV == TRUE){
-      instQ$UV_flag[is.na(instQ$UV_flow_cfs)] <- paste('No Approved UV flow')
+      #instQ$UV_flag[is.na(instQ$UV_flow_cfs)] <- paste('No Approved UV flow')
       instQ$sumUV_flag[is.na(instQ$UV_flow_cfs)] <- 1
       instQ$sumUV_flag[!is.na(instQ$UV_flag) & is.na(instQ$sumUV_flag)] <- -1
       
@@ -124,6 +125,11 @@ check_Q <- function(x, includeUV = FALSE, returnAll = FALSE, reviewSummary = FAL
       flagSummary <- dplyr::left_join(flagSummary, diffUV, by = c('SITE_NO','STATION_NM','WY'))
       
       flagSummary[is.na(flagSummary)] <- 0
+      
+      flagSummary <- flagSummary[flagSummary$missing_Q != 0 |
+                                   flagSummary$missing_App_UV != 0 |
+                                   flagSummary$diff_10perc_from_App_UV != 0,]
+      
       return(flagSummary)
       
     }else{
@@ -133,6 +139,9 @@ check_Q <- function(x, includeUV = FALSE, returnAll = FALSE, reviewSummary = FAL
                                    missing_Q = length(hasQ_flag))
       flagSummary <- dplyr::left_join(flagSummary, missingQ, by = c('SITE_NO','STATION_NM','WY'))
       flagSummary[is.na(flagSummary)] <- 0
+      
+      flagSummary <- flagSummary[flagSummary$missing_Q != 0,]
+      
       return(flagSummary)
     }
   }

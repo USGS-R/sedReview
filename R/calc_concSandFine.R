@@ -1,9 +1,8 @@
-#' calc_concSandFine. calculate sand/fine concentration based on SSC and sand/fine split value and output basic plots
+#' calc_concSandFine. calculate sand/fine concentration based on SSC and sand/fine split value
 #' 
-#' @description Function to calculate sand/fine concentration based on SSC and sand/fine split value and output basic plots
+#' @description Function to calculate sand/fine concentration based on SSC and sand/fine split value
 #' @param x A \code{dataframe} output from \code{get_localNWIS}
 #' @details Sand and Fine concentration (mg/L) is calculated for sites with SSC (P80154) and % finer than 62.5 microns (P70331)
-#' @details Some measure of discharge (P00060, P00061, P30208, P30209, P50042, P72137, P72243, P99060, P99061) must be present a record to plot in plotFlow, otherwise it is removed
 #' @details Rejected samples are not included.
 #' @examples 
 #' data("exampleData",package="sedReview")

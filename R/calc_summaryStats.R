@@ -77,10 +77,128 @@ calc_summaryStats <- function(x, pcodes = c("80154",
                            median = median(RESULT_VA, na.rm = T),
                            mean = mean(RESULT_VA, na.rm = T),
                            stdev = sd(RESULT_VA, na.rm = T))
-  temp$mean <- format(temp$mean, scientific = FALSE)
+  #temp$mean <- format(temp$mean, scientific = FALSE)
   
-
-
+  # default rounding array for P80154: 0011233331
+  temp$mean[temp$PARM_CD == '80154' & temp$mean < 0.1] <- round(signif(temp$mean[temp$PARM_CD == '80154' & temp$mean < 0.1], digits = 0), digits = 0)
+  temp$mean[temp$PARM_CD == '80154' & temp$mean >= 0.1 & temp$mean < 10] <- round(signif(
+    temp$mean[temp$PARM_CD == '80154' & temp$mean >= 0.1 & temp$mean < 10], 1), digits = 0)
+  temp$mean[temp$PARM_CD == '80154' & temp$mean >= 10 & temp$mean < 100] <- round(signif(
+    temp$mean[temp$PARM_CD == '80154' & temp$mean >= 10 & temp$mean < 100], 2), digits = 0)
+  temp$mean[temp$PARM_CD == '80154' & temp$mean >= 100] <- round(signif(
+    temp$mean[temp$PARM_CD == '80154' & temp$mean >= 100], 3), digits = 0)
+  
+  temp$stdev[temp$PARM_CD == '80154' & temp$stdev < 0.1 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80154' & temp$stdev < 0.1 & !is.na(temp$stdev)], digits = 0), digits = 0)
+  temp$stdev[temp$PARM_CD == '80154' & temp$stdev >= 0.1 & temp$stdev < 10 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80154' & temp$stdev >= 0.1 & temp$stdev < 10 & !is.na(temp$stdev)], 1), digits = 0)
+  temp$stdev[temp$PARM_CD == '80154' & temp$stdev >= 10 & temp$stdev < 100 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80154' & temp$stdev >= 10 & temp$stdev < 100 & !is.na(temp$stdev)], 2), digits = 0)
+  temp$stdev[temp$PARM_CD == '80154' & temp$stdev >= 100 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80154' & temp$stdev >= 100 & !is.na(temp$stdev)], 3), digits = 0)
+  
+  # default rounding array for P70331: 0012333331
+  temp$mean[temp$PARM_CD == '70331' & temp$mean < 0.1] <- round(signif(temp$mean[temp$PARM_CD == '70331' & temp$mean < 0.1], digits = 0), digits = 0)
+  temp$mean[temp$PARM_CD == '70331' & temp$mean >= 0.1 & temp$mean < 1] <- round(signif(
+    temp$mean[temp$PARM_CD == '70331' & temp$mean >= 0.1 & temp$mean < 1], 1), digits = 1)
+  temp$mean[temp$PARM_CD == '70331' & temp$mean >= 1 & temp$mean < 10] <- round(signif(
+    temp$mean[temp$PARM_CD == '70331' & temp$mean >= 1 & temp$mean < 10], 2), digits = 1)
+  temp$mean[temp$PARM_CD == '70331' & temp$mean >= 10] <- round(signif(
+    temp$mean[temp$PARM_CD == '70331' & temp$mean >= 10], 3), digits = 1)
+  
+  temp$stdev[temp$PARM_CD == '70331' & temp$stdev < 0.1 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '70331' & temp$stdev < 0.1 & !is.na(temp$stdev)], digits = 0), digits = 0)
+  temp$stdev[temp$PARM_CD == '70331' & temp$stdev >= 0.1 & temp$stdev < 1 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '70331' & temp$stdev >= 0.1 & temp$stdev < 1 & !is.na(temp$stdev)], 1), digits = 1)
+  temp$stdev[temp$PARM_CD == '70331' & temp$stdev >= 1 & temp$stdev < 10 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '70331' & temp$stdev >= 1 & temp$stdev < 10 & !is.na(temp$stdev)], 2), digits = 1)
+  temp$stdev[temp$PARM_CD == '70331' & temp$stdev >= 10 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '70331' & temp$stdev >= 10 & !is.na(temp$stdev)], 3), digits = 1)
+  
+  # default rounding array for P00530: 0011233331
+  temp$mean[temp$PARM_CD == '00530' & temp$mean < 0.1] <- round(signif(temp$mean[temp$PARM_CD == '00530' & temp$mean < 0.1], digits = 0), digits = 0)
+  temp$mean[temp$PARM_CD == '00530' & temp$mean >= 0.1 & temp$mean < 10] <- round(signif(
+    temp$mean[temp$PARM_CD == '00530' & temp$mean >= 0.1 & temp$mean < 10], 1), digits = 0)
+  temp$mean[temp$PARM_CD == '00530' & temp$mean >= 10 & temp$mean < 100] <- round(signif(
+    temp$mean[temp$PARM_CD == '00530' & temp$mean >= 10 & temp$mean < 100], 2), digits = 0)
+  temp$mean[temp$PARM_CD == '00530' & temp$mean >= 100] <- round(signif(
+    temp$mean[temp$PARM_CD == '00530' & temp$mean >= 100], 3), digits = 0)
+  
+  temp$stdev[temp$PARM_CD == '00530' & temp$stdev < 0.1 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '00530' & temp$stdev < 0.1 & !is.na(temp$stdev)], digits = 0), digits = 0)
+  temp$stdev[temp$PARM_CD == '00530' & temp$stdev >= 0.1 & temp$stdev < 10 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '00530' & temp$stdev >= 0.1 & temp$stdev < 10 & !is.na(temp$stdev)], 1), digits = 0)
+  temp$stdev[temp$PARM_CD == '00530' & temp$stdev >= 10 & temp$stdev < 100 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '00530' & temp$stdev >= 10 & temp$stdev < 100 & !is.na(temp$stdev)], 2), digits = 0)
+  temp$stdev[temp$PARM_CD == '00530' & temp$stdev >= 100 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '00530' & temp$stdev >= 100 & !is.na(temp$stdev)], 3), digits = 0)
+  
+  # default rounding array for P80155: 0222233332
+  temp$mean[temp$PARM_CD == '80155' & temp$mean < 0.01] <- round(signif(temp$mean[temp$PARM_CD == '80155' & temp$mean < 0.01], digits = 0), digits = 0)
+  temp$mean[temp$PARM_CD == '80155' & temp$mean >= 0.01 & temp$mean < 100] <- round(signif(
+    temp$mean[temp$PARM_CD == '80155' & temp$mean >= 0.01 & temp$mean < 100], 2), digits = 2)
+  temp$mean[temp$PARM_CD == '80155' & temp$mean >= 100] <- round(signif(
+    temp$mean[temp$PARM_CD == '80155' & temp$mean >= 100], 3), digits = 0)
+  
+  temp$stdev[temp$PARM_CD == '80155' & temp$stdev < 0.01 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80155' & temp$stdev < 0.01 & !is.na(temp$stdev)], digits = 0), digits = 0)
+  temp$stdev[temp$PARM_CD == '80155' & temp$stdev >= 0.1 & temp$stdev < 100 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80155' & temp$stdev >= 0.1 & temp$stdev < 100 & !is.na(temp$stdev)], 2), digits = 2)
+  temp$stdev[temp$PARM_CD == '80155' & temp$stdev >= 100 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80155' & temp$stdev >= 100 & !is.na(temp$stdev)], 3), digits = 0)
+  
+  # default rounding array for P80225: 0222233442
+  temp$mean[temp$PARM_CD == '80225' & temp$mean < 0.01] <- round(signif(temp$mean[temp$PARM_CD == '80225' & temp$mean < 0.01], digits = 0), digits = 0)
+  temp$mean[temp$PARM_CD == '80225' & temp$mean >= 0.01 & temp$mean < 100] <- round(signif(
+    temp$mean[temp$PARM_CD == '80225' & temp$mean >= 0.01 & temp$mean < 100], 2), digits = 2)
+  temp$mean[temp$PARM_CD == '80225' & temp$mean >= 100 & temp$mean < 10000] <- round(signif(
+    temp$mean[temp$PARM_CD == '80225' & temp$mean >= 100 & temp$mean < 10000], 3), digits = 0)
+  temp$mean[temp$PARM_CD == '80225' & temp$mean >= 10000] <- round(signif(
+    temp$mean[temp$PARM_CD == '80225' & temp$mean >= 10000], 4), digits = 0)
+  
+  temp$stdev[temp$PARM_CD == '80225' & temp$stdev < 0.01 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80225' & temp$stdev < 0.01 & !is.na(temp$stdev)], digits = 0), digits = 0)
+  temp$stdev[temp$PARM_CD == '80225' & temp$stdev >= 0.01 & temp$stdev < 100 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80225' & temp$stdev >= 0.01 & temp$stdev < 100 & !is.na(temp$stdev)], 2), digits = 2)
+  temp$stdev[temp$PARM_CD == '80225' & temp$stdev >= 100 & temp$stdev < 10000 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80225' & temp$stdev >= 100 & temp$stdev < 10000 & !is.na(temp$stdev)], 3), digits = 0)
+  temp$stdev[temp$PARM_CD == '80225' & temp$stdev >= 10000 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '80225' & temp$stdev >= 10000 & !is.na(temp$stdev)], 4), digits = 0)
+  
+  # default rounding array for P91145: 0012345551
+  temp$mean[temp$PARM_CD == '91145' & temp$mean < 0.1] <- round(signif(temp$mean[temp$PARM_CD == '91145' & temp$mean < 0.1], digits = 0), digits = 0)
+  temp$mean[temp$PARM_CD == '91145' & temp$mean >= 0.1 & temp$mean < 1] <- round(signif(
+    temp$mean[temp$PARM_CD == '91145' & temp$mean >= 0.1 & temp$mean < 1], 1), digits = 1)
+  temp$mean[temp$PARM_CD == '91145' & temp$mean >= 1 & temp$mean < 10] <- round(signif(
+    temp$mean[temp$PARM_CD == '91145' & temp$mean >= 1 & temp$mean < 10], 2), digits = 1)
+  temp$mean[temp$PARM_CD == '91145' & temp$mean >= 10 & temp$mean < 100] <- round(signif(
+    temp$mean[temp$PARM_CD == '91145' & temp$mean >= 10 & temp$mean < 100], 3), digits = 1)
+  temp$mean[temp$PARM_CD == '91145' & temp$mean >= 100 & temp$mean < 1000] <- round(signif(
+    temp$mean[temp$PARM_CD == '91145' & temp$mean >= 100 & temp$mean < 1000], 4), digits = 1)
+  temp$mean[temp$PARM_CD == '91145' & temp$mean >= 1000] <- round(signif(
+    temp$mean[temp$PARM_CD == '91145' & temp$mean >= 1000], 5), digits = 1)
+  
+  temp$stdev[temp$PARM_CD == '91145' & temp$stdev < 0.1 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '91145' & temp$stdev < 0.1 & !is.na(temp$stdev)], digits = 0), digits = 0)
+  temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 0.1 & temp$stdev < 1 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 0.1 & temp$stdev < 1 & !is.na(temp$stdev)], 1), digits = 1)
+  temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 1 & temp$stdev < 10 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 1 & temp$stdev < 10 & !is.na(temp$stdev)], 2), digits = 1)
+  temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 10 & temp$stdev < 100 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 10 & temp$stdev < 100 & !is.na(temp$stdev)], 3), digits = 1)
+  temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 100 & temp$stdev < 1000 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 100 & temp$stdev < 1000 & !is.na(temp$stdev)], 4), digits = 1)
+  temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 1000 & !is.na(temp$stdev)] <- round(signif(
+    temp$stdev[temp$PARM_CD == '91145' & temp$stdev >= 1000 & !is.na(temp$stdev)], 5), digits = 1)
+  
+  #ouput table not in scientific notation
+  temp$min <- round(temp$min, digits = 2)
+  temp$max <- round(temp$max, digits = 2)
+  temp$median <- round(temp$median, digits = 2)
+  temp$mean <- round(temp$mean, digits = 2)
+  temp$stdev <- round(temp$stdev, digits = 2)
+  
+  
   #count number of non-detect samples and join to output
   nonDet <- x[!(x$MEDIUM_CD == "OAQ") & x$PARM_CD %in% pcodes & x$REMARK_CD == "<", ]
   nonDet <- dplyr::summarise(dplyr::group_by(nonDet,SITE_NO,PARM_CD,WY,xsection),

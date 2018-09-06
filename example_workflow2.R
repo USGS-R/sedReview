@@ -231,8 +231,9 @@ centerData <- get_localNWIS(DSN = 'nwisco',
                             STAIDS = sedSites,
                             begin.date = '2015-10-01',
                             end.date = '2017-09-30')
-# You can quickly scan and review the data as needed.
 
+# calc summary stats
+sumStats2 <- calc_summaryStats(centerData)
 
 # count DQI code status
 status2 <- count_sampleStatus(centerData)
@@ -247,7 +248,7 @@ boxcoefSum3 <- summary_boxcoef(centerData, timediff = 3)
 
 #### you can also output the boxcoefficient summary and the data for all sites as an R list. Access list elements using $ operator
 boxcoefSum_all <- summary_boxcoef(centerData, returnAllTables = TRUE)
-fountain_boxcoef <- boxcoefSum_all$`07106300`
+cherrycrk_boxcoef <- boxcoefSum_all$`06713500`
 
 # check EWI/EDI sample verticals
 # Reports a summary of sediment samples that were flagged with # verticals outside the normal ranges for EWI and EDI or where # verticals was missing in the metadata.

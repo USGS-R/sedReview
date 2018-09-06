@@ -57,6 +57,8 @@ check_tss <- function(x, returnAll = FALSE, reviewSummary = FALSE){
     flagSummary <- dplyr::left_join(flagSummary, flaggedSamples, by = c('SITE_NO','STATION_NM','WY'))
     flagSummary[is.na(flagSummary)] <- 0
     
+    flagSummary <- flagSummary[flagSummary$OSW2001_03_flags != 0,]
+    
     return(flagSummary)
   }
   
