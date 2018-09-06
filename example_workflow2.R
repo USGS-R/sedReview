@@ -247,7 +247,7 @@ boxcoefSum3 <- summary_boxcoef(centerData, timediff = 3)
 
 #### you can also output the boxcoefficient summary and the data for all sites as an R list. Access list elements using $ operator
 boxcoefSum_all <- summary_boxcoef(centerData, returnAllTables = TRUE)
-fountain_boxcoef <- boxcoefSum_all$`07106300`
+cherrycrk_boxcoef <- boxcoefSum_all$`06713500`
 
 # check EWI/EDI sample verticals
 # Reports a summary of sediment samples that were flagged with # verticals outside the normal ranges for EWI and EDI or where # verticals was missing in the metadata.

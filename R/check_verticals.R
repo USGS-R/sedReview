@@ -129,6 +129,14 @@ check_verticals <- function(x, returnAll = FALSE, reviewSummary = FALSE){
     }else{flagSummary$EDI_low_vert <- NA}
     
     flagSummary[is.na(flagSummary)] <- 0
+    
+    flagSummary <- flagSummary[flagSummary$EWI_missing_vert != 0 |
+                                 flagSummary$EWI_high_vert != 0 |
+                                 flagSummary$EWI_low_vert != 0 |
+                                 flagSummary$EDI_missing_vert != 0 |
+                                 flagSummary$EDI_high_vert != 0 |
+                                 flagSummary$EDI_low_vert != 0,]
+    
     return(flagSummary)
   }
   

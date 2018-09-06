@@ -49,6 +49,7 @@ check_sedMass <- function(x, returnAll = FALSE, reviewSummary = FALSE){
                               'WY')])
     flagSummary <- dplyr::left_join(flagSummary, flaggedSamples, by = c('SITE_NO','STATION_NM','WY'))
     flagSummary[is.na(flagSummary)] <- 0
+    flagSummary <- flagSummary[flagSummary$sedMassflag != 0,]
     
     return(flagSummary)
   }

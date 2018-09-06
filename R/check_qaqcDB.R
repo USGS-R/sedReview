@@ -62,6 +62,8 @@ check_qaqcDB <- function(x,
     flagSummary <- dplyr::left_join(flagSummary, flaggedSamples, by = c('SITE_NO','STATION_NM','WY'))
     flagSummary[is.na(flagSummary)] <- 0
     
+    flagSummary <- flagSummary[flagSummary$QAQC_DB_flags != 0,]
+    
     return(flagSummary)
   }
   

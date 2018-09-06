@@ -126,6 +126,11 @@ check_bagIE <- function(x, returnAll = FALSE, reviewSummary = FALSE){
     }else{flagSummary$low_IE <- NA}
     
     flagSummary[is.na(flagSummary)] <- 0
+    
+    flagSummary <- flagSummary[flagSummary$IE_missing_info != 0 |
+                                 flagSummary$high_IE !=0 |
+                                 flagSummary$low_IE != 0,]
+    
     return(flagSummary)
   }
   
