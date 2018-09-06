@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_concSandFine.R
 \name{calc_concSandFine}
 \alias{calc_concSandFine}
-\title{calc_concSandFine. calculate sand/fine concentration based on SSC and sand/fine split value and output basic plots}
+\title{calc_concSandFine. calculate sand/fine concentration based on SSC and sand/fine split value}
 \usage{
 calc_concSandFine(x)
 }
@@ -13,12 +13,10 @@ calc_concSandFine(x)
 A dataframe containing all samples with complete SSC, sand/fine split, and calculated sand and fine concentrations
 }
 \description{
-Function to calculate sand/fine concentration based on SSC and sand/fine split value and output basic plots
+Function to calculate sand/fine concentration based on SSC and sand/fine split value
 }
 \details{
 Sand and Fine concentration (mg/L) is calculated for sites with SSC (P80154) and % finer than 62.5 microns (P70331)
-
-Some measure of discharge (P00060, P00061, P30208, P30209, P50042, P72137, P72243, P99060, P99061) must be present a record to plot in plotFlow, otherwise it is removed
 
 Rejected samples are not included.
 }

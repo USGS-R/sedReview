@@ -231,8 +231,9 @@ centerData <- get_localNWIS(DSN = 'nwisco',
                             STAIDS = sedSites,
                             begin.date = '2015-10-01',
                             end.date = '2017-09-30')
-# You can quickly scan and review the data as needed.
 
+# calc summary stats
+sumStats2 <- calc_summaryStats(centerData)
 
 # count DQI code status
 status2 <- count_sampleStatus(centerData)

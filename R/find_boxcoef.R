@@ -174,7 +174,7 @@ find_boxcoef <- function(x, site_no = NULL, timediff = 1,
   }
   
   #Calculate box coefficient
-  sitePairs$calc_box_coef <- sitePairs$RESULT_VA_xsection / sitePairs$RESULT_VA_nonXS
+  sitePairs$calc_box_coef <- round((sitePairs$RESULT_VA_xsection / sitePairs$RESULT_VA_nonXS), digits = 2)
   
   return(sitePairs)
 }
