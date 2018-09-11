@@ -168,10 +168,10 @@ count_activeSed <- function(DSN,
   Results$WY <- sedReview::waterYear(Results$SAMPLE_START_DT, numeric = TRUE)
   
   Table <- dplyr::summarise(dplyr::group_by(Results,SITE_NO,STATION_NM,WY),
-                            SSC_80154 = length(RECORD_NO[PARM_CD == "80154"]),
-                            SandSilt_70331 = length(RECORD_NO[PARM_CD == "70331"]),
-                            TSS_00530 = length(RECORD_NO[PARM_CD == "00530"]),
-                            bedload_80225 = length(RECORD_NO[PARM_CD == "80225"]))
+                            SSC_80154 = length(unique(RECORD_NO[PARM_CD == "80154"])),
+                            SandSilt_70331 = length(unique(RECORD_NO[PARM_CD == "70331"])),
+                            TSS_00530 = length(unique(RECORD_NO[PARM_CD == "00530"])),
+                            bedload_80225 = length(unique(RECORD_NO[PARM_CD == "80225"])))
   ###Remove trailing spaces on site IDs
   
   Table$SITE_NO <- gsub(" ","",Table$SITE_NO)
