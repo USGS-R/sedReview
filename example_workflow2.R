@@ -24,7 +24,7 @@ siteData <- get_localNWIS(DSN = 'nwisco',            # Colorado NWIS server
                             '07106500'),             # Fountain Creek at Pueblo
                           begin.date = '2015-10-01', # WY 2016-2017
                           end.date = '2017-09-30',
-                          approval = 'Non-rejected')
+                          approval = 'All')
 
 # view site data in wide format
 siteData2 <- make_wideTable(siteData)

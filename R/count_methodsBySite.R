@@ -58,7 +58,9 @@ count_methodsBySite <- function(x) {
   if(nrow(sumByMethod_SSC)>0){
     sumByMethod_SSC <- reshape2::dcast(sumByMethod_SSC, SITE_NO + WY ~ RESULT_VA, value.var = 'n')
     names(sumByMethod_SSC) <- paste("SSC_method", names(sumByMethod_SSC), sep = "_")
-  }else{warning("No SSC and Sample Method pairs")}
+  }else{
+    warning("No SSC and Sample Method pairs")
+    sumByMethod_SSC <- NULL}
 
   ##########################
   #Summarize sampler type used for SSC
@@ -85,7 +87,9 @@ count_methodsBySite <- function(x) {
   if(nrow(sumBySampler_SSC)>0){
     sumBySampler_SSC <- reshape2::dcast(sumBySampler_SSC, SITE_NO + WY ~ RESULT_VA, value.var = 'n')
     names(sumBySampler_SSC) <- paste("SSC_sampler", names(sumBySampler_SSC), sep = "_")
-  }else{warning("No SSC and Sampler Type pairs")}
+  }else{
+    warning("No SSC and Sampler Type pairs")
+    sumBySampler_SSC <- NULL}
   
   ##############################
   #Summarize methods used for bedload
