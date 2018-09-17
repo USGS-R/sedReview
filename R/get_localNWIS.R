@@ -668,18 +668,21 @@ get_localNWIS <- function(DSN,
   names(Q)[names(Q) == 'RESULT_VA'] <- 'Q_cfs'
   SSL <- dplyr::left_join(SSC,Q[,c('UID','Q_cfs')], by = 'UID')
   SSL <- SSL[!(SSL$UID %in% existingSSL),]
-  SSL$RESULT_VA <- SSL$SSC_mgL * SSL$Q_cfs * 0.0027
-  SSL <- SSL[!is.na(SSL$RESULT_VA),]
-  SSL$RESULT_VA[SSL$RESULT_VA < 100] <- signif(SSL$RESULT_VA[SSL$RESULT_VA < 100], 2)
-  SSL$RESULT_VA[SSL$RESULT_VA >= 100] <- signif(SSL$RESULT_VA[SSL$RESULT_VA >= 100], 3)
-  SSL$PARM_CD <- '80155'
-  SSL$PARM_NM <- 'Suspnd sedmnt disch'
-  SSL$METH_CD <- 'ALGOR'
-  SSL$PARM_DS <- 'Suspended sediment discharge, short tons per day'
-  SSL$Val_qual <- paste(SSL$RESULT_VA,SSL$REMARK_CD, sep = " ")
-  SSL$Val_qual <- gsub("Sample","",SSL$Val_qual)
-  SSL <- SSL[,1:79]
-  longTable <- rbind(longTable, SSL)
+  if(nrow(SSL)>0){
+    SSL$RESULT_VA <- SSL$SSC_mgL * SSL$Q_cfs * 0.0027
+    SSL <- SSL[!is.na(SSL$RESULT_VA),]
+    SSL$RESULT_VA[SSL$RESULT_VA < 100] <- signif(SSL$RESULT_VA[SSL$RESULT_VA < 100], 2)
+    SSL$RESULT_VA[SSL$RESULT_VA >= 100] <- signif(SSL$RESULT_VA[SSL$RESULT_VA >= 100], 3)
+    SSL$PARM_CD <- '80155'
+    SSL$PARM_NM <- 'Suspnd sedmnt disch'
+    SSL$METH_CD <- 'ALGOR'
+    SSL$PARM_DS <- 'Suspended sediment discharge, short tons per day'
+    SSL$Val_qual <- paste(SSL$RESULT_VA,SSL$REMARK_CD, sep = " ")
+    SSL$Val_qual <- gsub("Sample","",SSL$Val_qual)
+    SSL <- SSL[,1:79]
+    longTable <- rbind(longTable, SSL)
+  }
+  
   
   ### Subset to samples based on approval flag setting
   if(!(approval %in% c('All','Rejected','Non-rejected'))){
