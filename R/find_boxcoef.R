@@ -108,9 +108,10 @@ find_boxcoef <- function(x, site_no = NULL, timediff = 1,
   
   # if no pairs possible, return empty dataframe
   if(nrow(methodNX) == 0 | nrow(methodX) == 0){
-    sitePairs <- as.data.frame(matrix(nrow = 0,ncol = 10))
+    sitePairs <- as.data.frame(matrix(nrow = 0,ncol = 13))
     names(sitePairs) <- c("SITE_NO","STATION_NM","UID_nonXS","SAMPLE_START_DT_nonXS","method_nonXS","RESULT_VA_nonXS",
-                          "RESULT_VA_xsection","SAMPLE_START_DT_xsection","method_xsection","UID_xsection")
+                          "RESULT_VA_xsection","SAMPLE_START_DT_xsection","method_xsection","UID_xsection",
+                          "QW_flow_cfs_nonXS","QW_flow_cfs_xsection","calc_box_coef")
     return(sitePairs)
   }
   
