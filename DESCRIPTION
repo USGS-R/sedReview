@@ -20,7 +20,8 @@ Imports:
     ggplot2,
     cowplot,
     dataRetrieval,
-    shiny
+    shiny,
+    DT
 Suggests:
     xtable,
     knitr,
