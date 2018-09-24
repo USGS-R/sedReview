@@ -1,11 +1,12 @@
 Package: sedReview
 Type: Package
-Title: Package for review of discrete water-quality sediment data stored in the USGS NWIS system
-Version: 0.1
-Date: 2017-04-25
+Title: Package and shiny GUI for review of discrete water-quality sediment data stored in the USGS NWIS system
+Version: 1.0
+Date: 2018-09-24
 Authors@R: as.person(c(
     "T. Joe Mills <tmills@usgs.gov> [aut, cre]", 
     "Colin Penn <cpenn@usgs.gov> [aut]",
+    "Cory Williams <cawillia@usgs.gov [aut]",
     "Molly Wood <mwood@usgs.gov> [aut]")
     )
 Depends:
@@ -18,7 +19,9 @@ Imports:
     stringi,
     ggplot2,
     cowplot,
-    dataRetrieval
+    dataRetrieval,
+    shiny,
+    DT
 Suggests:
     xtable,
     knitr,
