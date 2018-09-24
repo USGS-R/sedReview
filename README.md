@@ -1,7 +1,7 @@
 `sedReview`
 ==========
 # Overview
-Package for USGS discrete sediment data review. IN DEVELOPMENT.
+Package for USGS discrete sediment data review and box coefficient development. Currently in Beta testing.
 
 # Package Status
 |Linux|Windows| Test Coverage | USGS Status |
