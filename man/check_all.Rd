@@ -4,7 +4,8 @@
 \alias{check_all}
 \title{check_all. Run all project level review checks, counts, finds, and calcs on a dataset.}
 \usage{
-check_all(x, qa.db = "02", includeUV = FALSE, returnAllTables = FALSE)
+check_all(x, qa.db = "02", includeUV = FALSE,
+  returnAllTables = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}

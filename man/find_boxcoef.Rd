@@ -5,9 +5,9 @@
 \title{find_boxcoef. Find box coefficient pairs between SSC non-cross section/point samples and 
 SSC cross section samples at a site.}
 \usage{
-find_boxcoef(x, site_no = NULL, timediff = 1, methods_NX = c(30, 40, 50,
-  55, 70, 100, 900, 920, 930, 940, 4033, 4080), methods_X = c(10, 15, 20),
-  includeUV = FALSE)
+find_boxcoef(x, site_no = NULL, timediff = 1, methods_NX = c(30, 40,
+  50, 55, 70, 100, 900, 920, 930, 940, 4033, 4080), methods_X = c(10, 15,
+  20), includeUV = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
