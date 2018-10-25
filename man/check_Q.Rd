@@ -4,7 +4,8 @@
 \alias{check_Q}
 \title{check_Q. Searches for samples that were collected for sediment data but are missing discharge measurements}
 \usage{
-check_Q(x, includeUV = FALSE, returnAll = FALSE, reviewSummary = FALSE)
+check_Q(x, includeUV = FALSE, returnAll = FALSE,
+  reviewSummary = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}

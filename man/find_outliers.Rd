@@ -4,8 +4,8 @@
 \alias{find_outliers}
 \title{find_outliers. Flag sediment outliers based on threshold criteria.}
 \usage{
-find_outliers(x, site_no = NULL, lowThreshold = 0.1, highThreshold = 0.9,
-  returnAll = FALSE)
+find_outliers(x, site_no = NULL, lowThreshold = 0.1,
+  highThreshold = 0.9, returnAll = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}

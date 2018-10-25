@@ -15,7 +15,7 @@ library(leaflet)
 ################
 
 ui <- navbarPage(
-  titlePanel(title = "SedReview v1.0"),
+  titlePanel(title = NULL, windowTitle = "SedReview v1.0"),
   tabPanel("U.S. Geological Survey SedReview v1.0.0", h4("Welcome to SedReview v1.0.0.: Discrete sediment data review and exploration toolbox. Please use the 'Site-Level Assessment Module' to review and plot data from a specific site. Please use the 'Science-Center Review Module' to perform high-level data reviews for an entire Water Science Center.")
     
   ),
