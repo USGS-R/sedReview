@@ -1,4 +1,4 @@
-# Draft Version 0.16_2 of BoxCoeff tool. Author Cory A. Williams, 09/21/2018
+# Draft Version 0.16_14 of BoxCoeff tool. Author Cory A. Williams, 2019-02-06
 ################
 library(shiny)
 library(shinyBS)
@@ -12,14 +12,19 @@ library(broom)
 library(smwrBase)
 library(dataRetrieval)
 library(leaflet)
+library(shinycssloaders)
 ################
 
 ui <- navbarPage(
-  titlePanel(title = h5("", align="center")),
-  tabPanel("U.S. Geological Survey SedReview v1.0.0", h4("Welcome to SedReview v1.0.0.: Discrete sediment data review and exploration toolbox. Please use the 'Site-Level Assessment Module' to review and plot data from a specific site. Please use the 'Science-Center Review Module' to perform high-level data reviews for an entire Water Science Center.")
-    
+  titlePanel(title = NULL, windowTitle = "SedReview v1.0"),
+  tabPanel(title = img(src="Logo.png", width="60px",height = "20px"),
+           h3("Welcome to SedReview v1.0: Discrete sediment data review and exploration toolbox."),
+           h4("Please use the 'Site-Level Assessment Module' to review and plot data from a specific site."),
+           h4("Please use the 'Science-Center Review Module' to perform high-level data reviews for an entire Water Science Center."),
+           h4(helpText(a('User Guide', href=NULL,target="_blank"))),
+           h4(helpText(a("Additional Info: SedReview 1.0 GitHub",
+                         href="https://github.com/USGS-R/sedReview",target="_blank")))
   ),
-  
   
   
   tabPanel("Site-Level Assessment Module", helpText(h4(verbatimTextOutput("site"))),
@@ -28,10 +33,10 @@ ui <- navbarPage(
     tabPanel(title = "User Input and Summary",
              sidebarLayout(
                sidebarPanel(
-                 textInput(inputId = "DBName", label = "Please enter your ODBC Database connection Name", value = "NWISCO"),
+                 textInput(inputId = "DBName", label = "Please enter your ODBC Database connection name", value = "NWISCO"),
                  textInput(inputId = "env.db", label = "Please enter your database number of environmental samples", value = "01"),
                  textInput(inputId = "qa.db", label = "Please enter your database number of QA samples", value = "02"),
-                 textInput(inputId = "varSite", label = "Please enter your 8- or 15-digit USGS station id", value = "385626107212000"),
+                 textInput(inputId = "varSite", label = "Please enter your 8- or 15-digit USGS station ID", value = "385626107212000"),
                  textInput(inputId = "beginDT", label = "Please enter starting date for reference period", value = "2012/10/01"),
                  textInput(inputId = "analysisBeginDT", label = "Please enter starting date for analysis period", value = "2016/10/01"),
                  bsTooltip("beginDT", "Reference period - Period of historical data. Sample results during the reference period will be shown on plots for comparison with sample results during the analysis period.", "right","hover", options = list(container = "body")),
@@ -42,8 +47,9 @@ ui <- navbarPage(
                ),
                
                mainPanel(
-                 h4("Summary Stats", align="center"),
-                 DT::dataTableOutput("sumtable")
+                 h4("Summary Stats", align="center"), 
+                 helpText("Data available for download using NWIS interface, below:"), helpText( a("NWIS link", target= "_blank", href= "https://nwis.waterdata.usgs.gov/nwis/qwdata?search_criteria=search_site_no&submitted_form=introduction")),
+                 withSpinner(DT::dataTableOutput("sumtable"))
              )
            )
     ),
@@ -51,7 +57,7 @@ ui <- navbarPage(
     
     tabPanel(title = "Rejected Sediment Data",
              h4("Rejected Sediment Data Table", align="center"),
-             DT::dataTableOutput("rejectedtable")
+             withSpinner(DT::dataTableOutput("rejectedtable"))
     ),
     
     tabPanel(title = "Outlier Explorer",
@@ -63,7 +69,7 @@ ui <- navbarPage(
                  selectInput(inputId = "varx2", label = "Please select X variable from the dataset", choices=c("Streamflow" = 7, "Date-Time" = 4, "Turbidity_FNU" = 5, "Specific conductance" = 6, "Suspended Sediment Concentration" = 8)),
                  selectInput(inputId = "vary2", label = "Please select Y variable from the dataset", choices=c("Suspended Sediment Concentration" = 8, "Sand/Silt-break percent finer" = 9, "Bedload" = 10)), #, "Total Suspended Solids" = 11
                  selectInput(inputId = "percentileHigh", label = "Please select 'greater than' percentile for outlier", choices=c("0.99", "0.95", "0.90", "0.85", "0.80")),
-                 selectInput(inputId = "percentileLow", label = "Please select 'less than' percentile for outlier", choices=c("0.99", "0.95", "0.90", "0.85", "0.80")),
+                 selectInput(inputId = "percentileLow", label = "Please select 'less than' percentile for outlier", choices=c("0.01", "0.05", "0.10", "0.15", "0.20")),
                  checkboxInput(inputId = "outlierlabel", label = "Add label to plot: RECORD_NO (labels are record#_database#).", value = FALSE)
                ),
                
@@ -73,9 +79,9 @@ ui <- navbarPage(
                  h3("Outlier Plots", align="center"),
                  h5("These plots show potential outliers in the analysis period. Currently, outliers are defined as values above and below the selected percentiles for the y-axis variables."),
                  h4("Outlier greater than threshold", align="center"),
-                 plotOutput("plot2", dblclick = "plot2_dblclick", height = 250),
+                 withSpinner(plotOutput("plot2", dblclick = "plot2_dblclick", height = 250)),
                  h4("Outlier less than threshold", align="center"),
-                 plotOutput("plot3", dblclick = "plot2_dblclick", height = 250),
+                 withSpinner(plotOutput("plot3", dblclick = "plot2_dblclick", height = 250)),
                  
                  # verbatimTextOutput("plot2info"),
                  # verbatimTextOutput("header"),
@@ -84,7 +90,7 @@ ui <- navbarPage(
                  #verbatimTextOutput("info"),
                  h4("Outlier Table", align="center"),
                  helpText("Tests whether sample results are outliers. Flags if an outlier. Currently looks at SSC, SSL, bedload loss on ignition, suspended sediment loss on ignition, and sand/silt break."),
-                 DT::dataTableOutput("outlierTable")
+                 withSpinner(DT::dataTableOutput("outlierTable"))
                )
               )
     ),
@@ -95,88 +101,87 @@ ui <- navbarPage(
              h4("Data flag summary", align="center"),
              helpText("This table summarizes samples that had one or more flags in the following data quality tests:"),
              helpText("bagIEFlags: Tests whether required  intake efficiency test parameters are reported when bag samplers are used (required as of June 2013 per OSW Memo 2013.03). Flags if missing."),
-             helpText("noResultFlags: Tests whether an analytical result is missing for a sample."),
-             helpText("Qflags: Tests whether some measure of discharge is provided as metadata for a sample. Flags if missing."),
+             helpText("CommentNoResultFlags: Returns a table with sample or analytical result comments and tests whether an analytical result is missing for a sample."),
+             helpText("QFlags: Tests whether some measure of discharge is provided as metadata for a sample. Flags if missing."),
              helpText("metaDataFlags: Tests whether samples are missing required sample metadata, such as sample purpose, sampler type, sampling method, and type of associated QA with sample (if applicable). Includes tests in NWIS 20.xx level checks.For more information, see:", a("link to NWIS 20.xx level checks", target= "_blank", href= "http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check20-sql.html")),
-             helpText("samplePurpFlags: Tests whether a sample purpose code (71999) differs from other samples collected at site (there are certainly valid reasons for this, but just provides a reminder to check that these are correct."),
+             helpText("samplePurpFlags: Tests whether a sample purpose code (71999) differs from other samples collected at a site (there are certainly valid reasons for this, but just provides a reminder to check that these are correct)."),
              helpText("samplerTypeFlags: Tests whether a sampler type code (84164) differs from others reported. Flags if sampler type code is used 3 or fewer times (again, there are valid reasons for this, so just a check)."),
              helpText("sedMassFlags: Tests whether a sample has a sediment mass less than 2 mg. Flags if so. (Note: this is a new piece of metadata (pcode 91157) reported by USGS sediment laboratories so will not be available for historical data)."),
              helpText("tssFlags: Tests whether there is a TSS result without an accompanying SSC result, per OSW memo 01.03. Flags if TSS stands alone."),
              helpText("verticalsFlags: Tests whether sufficient verticals were sampled and reported (criteria are between 4 and 9 verticals for an EDI sample and between 10 and 20 verticals for an EWI samples)."),
              helpText("qaqcFlags: Tests whether samples coded as SSC, bedload, or bedload mass are stored in the QA database. Flags if a sediment sample is in the QA database. This is just a check to see if any sediment samples have been entered (manually or otherwise) into the QA database."),
-             DT::dataTableOutput("flagtablesum")
+             withSpinner(DT::dataTableOutput("flagtablesum"))
     ),
     
     tabPanel(title = "Sampling method summary",
              h4("Count of SSC sampling method, sampler type and bedload method", align="center"),
-             helpText("[SSC_method_10 = EWI; SSC_method_15 = multiple verticals, non-isokinetic, equal widths and transit rates; SSC_method_20 = EDI;  SSC_method_40 = multiple verticals; SSC_method_70 = grab sample; SSC_sampler_100 = Van Dorn; SSC_sampler_3044 = DH-81; SSC_sampler_3045 = DH-81 with Teflon cap and nozzle; SSC_sampler_3051 = DH-95 Teflon bottle; SSC_sampler_3052 = DH-95 plastic bottle; SSC_sampler_3054 = D-95 plastic bottle; SSC_sampler_3055 = D-96; SSC_sampler_3071 = open-mouth bottle; SSC_sampler_8000 = none.]"),
-             DT::dataTableOutput("flagtable10")
+             helpText("[SSC_method_10 = EWI; SSC_method_15 = multiple verticals, non-isokinetic, equal widths and transit rates; SSC_method_20 = EDI;  SSC_method_40 = multiple verticals; SSC_method_70 = grab sample; SSC_sampler_100 = Van Dorn; SSC_sampler_3044 = DH-81; SSC_sampler_3045 = DH-81 with Teflon cap and nozzle; SSC_sampler_3051 = DH-95 Teflon bottle; SSC_sampler_3052 = DH-95 plastic bottle; SSC_sampler_3054 = D-95 plastic bottle; SSC_sampler_3055 = D-96; SSC_sampler_3071 = open-mouth bottle; SSC_sampler_8000 = none.]"), helpText( a("link to additional sampling codes", target= "_blank", href= "https://help.waterdata.usgs.gov/code/fixed_parms_query?fmt=html")),
+             withSpinner(DT::dataTableOutput("flagtable10"))
     ),
     
     tabPanel(title = "Bag-sampler IE check",
              h4("Missing bag-sampler intake-efficency data", align="center"),
              helpText("Tests whether required  intake efficiency test parameters are reported when bag samplers are used (required as of June 2013 per OSW Memo 2013.03). Flags if missing."),
-             DT::dataTableOutput("flagtable1")
+             withSpinner(DT::dataTableOutput("flagtable1"))
     ),
     
-    tabPanel(title = "Missing analytical result check",
-             h4("Samples with missing analytical results", align="center"),
-             helpText("Tests whether an analytical result is missing for a sample."),
-             DT::dataTableOutput("flagtable12")
+    tabPanel(title = "Sample/Result comments & Missing result check",
+             h4("Table of Sample/Result comments and flags for missing analytical results", align="center"),
+             helpText("Returns a table with sample or analytical result comments and tests whether an analytical result is missing for a sample."),
+             withSpinner(DT::dataTableOutput("flagtable12"))
     ),
     
     tabPanel(title = "Streamflow check",
              h4("Missing associated streamflow data", align="center"),
              helpText("Tests whether some measure of discharge is provided as metadata for a sample. Flags if missing."),
-             DT::dataTableOutput("flagtable2")
+             withSpinner(DT::dataTableOutput("flagtable2"))
     ),
     
     tabPanel(title = "Metadata check",
              h4("Flags of metadata fields", align="center"),
              helpText("Tests whether samples are missing required sample metadata, such as sample purpose, sampler type, sampling method, and type of associated QA with sample (if applicable). Includes tests in NWIS 20.xx level checks. For more information, see:", a("link to NWIS 20.xx level checks", target= "_blank", href= "http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check20-sql.html")),
-             DT::dataTableOutput("flagtable3")
-    ),
-    
-    tabPanel(title = "QAQC check",
-             h4("Check for sediment samples that are in the QAQC database", align="center"),
-             helpText("Tests whether samples coded as SSC, bedload, or bedload mass are stored in the QA database. Flags if a sediment sample is in the QA database.  (Note: most qa/qc samples for sediment are NOT stored in the qa database because they are considered environmental samples. Storage of sediment replicates is coded by default in SedLogin in the main environmental database. This is just a check to see if any sediment samples have been entered (manually or otherwise) into the QA database."),
-             DT::dataTableOutput("flagtable4")
+             withSpinner(DT::dataTableOutput("flagtable3"))
     ),
     
     tabPanel(title = "Sample purpose check",
              h4("Samples not collected with most common purpose code", align="center"),
-             helpText("Tests whether a sample purpose code (71999) differs from other samples collected at site (there are certainly valid reasons for this, but just provides a reminder to check that these are correct."),
-             DT::dataTableOutput("flagtable5")
+             helpText("Tests whether a sample purpose code (71999) differs from other samples collected at a site (there are certainly valid reasons for this, but just provides a reminder to check that these are correct)."),
+             withSpinner(DT::dataTableOutput("flagtable5"))
     ),
     
     tabPanel(title = "Sampler type check",
              h4("Samples not collected with most common sampler type", align="center"),
              helpText("Tests whether a sampler type code (84164) differs from others reported. Flags if sampler type code is used 3 or fewer times (again, there are valid reasons for this, so just a check)."),
-             DT::dataTableOutput("flagtable6")
+             withSpinner(DT::dataTableOutput("flagtable6"))
     ),
     
     tabPanel(title = "Sediment mass check",
              h4("Flag samples with sediment less than 2 milligrams", align="center"),
-             helpText("Tests whether a sample has a sediment mass less than 2 mg. Flags if so. (Note: this is a new piece of metadata (pcode 91157) reported by USGS sediment laboratories so will not be available for historical data)."),
-             DT::dataTableOutput("flagtable7")
+             helpText("Tests whether a sample has a sediment mass less than 2 mg. Flags if so. Note: this is a new piece of metadata (pcode 91157) reported by USGS sediment laboratories so will not be available for historical data."),
+             withSpinner(DT::dataTableOutput("flagtable7"))
     ),
     
     tabPanel(title = "Unpaired-TSS samples",
              h4("Samples with TSS analysis without associated SSC data", align="center"),
              helpText("Tests whether there is a TSS result without an accompanying SSC result, per OSW memo 01.03. Flags if TSS stands alone."),
-             DT::dataTableOutput("flagtable8")
+             withSpinner(DT::dataTableOutput("flagtable8"))
     ),
     
     tabPanel(title = "EWI/EDI verticals check",
              h4("EWI/EDI samples low/high/missing verticals", align="center"),
              helpText("Tests whether sufficient verticals were sampled and reported (criteria are between 4 and 9 verticals for an EDI sample and between 10 and 20 verticals for an EWI samples)"),
-             DT::dataTableOutput("flagtable9")
+             withSpinner(DT::dataTableOutput("flagtable9"))
     ),
     
     tabPanel(title = "DQI status summary",
-             h4("Summary of counts of sediment-associated data with DQI codes of Q (reviewed and rejected), R (reviewed and accepted), S (presumed satisfactory), and U (research/unapproved method or lab) when present in Reference and Analysis periods.", align="center"),
+             h4("Summary of counts of sediment-associated data with DQI codes of A (historical data), S (presumed satisfactory), I (awaiting review), R (reviewed and accepted), Q (reviewed and rejected), P (proprietary, not reviewed), O (proprietary, reviewed and approved), X (proprietary, reviewed and rejected), and U (research/unapproved method or lab) when present in Reference and Analysis periods.", align="center"),
              #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-             DT::dataTableOutput("flagtable11")
+             withSpinner(DT::dataTableOutput("flagtable11"))
+    ),
+    tabPanel(title = "QAQC check",
+             h4("Check for sediment samples that are in the QAQC database", align="center"),
+             helpText("Tests whether samples coded as SSC, bedload, or bedload mass are stored in the QA database. Flags if a sediment sample is in the QA database.  Note: most qa/qc samples for sediment are NOT stored in the qa database because they are considered environmental samples. Storage of sediment replicates is coded by default in SedLogin in the main environmental database. This is just a check to see if any sediment samples have been entered (manually or otherwise) into the QA database."),
+             withSpinner(DT::dataTableOutput("flagtable4"))
     )
     ),
     
@@ -201,68 +206,68 @@ ui <- navbarPage(
                tabPanel(title = "Time Series Plots",
                         h4("Time series plot of SSC (80154)", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("TSplot1", height = 400),
+                        withSpinner(plotOutput("TSplot1", height = 400)),
                         
                         h4("Time series plot of sand/silt break (70331)", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("TSplot2", height = 400),
+                        withSpinner(plotOutput("TSplot2", height = 400)),
                         
                         h4("Time series plot of SSL (80155)", align="center"),
                         helpText("Samples without an accompanying discharge will not appear in this plot"),
-                        plotOutput("TSplot3", height = 250),
+                        withSpinner(plotOutput("TSplot3", height = 250)),
 
                         h4("Time series plot of bedload (80225)", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("TSplot4", height = 250),
+                        withSpinner(plotOutput("TSplot4", height = 250)),
 
                         h4("Time series plot of bedload mass (91145)", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("TSplot5", height = 250),
+                        withSpinner(plotOutput("TSplot5", height = 250)),
                         
                         h4("Time series plot of total suspended solids (00530)", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("TSplot6", height = 250)
+                        withSpinner(plotOutput("TSplot6", height = 250))
                         
                ),
                
                tabPanel(title = "Scatter Plots",
                         h4("Scatter plot of SSC (80154) by discharge (00060, 00061, 30208, or 30209) - if more than one discharge parameter is available, plot by default 00060 or 00061", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("Splot1", height = 400),
+                        withSpinner(plotOutput("Splot1", height = 400)),
                         
                         h4("Scatter plot of sand/silt break (70331) by discharge", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("Splot2", height = 400),
+                        withSpinner(plotOutput("Splot2", height = 400)),
                         
                         h4("Scatter plot of bedload (80225) by discharge", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("Splot3", height = 400),
+                        withSpinner(plotOutput("Splot3", height = 400)),
                         
                         h4("Scatter plot of SSC (80154) by turbidity (00076, 61028, 63675, 63676, 63677, 63679, 63680, 63681, 63682, 63683, 63684, 72188, 72208, 72209, 72213, 82079, OR 99872, whatever is available).", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("Splot4", height = 400),
+                        withSpinner(plotOutput("Splot4", height = 400)),
                         
                         h4("Scatter plot of total suspended solids (00530) by discharge", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("Splot5", height = 400),
+                        withSpinner(plotOutput("Splot5", height = 400)),
                         
                         h4("Scatter plot of total suspended solids (00530) by SSC (80154)", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("Splot6", height = 400)
+                        withSpinner(plotOutput("Splot6", height = 400))
                ),
                
                tabPanel(title = "Box Plots",
                         h4("Boxplots of TSS (00530) and SSC (80154)", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("Bplot1", height = 250),
+                        withSpinner(plotOutput("Bplot1", height = 250)),
                         
                         h4("Boxplots of SSC (80154)", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("Bplot2", height = 250),
+                        withSpinner(plotOutput("Bplot2", height = 250)),
                         
                         h4("Boxplots of TSS (00530)", align="center"),
                         #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                        plotOutput("Bplot3", height = 250)
+                        withSpinner(plotOutput("Bplot3", height = 250))
                )
     ),
     
@@ -288,7 +293,7 @@ ui <- navbarPage(
                  verbatimTextOutput("bx_datadblclickinfo"),
                  helpText("Point selection information (left-click, and drag rectangle):", align="center"),
                  verbatimTextOutput("bx_datadblbrushinfo"),
-                 DT::dataTableOutput("mytable")
+                 withSpinner(DT::dataTableOutput("mytable"))
                  
                )
              )
@@ -305,10 +310,10 @@ ui <- navbarPage(
     mainPanel(
       h4("Box Coefficient Plot with Best-Fit Line", align="center"),
       helpText("Best-fit line (shown as red line) and 95th confidence-interval (shown as grey shading) shown in plot based on samples retained from within the analysis period (shown as red dots)."),
-      helpText("Referrence period samples and 'removed' samples from analysis period (shown as black dots)."),
-      h6("Regression Fit, wiht Y-intercept set to zero", align="center"),
+      helpText("Reference period samples and 'removed' samples from analysis period (shown as black dots)."),
+      h6("Regression Fit, with Y-intercept set to zero", align="center"),
       verbatimTextOutput("model"),
-  plotOutput("plot1b", height = 250),
+      withSpinner(plotOutput("plot1b", height = 250)),
 
   # h4("double-Click info", align="center"),
   # verbatimTextOutput("bxe_datadblclickinfo"),
@@ -318,9 +323,9 @@ ui <- navbarPage(
   # verbatimTextOutput("info"),
   
   h4("Exploratory Scatter Plot", align="center"),
-  helpText("Samples retained from within the analysis period (shown as red dots) and samples from the referrence period samples and 'removed' samples from analysis period (shown as black dots)."),
+  helpText("Samples retained from within the analysis period (shown as red dots) and samples from the reference period samples and 'removed' samples from analysis period (shown as black dots)."),
   
-  plotOutput("plot1", height = 250)
+  withSpinner(plotOutput("plot1", height = 250))
   
       )
     )
@@ -349,7 +354,8 @@ tabsetPanel(
              mainPanel(
                h4("Science-Center Summary", align="center"),
                helpText("Table containing overview of sites with sediment data, how much, and review status organized by site, year, and data type, below"),
-               DT::dataTableOutput("centerSumtable")
+               helpText("Data available for download using NWIS interface, below:"), helpText( a("NWIS link", target= "_blank", href= "https://nwis.waterdata.usgs.gov/nwis/qwdata?search_criteria=search_site_no&submitted_form=introduction")),
+               withSpinner(DT::dataTableOutput("centerSumtable"))
              )
            )
   ),
@@ -366,7 +372,7 @@ tabsetPanel(
            ),
            
            mainPanel(
-           leafletOutput("activeMap"),
+             withSpinner(leafletOutput("activeMap")),
            DT::dataTableOutput("map1Sitetable")
            )
            )
@@ -386,9 +392,9 @@ tabsetPanel(
              ),
              
              mainPanel(
-               leafletOutput("PcodeMap"),
-               DT::dataTableOutput("map2Sitetable"),
-               DT::dataTableOutput("map2Sampletable")
+               withSpinner(leafletOutput("PcodeMap")),
+               DT::dataTableOutput("map2Sitetable")
+               #DT::dataTableOutput("map2Sampletable")
              )
   )
   ),
@@ -405,13 +411,13 @@ tabsetPanel(
              tabPanel(title = "Bag-sampler IE check",
                       h4("Missing bag-sampler intake-efficency data", align="center"),
                       helpText("Tests whether required  intake efficiency test parameters are reported when bag samplers are used (required as of June 2013 per OSW Memo 2013.03). Flags if missing."),
-                      DT::dataTableOutput("SCLflagtable1")
+                      withSpinner(DT::dataTableOutput("SCLflagtable1"))
              ),
              
              tabPanel(title = "Streamflow check",
                       h4("Missing associated streamflow data", align="center"),
                       helpText("Tests whether some measure of discharge is provided as metadata for a sample. Flags if missing."),
-                      DT::dataTableOutput("SCLflagtable2")
+                      withSpinner(DT::dataTableOutput("SCLflagtable2"))
              ),
              
              # tabPanel(title = "Metadata check",
@@ -423,7 +429,7 @@ tabsetPanel(
              tabPanel(title = "QAQC check",
                       h4("Check for sediment samples that are in the QAQC database", align="center"),
                       helpText("Tests whether samples coded as SSC, bedload, or bedload mass are stored in the QA database. Flags if a sediment sample is in the QA database.  (Note: most qa/qc samples for sediment are NOT stored in the qa database because they are considered environmental samples. Storage of sediment replicates is coded by default in SedLogin in the main environmental database. This is just a check to see if any sediment samples have been entered (manually or otherwise) into the QA database."),
-                      DT::dataTableOutput("SCLflagtable4")
+                      withSpinner(DT::dataTableOutput("SCLflagtable4"))
              ),
              
              # tabPanel(title = "Sample purpose check",
@@ -441,31 +447,31 @@ tabsetPanel(
              tabPanel(title = "Sediment mass check",
                       h4("Flag samples with sediment less than 2 milligrams", align="center"),
                       helpText("Tests whether a sample has a sediment mass less than 2 mg. Flags if so. (Note: as of September 2018, sediment mass data (pcode 91157) are not yet reported by USGS sediment laboratories. Future samples will show in this table if mass is less than 2 mg)"),
-                      DT::dataTableOutput("SCLflagtable7")
+                      withSpinner(DT::dataTableOutput("SCLflagtable7"))
              ),
              
              tabPanel(title = "Unpaired-TSS sample check",
                       h4("Samples with TSS analysis without associated SSC data", align="center"),
                       helpText("Tests whether there is a TSS result without an accompanying SSC result, per OSW memo 01.03. Flags if TSS stands alone."),
-                      DT::dataTableOutput("SCLflagtable8")
+                      withSpinner(DT::dataTableOutput("SCLflagtable8"))
              ),
              
              tabPanel(title = "EWI/EDI verticals check",
                       h4("EWI/EDI samples low/high/missing verticals", align="center"),
                       helpText("Tests whether sufficient verticals were sampled and reported (criteria are between 4 and 9 verticals for an EDI sample and between 10 and 20 verticals for an EWI sample)."),
-                      DT::dataTableOutput("SCLflagtable9")
+                      withSpinner(DT::dataTableOutput("SCLflagtable9"))
              ),
              
              tabPanel(title = "Sampling method summary",
                       h4("Count of SSC sampling method, sampler type and bedload method", align="center"),
-                      helpText("[SSC_method_10 = EWI; SSC_method_15 = multiple verticals, non-isokinetic, equal widths and transit rates; SSC_method_20 = EDI;  SSC_method_40 = multiple verticals; SSC_method_70 = grab sample; SSC_sampler_100 = Van Dorn; SSC_sampler_3044 = DH-81; SSC_sampler_3045 = DH-81 with Teflon cap and nozzle; SSC_sampler_3051 = DH-95 Teflon bottle; SSC_sampler_3052 = DH-95 plastic bottle; SSC_sampler_3054 = D-95 plastic bottle; SSC_sampler_3055 = D-96; SSC_sampler_3071 = open-mouth bottle; SSC_sampler_8000 = none.]"),
-                      DT::dataTableOutput("SCLflagtable10")
+                      helpText("[SSC_method_10 = EWI; SSC_method_15 = multiple verticals, non-isokinetic, equal widths and transit rates; SSC_method_20 = EDI;  SSC_method_40 = multiple verticals; SSC_method_70 = grab sample; SSC_sampler_100 = Van Dorn; SSC_sampler_3044 = DH-81; SSC_sampler_3045 = DH-81 with Teflon cap and nozzle; SSC_sampler_3051 = DH-95 Teflon bottle; SSC_sampler_3052 = DH-95 plastic bottle; SSC_sampler_3054 = D-95 plastic bottle; SSC_sampler_3055 = D-96; SSC_sampler_3071 = open-mouth bottle; SSC_sampler_8000 = none.]"), helpText( a("link to additional sampling codes", target= "_blank", href= "https://help.waterdata.usgs.gov/code/fixed_parms_query?fmt=html")),
+                      withSpinner(DT::dataTableOutput("SCLflagtable10"))
              ),
              
              tabPanel(title = "DQI status summary",
                       h4("Summary of counts of sediment-associated data with DQI codes of Q (reviewed and rejected), R (reviewed and accepted), S (presumed satisfactory), and U (research/unapproved method or lab) when present in Review period.", align="center"),
                       #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      DT::dataTableOutput("SCLflagtable11")
+                      withSpinner(DT::dataTableOutput("SCLflagtable11"))
              )
   ),
   
@@ -478,7 +484,7 @@ tabsetPanel(
            helpText("Summary of data by site, and year for SSC box coefficients"),
            numericInput(inputId = "searchInterval2", label = "Please enter your search interval in hrs", value = "0.50", step = 0.25),
            actionButton(inputId = "reviewLoad", label = "Pull Summary!"),
-           DT::dataTableOutput("SCLBoxCoefftable")
+           withSpinner(DT::dataTableOutput("SCLBoxCoefftable"))
   )
 )
 )
@@ -486,7 +492,7 @@ tabsetPanel(
 
 
 
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   # Data Pull routine
  siteData <- eventReactive(input$dataPull, {
@@ -936,7 +942,7 @@ server <- function(input, output) {
      
      Map1table <- reactive({ #https://blog.exploratory.io/filter-with-text-data-952df792c2ba
        ActiveSedSites()%>%
-         select("SITE_NO", "STATION_NM", "SSC_80154", "SandSilt_70331", "TSS_00530", "bedload_80225")#%>%
+         select("SITE_NO", "STATION_NM", "WY", "SSC_80154", "SandSilt_70331", "TSS_00530", "bedload_80225")#%>%
          #filter(str_detect(SITE_NO, as.character(input$map1SiteId))) 
      })
      
@@ -1484,7 +1490,7 @@ server <- function(input, output) {
                                 )),
                               scrollX = TRUE,
                               scrollY = "600px",
-                              order = list(list(4, 'asc')),
+                              order = list(list(7, 'asc')),
                               pageLength = nrow({noResult()}),
                               selection = 'single')
                
@@ -1568,7 +1574,7 @@ server <- function(input, output) {
    })
    
    output$plot3 <- renderPlot({
-     ggplot(data= OutlierData2(), aes(x=xplot2, y=yplot2)) + geom_point() + gghighlight((yplot2) < (quantile(yplot2, (1.0-as.numeric(input$percentileLow)), na.rm = TRUE)), use_direct_label = input$outlierlabel, label_key = RECORD_NO) +
+     ggplot(data= OutlierData2(), aes(x=xplot2, y=yplot2)) + geom_point() + gghighlight((yplot2) < (quantile(yplot2, as.numeric(input$percentileLow), na.rm = TRUE)), use_direct_label = input$outlierlabel, label_key = RECORD_NO) +
        xlab("X-axis Variable") +
        ylab("Y-axis Variable")
    })
@@ -1920,7 +1926,10 @@ server <- function(input, output) {
     c("Site:", input$varSite, " Box Coeff",round(coef(lm(RESULT_VA_xsection~ 0+ RESULT_VA_nonXS, boxcoeftrim())), 2), "  Adjusted R^2:",round(summary(lm(RESULT_VA_xsection~ 0+ RESULT_VA_nonXS, boxcoeftrim()))$adj.r.squared, 3), "    Analysis Period:", input$analysisBeginDT, "-", input$endDT, "(", input$tz, ")" )
 
   })
-  
+  ###### stop app after exit
+  session$onSessionEnded(function() {
+    stopApp()
+  })
 }
 
 shinyApp(ui, server)
