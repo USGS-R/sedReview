@@ -8,8 +8,20 @@ sudo: true
 dist: trusty
 warnings_are_errors: false
 
-r_build_args: --no-build-vignettes --no-manual --no-multiarch
-r_check_args: --no-build-vignettes --no-manual
+matrix:
+  include:
+    - os: linux
+      r: release
+    - os: linux
+      r: devel
+      env: R_CODECOV=true
+
+env:
+   global:
+     - R_BUILD_ARGS="--no-vignettes --no-manual"
+     - R_CHECK_ARGS="--no-vignettes --no-manual"
+     - NOT_CRAN="true"
+     - _R_CHECK_FORCE_SUGGESTS_=false
 
 repos:
   CRAN: https://cran.rstudio.com
@@ -21,6 +33,11 @@ before_script:
 
 r_github_packages:
   - jimhester/covr
+
+script: 
+  - |
+    R CMD build .
+    travis_wait 20 R CMD check sedReview*tar.gz
 
 after_success:
   - if [[ "${R_CODECOV}" ]]; then travis_wait 20 R -e 'covr::coveralls()'; fi
