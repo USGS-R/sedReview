@@ -1,10 +1,8 @@
-SedReview GUI v1.0 User Guide
-================
-February 7, 2019
-
 -   [Introduction](#introduction)
--   [Before Running SedReview: Setting up ODBC Connection to NWIS](#before-running-sedreview-setting-up-odbc-connection-to-nwis)
--   [Installing and Opening SedReview](#installing-and-opening-sedreview)
+-   [Before Running SedReview: Setting up ODBC Connection to
+    NWIS](#before-running-sedreview-setting-up-odbc-connection-to-nwis)
+-   [Installing and Opening
+    SedReview](#installing-and-opening-sedreview)
 -   [Site-Level Assessment Module](#site-level-assessment-module)
     -   [User Input and Summary Tab](#user-input-and-summary-tab)
     -   [Rejected Sediment Data](#rejected-sediment-data)
@@ -20,107 +18,188 @@ February 7, 2019
     -   [Data Flags and Summary](#data-flags-and-summary-1)
     -   [Summary Box Coeff](#summary-box-coeff)
 -   [Known Issues](#known-issues)
--   [Planned Enhancements (FY19 and beyond)](#planned-enhancements-fy19-and-beyond)
-    -   [Any Questions or Enhancement Requests?](#any-questions-or-enhancement-requests)
+-   [Planned Enhancements (FY19 and
+    beyond)](#planned-enhancements-fy19-and-beyond)
+    -   [Any Questions or Enhancement
+        Requests?](#any-questions-or-enhancement-requests)
 
 Introduction
 ------------
 
-This manual describes use of the SedReview version 1.0. The SedReview R-package allows import of sediment data from the U.S. Geological Survey's National Water Information System utilizing ODBC connections. It allows review of those data using a series of interactive graphical interfaces through a graphical user interface (GUI) and tabular output of data.
+This manual describes use of the SedReview version 1.0. The SedReview
+R-package allows import of sediment data from the U.S. Geological
+Survey's National Water Information System utilizing ODBC connections.
+It allows review of those data using a series of interactive graphical
+interfaces through a graphical user interface (GUI) and tabular output
+of data.
 
-SedReview has two main modules that are accessed by clicking on either Module tab at the top of the screen:
-**Site-Level Assessment Module**
---- Intended for use by project managers or other project staff to review and plot sediment data from a specific site.
-**Science-Center Review Module**
---- Intended for use by office managers, specialists, or external reviewers who wish to perform high-level reviews of data from an entire Water Science Center.
+SedReview has two main modules that are accessed by clicking on either
+Module tab at the top of the screen:  
+**Site-Level Assessment Module**  
+--- Intended for use by project managers or other project staff to
+review and plot sediment data from a specific site.  
+**Science-Center Review Module**  
+--- Intended for use by office managers, specialists, or external
+reviewers who wish to perform high-level reviews of data from an entire
+Water Science Center.
 
 Throughout all tables in SedReview:
 
 -   You can sort the table by clicking on any of the column headers.
--   You can select which columns are displayed in table by clicking on the Column Visibility button and selecting/de-selecting the headers.
--   You can download the table in .csv, Excel, or .pdf format by clicking on the Download button. NOTE: .pdf downloads for large datasets may be slow or cause the program to crash. File downloads in .csv or Excel format may be a better choice than .pdf for large datasets.
--   You can search for a particular entry, parameter code, etc. by typing in the text or number of interest in the "Search" box at the upper right of the table.
+-   You can select which columns are displayed in table by clicking on
+    the Column Visibility button and selecting/de-selecting the headers.
+-   You can download the table in .csv, Excel, or .pdf format by
+    clicking on the Download button. NOTE: .pdf downloads for large
+    datasets may be slow or cause the program to crash. File downloads
+    in .csv or Excel format may be a better choice than .pdf for large
+    datasets.
+-   You can search for a particular entry, parameter code, etc. by
+    typing in the text or number of interest in the "Search" box at the
+    upper right of the table.
 
-Additionally, you can right click your mouse outside of the plots or user inputs on any screen, and select Save As an html file to preserve the last state of the SedReview session. Only tabs, tables, and plots that were populated as part of the session will be preserved.
+Additionally, you can right click your mouse outside of the plots or
+user inputs on any screen, and select Save As an html file to preserve
+the last state of the SedReview session. Only tabs, tables, and plots
+that were populated as part of the session will be preserved.
 
 Before Running SedReview: Setting up ODBC Connection to NWIS
 ------------------------------------------------------------
 
-This can be done without admin privileges, but your database administrator or IT specialist may need to assist with these steps.
+This can be done without admin privileges, but your database
+administrator or IT specialist may need to assist with these steps.
 
-**Step 1**
-You need to setup a user Data Source Name (User DSN).
-On 64bit Windows 7 and 8, run "C:/Windows/SysWOW64/odbcad32.exe".
-On 32bit Windows 7 and 8, run "C:/Windows/System32/odbcad32.exe".
-On 64bit Windows 10, in a Windows explorer window, paste "Control Panel/All Control Panel Items/Administrative Tools" and select "ODBC Data Sources (32-bit)."
+**Step 1**  
+You need to setup a user Data Source Name (User DSN).  
+On 64bit Windows 7 and 8, run "C:/Windows/SysWOW64/odbcad32.exe".  
+On 32bit Windows 7 and 8, run "C:/Windows/System32/odbcad32.exe".  
+On 64bit Windows 10, in a Windows explorer window, paste "Control
+Panel/All Control Panel Items/Administrative Tools" and select "ODBC
+Data Sources (32-bit)."
 
-In the User DSN tab, if you do not see a connection with the same name as your NWIS server of interest, you must add a new connection. Click "Add" on the right.
+In the User DSN tab, if you do not see a connection with the same name
+as your NWIS server of interest, you must add a new connection. Click
+"Add" on the right.  
 ![](ODBC_UserDSN.png)
 
-**Step 2**
-Scroll down until you see a driver named "Oracle in OraClient11g\_home1" and click "Finish". ***IF YOU DO NOT SEE THE ABOVE DRIVER LISTED, IT IS NOT INSTALLED AND YOU WILL NEED ASSISTANCE FROM AN IT SPECIALIST TO INSTALL IT, THE LINK TO GUIDANCE IS PROVIDED BELOW***
+**Step 2**  
+Scroll down until you see a driver named "Oracle in OraClient11g\_home1"
+and click "Finish". ***IF YOU DO NOT SEE THE ABOVE DRIVER LISTED, IT IS
+NOT INSTALLED AND YOU WILL NEED ASSISTANCE FROM AN IT SPECIALIST TO
+INSTALL IT, THE LINK TO GUIDANCE IS PROVIDED BELOW***  
 ![](ODBC_CreateUserDSN.png)
 
-**Step 3**
-A new dialogue will appear. Click the dropdown box next to "TNS Service Name" and select the NWIS server you would like to connect to. After selecting the server, type in the server name into the "Data Source Name" text box at the top. ***DO NOT ENTER A USER ID, LEAVE THIS FIELD BLANK.*** You are finished, click OK to close the dialogue and then click OK in the main ODBC Data Source Administrator application to close the application.
+**Step 3**  
+A new dialogue will appear. Click the dropdown box next to "TNS Service
+Name" and select the NWIS server you would like to connect to. After
+selecting the server, type in the server name into the "Data Source
+Name" text box at the top. ***DO NOT ENTER A USER ID, LEAVE THIS FIELD
+BLANK.*** You are finished, click OK to close the dialogue and then
+click OK in the main ODBC Data Source Administrator application to close
+the application.  
 ![](ODBC_SelectDSN.png)
 
 Installing and Opening SedReview
 --------------------------------
 
-1.  Download the install file from <ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/> and double click to install the program. You should not need administrator privileges to install the file.
-2.  Save the program where desired (e.g. user/Documents/SedReview or C:/ drive)
-3.  When installed, navigate to the location where installed and double click the "runSedReviewGUI" file. You can create a shortcut to the program on your start menu or desktop for future access.
-4.  The program will open a Windows console (do not close this when working in SedReview!) and then will launch SedReview in an internet browser window.
-5.  Navigate between the two modules by clicking the desired module tab at the top of the screen, and then navigating between tabs (located below the Module informational header near the top of the screen). Tabs are activated by clicking on the blue text heading or drop-down menu icon.
+1.  Download the install file from
+    <ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/> and
+    double click to install the program. You should not need
+    administrator privileges to install the file.
+2.  Save the program where desired (e.g. user/Documents/SedReview or C:/
+    drive)
+3.  When installed, navigate to the location where installed and double
+    click the "runSedReviewGUI" file. You can create a shortcut to the
+    program on your start menu or desktop for future access.
+4.  The program will open a Windows console (do not close this when
+    working in SedReview!) and then will launch SedReview in an internet
+    browser window.
+5.  Navigate between the two modules by clicking the desired module tab
+    at the top of the screen, and then navigating between tabs (located
+    below the Module informational header near the top of the screen).
+    Tabs are activated by clicking on the blue text heading or drop-down
+    menu icon.
 
 Site-Level Assessment Module
 ----------------------------
 
 #### User Input and Summary Tab
 
-1.  Enter the following information in the fields on the left of the screen:
+1.  Enter the following information in the fields on the left of the
+    screen:
     -   ODBC database connection name (e.g., NWISCO, NWISID, etc)
     -   Database number for environmental samples
     -   Database number for QA samples
-    -   USGS station ID for the station you want to review (8- or 15-digit)
-    -   Starting date for reference period. A reference period is a historical period with data that you may want to include on plots and in selected tables, for comparison with data during your main period of interest (analysis period). If you do not wish to include any historical/reference data, select the same starting dates for reference and analysis periods.
-    -   Starting date for analysis period. This is the start date for the period with data you want to review for your site.
-    -   Ending date for reference and analysis periods. This is the last date of the period with data you want to review for your site.
+    -   USGS station ID for the station you want to review (8- or
+        15-digit)
+    -   Starting date for reference period. A reference period is a
+        historical period with data that you may want to include on
+        plots and in selected tables, for comparison with data during
+        your main period of interest (analysis period). If you do not
+        wish to include any historical/reference data, select the same
+        starting dates for reference and analysis periods.
+    -   Starting date for analysis period. This is the start date for
+        the period with data you want to review for your site.
+    -   Ending date for reference and analysis periods. This is the last
+        date of the period with data you want to review for your site.
     -   Local time zone for site being reviewed.
-2.  Once these fields are populated, click the Get data! button at the bottom.
-3.  A table of summary statistics is populated on the right of the screen.
+2.  Once these fields are populated, click the Get data! button at the
+    bottom.
+3.  A table of summary statistics is populated on the right of the
+    screen.
 4.  Column header definitions:
     -   SITE\_NO = USGS station ID
     -   STATION\_NM = USGS station name
-    -   PARM\_CD = NWIS parameter code (see <https://nwis.waterdata.usgs.gov/nwis/pmcodes/>)
-    -   PARM\_NM = NWIS parameter name (see website listed above for parameter codes)
+    -   PARM\_CD = NWIS parameter code (see
+        <https://nwis.waterdata.usgs.gov/nwis/pmcodes/>)
+    -   PARM\_NM = NWIS parameter name (see website listed above for
+        parameter codes)
     -   WY = Water year (October --- September)
-    -   xsection = denotes whether a sample is a full cross-sectionally integrated sample (e.g. an EDI or EWI sample would be marked as a X-Section sample; a grab sample or autosample would be marked as a Pt/non-X-section sample). This is used to group and compare samples by type (so their summary statistics are kept separate) and for box coefficient calculations in a later routine.
+    -   xsection = denotes whether a sample is a full cross-sectionally
+        integrated sample (e.g. an EDI or EWI sample would be marked as
+        a X-Section sample; a grab sample or autosample would be marked
+        as a Pt/non-X-section sample). This is used to group and compare
+        samples by type (so their summary statistics are kept separate)
+        and for box coefficient calculations in a later routine.  
     -   n = number of samples
     -   min = minimum value for data summarized
     -   max = maximum value for data summarized
     -   median = median value for data summarized
     -   mean = mean or average value for data summarized
     -   stdev = standard deviation for the data summarized
-    -   non\_detects = number of samples coded as not detected or below the method detection limit
-    -   no\_result\_reported = number of samples that have no laboratory analytical result.
+    -   non\_detects = number of samples coded as not detected or below
+        the method detection limit
+    -   no\_result\_reported = number of samples that have no laboratory
+        analytical result.
 
 #### Rejected Sediment Data
 
-1.  Click on the Rejected Sediment Data tab. The table in this tab displays samples that are coded as Q (reviewed and rejected) or X (proprietary, reviewed and rejected) as a quick check on data quality problems and patterns for sample rejection.
-2.  Column header definitions (see current NWIS documentation for full descriptions and possible codes at <http://nwis.usgs.gov/currentdocs/index.html>):
+1.  Click on the Rejected Sediment Data tab. The table in this tab
+    displays samples that are coded as Q (reviewed and rejected) or X
+    (proprietary, reviewed and rejected) as a quick check on data
+    quality problems and patterns for sample rejection.
+2.  Column header definitions (see current NWIS documentation for full
+    descriptions and possible codes at
+    <http://nwis.usgs.gov/currentdocs/index.html>):
     -   RECORD\_NO = NWIS unique record number for the sample
     -   STATION\_NM = USGS station name
     -   SAMPLE\_START\_DT = Start date identified for the sample
     -   PROJECT\_CD = Project ID entered in NWIS
-    -   PARM\_CD = NWIS parameter code (see <https://nwis.waterdata.usgs.gov/nwis/pmcodes/>)
-    -   PARM\_NM = NWIS parameter name (see website listed above for parameter codes)
+    -   PARM\_CD = NWIS parameter code (see
+        <https://nwis.waterdata.usgs.gov/nwis/pmcodes/>)
+    -   PARM\_NM = NWIS parameter name (see website listed above for
+        parameter codes)
     -   RESULT\_VA = Analytical result for the sample
-    -   REMARK\_CD = Result-level remark codes (such as &lt;, less than; &gt;, greater than; E, estimated).
+    -   REMARK\_CD = Result-level remark codes (such as &lt;, less
+        than; &gt;, greater than; E, estimated).
     -   VAL\_QUAL\_CD = Value qualifier codes
-    -   DQI\_CD = Data Quality Indicator Code (in this table, possible values shown are A, historical data; S, provisional; I, awaiting review; R, reviewed and approved; Q, reviewed and rejected; P, proprietary and not reviewed; O, proprietary, reviewed and approved; X, proprietary, reviewed and rejected; and U, research or unapproved method or laboratory)
-    -   RESULT\_MN = Name of the user account that was the source of the last modification to the sample record
+    -   DQI\_CD = Data Quality Indicator Code (in this table, possible
+        values shown are A, historical data; S, provisional; I, awaiting
+        review; R, reviewed and approved; Q, reviewed and rejected; P,
+        proprietary and not reviewed; O, proprietary, reviewed and
+        approved; X, proprietary, reviewed and rejected; and U, research
+        or unapproved method or laboratory)
+    -   RESULT\_MN = Name of the user account that was the source of the
+        last modification to the sample record
     -   PREP\_DT = Sample preparation date at laboratory
     -   ANL\_DT = Sample analysis date at laboratory
     -   LAB\_NO = Laboratory ID
@@ -138,119 +217,388 @@ Site-Level Assessment Module
 
 #### Outlier Explorer
 
-1.  Click on the Outlier Explorer tab. This tab will allow the user to view potential outliers in a dataset based on percentiles.
-2.  All data retrieved in the User Input and Summary will be shown as light gray dots in the plots on the right. Modify what is plotted by selecting different parameters in the dropdown menus on the left side of the screen.
-3.  Select different percentiles for defining what may be an outlier in the dataset. Currently different percentiles can be defined for 1) 'high" or "greater than" outliers (percentiles 0.80 to 0.99) and 2) "low" or "less than" outliers (percentiles 0.01 to 0.20). Any samples with values above the "greater than" percentile and below the "less than"" percentile will be shown as black dots in the plots on the right.
-4.  Click the box next to "Add label to plot" below the dropdown menus on left to display the record number next to any outliers shown on the plots. Labels are record\#\_database\#.
-5.  Individual sample results (all samples, not just outliers) are displayed in the table under the plots.
+1.  Click on the Outlier Explorer tab. This tab will allow the user to
+    view potential outliers in a dataset based on percentiles.
+2.  All data retrieved in the User Input and Summary will be shown as
+    light gray dots in the plots on the right. Modify what is plotted by
+    selecting different parameters in the dropdown menus on the left
+    side of the screen.
+3.  Select different percentiles for defining what may be an outlier in
+    the dataset. Currently different percentiles can be defined for 1)
+    'high" or "greater than" outliers (percentiles 0.80 to 0.99) and 2)
+    "low" or "less than" outliers (percentiles 0.01 to 0.20). Any
+    samples with values above the "greater than" percentile and below
+    the "less than"" percentile will be shown as black dots in the plots
+    on the right.
+4.  Click the box next to "Add label to plot" below the dropdown menus
+    on left to display the record number next to any outliers shown on
+    the plots. Labels are record\#\_database\#.
+5.  Individual sample results (all samples, not just outliers) are
+    displayed in the table under the plots.
 
 #### Data Flags and Summary
 
-1.  Click on the Data Flags and Summary tab. A number of different summaries and data quality checks are available through this tab.
-2.  The Data Flag Summary table displays any sample **DURING THE ANALYSIS PERIOD** that had a "flagâ€ for one of the data quality checks. The data quality checks are described at the top of the table and repeated here:
-    -   bagIEFlags: Tests whether required intake efficiency test parameters are reported when bag samplers are used (required as of June 2013 per OSW Memo 2013.03). Flags if missing.
-    -   CommentNoResultFlags: Returns a table with sample or analytical result comments and tests whether an analytical result is missing for a sample.
-    -   Qflags: Tests whether some measure of discharge is provided as metadata for a sample. Flags if missing.
-    -   metaDataFlags: Tests whether samples are missing required sample metadata, such as sample purpose, sampler type, sampling method, and type of associated QA with sample (if applicable). Includes tests in NWIS 20.xx level checks. For more information, see: link to NWIS 20.xx level checks available on the tab: "Data Flags and Summary &gt; Metadata checkâ€ in the dropdown menu.
-    -   samplePurpFlags: Tests whether a sample purpose code (71999) differs from other samples collected at site (there are certainly valid reasons for this, but just provides a reminder to check that these are correct.
-    -   samplerTypeFlags: Tests whether a sampler type code (84164) differs from others reported. Flags if sampler type code is used 3 or fewer times (again, there are valid reasons for this, so just a check).
-    -   sedMassFlags: Tests whether a sample has a sediment mass less than 2 milligrams. Flags if so. (Note: this is a new piece of metadata (pcode 91157) reported by USGS sediment laboratories so will not be available for historical data).
-    -   tssFlags: Tests whether there is a Total-Suspended Solids (TSS) result without an accompanying suspended-sediment concentration (SSC) result, per OSW memo 01.03. Flags if TSS stands alone.
-    -   verticalsFlags: Tests whether sufficient verticals were sampled and reported (criteria are between 4 and 9 verticals for an EDI sample and between 10 and 20 verticals for an EWI samples).
-    -   qaqcFlags: Tests whether samples coded as SSC, bedload, or bedload mass are stored in the QA database. Flags if a sediment sample is in the QA database. This is a check to see if any sediment samples have been entered (manually or otherwise) into the QA database.
-3.  The results in the other tabs under the Data Flag Summary, which are described below, include samples from **BOTH THE REFERENCE (HISTORICAL) AND ANALYSIS PERIODS**, so the sample counts in these individual tabs may differ from what is shown in the Data Flag Summary tab.
-    -   Sampling Method Summary --- table of sample counts (by WY) of sampling method, sampler type, and bedload method (if applicable). Possible parameter codes are defined at the top of the table or provided through a link to additional sampling codes, following the header.
-    -   Bag Sampler IE Check --- table of samples that were flagged as missing intake efficiency test parameters when a bag sampler was used (required as of June 2013 per OSW Memo 2013.03).
-    -   Sample/Result Comments & Missing Result Check --- table of samples that had sample or analytical result comments and/or were missing laboratory analytical results. Sample and result comments are reported to identify a possible cause for missing analytical results.
-    -   Streamflow Check --- table of samples that were missing discharge metadata.
-    -   Metadata Check --- table of samples that were missing required sample metadata, such as sample purpose, sampler type, sampling method, and type of associated QA with sample (if applicable). Includes tests in NWIS 20.xx level checks.
-    -   Sample Purpose Check --- table of samples with a sample purpose code that differs from the code most commonly used at a site. There are certainly valid reasons for this, but this table just serves as a reminder to check that sample purposes are generally correct.
-    -   Sampler Type Check --- table of samples with a sampler type code that differs from the code most commonly used at a site. Flags if sampler is used 3 or fewer times. There are certainly valid reasons for this, but this table just serves as a check for possible typos during metadata entry.
-    -   Sediment Mass Check --- table of samples with sediment mass less than 2 milligrams. Sediment mass is a new piece of data (pcode 91157) reported by USGS sediment laboratories. Understanding of sediment mass in samples will inform project chiefs regarding uncertainties in analytical results associated with limited sample mass and may help determine whether more sample volume is needed in the future to reduce those uncertainties. A flag threshold of 2 milligrams is currently used in this table. Project chiefs should discuss mass results with their laboratory chief.
-    -   Unpaired-TSS Samples --- table of samples that have a result for TSS but do not have a corresponding sample result for SSC. SSC analysis is required for all samples analyzed for TSS, per OSW memo 01.03.
-    -   EWI/EDI Verticals Check --- table of EDI and EWI samples that were collected with a number of verticals outside the recommendations in Edwards and Glysson (1998), which state between 4 and 9 verticals for an EDI sample and between 10 and 20 verticals for an EWI sample). There could be valid reasons for deviation (such as for sampling in small streams).
-    -   DQI Status Summary --- summary table of samples organized by parameter code and water year, with the corresponding number of samples with data quality indicator codes of A, historical data; S, provisional; I, awaiting review; R, reviewed and approved; Q, reviewed and rejected; P, proprietary and not reviewed; O, proprietary, reviewed and approved; X, proprietary, reviewed and rejected; and U, research or unapproved method or laboratory. This is helpful for determining how many samples are awaiting review and approval or rejection. DQI codes not present in a dataset will not be shown in the table.
-    -   QAQC Check --- table of samples that were coded as suspended-sediment concentration (SSC), bedload, or bedload mass but were stored in the QA database. Note: most QA/QC samples for sediment are NOT stored in the QA database because they are considered environmental samples. Storage of sediment replicates is coded by default in SedLOGIN in the main environmental database. This is a check to see if any sediment samples have been entered (manually or otherwise) into the QA database. There may be a valid reason for storing a sediment sample in the QA database.
+1.  Click on the Data Flags and Summary tab. A number of different
+    summaries and data quality checks are available through this tab.
+2.  The Data Flag Summary table displays any sample **DURING THE
+    ANALYSIS PERIOD** that had a "flagâ€ for one of the data quality
+    checks. The data quality checks are described at the top of the
+    table and repeated here:
+    -   bagIEFlags: Tests whether required intake efficiency test
+        parameters are reported when bag samplers are used (required as
+        of June 2013 per OSW Memo 2013.03). Flags if missing.
+    -   CommentNoResultFlags: Returns a table with sample or analytical
+        result comments and tests whether an analytical result is
+        missing for a sample.
+    -   Qflags: Tests whether some measure of discharge is provided as
+        metadata for a sample. Flags if missing.
+    -   metaDataFlags: Tests whether samples are missing required sample
+        metadata, such as sample purpose, sampler type, sampling method,
+        and type of associated QA with sample (if applicable). Includes
+        tests in NWIS 20.xx level checks. For more information, see:
+        link to NWIS 20.xx level checks available on the tab: "Data
+        Flags and Summary &gt; Metadata checkâ€ in the dropdown menu.
+    -   samplePurpFlags: Tests whether a sample purpose code (71999)
+        differs from other samples collected at site (there are
+        certainly valid reasons for this, but just provides a reminder
+        to check that these are correct.
+    -   samplerTypeFlags: Tests whether a sampler type code (84164)
+        differs from others reported. Flags if sampler type code is used
+        3 or fewer times (again, there are valid reasons for this, so
+        just a check).
+    -   sedMassFlags: Tests whether a sample has a sediment mass less
+        than 2 milligrams. Flags if so. (Note: this is a new piece of
+        metadata (pcode 91157) reported by USGS sediment laboratories so
+        will not be available for historical data).
+    -   tssFlags: Tests whether there is a Total-Suspended Solids (TSS)
+        result without an accompanying suspended-sediment concentration
+        (SSC) result, per OSW memo 01.03. Flags if TSS stands alone.
+    -   verticalsFlags: Tests whether sufficient verticals were sampled
+        and reported (criteria are between 4 and 9 verticals for an EDI
+        sample and between 10 and 20 verticals for an EWI samples).
+    -   qaqcFlags: Tests whether samples coded as SSC, bedload, or
+        bedload mass are stored in the QA database. Flags if a sediment
+        sample is in the QA database. This is a check to see if any
+        sediment samples have been entered (manually or otherwise) into
+        the QA database.
+3.  The results in the other tabs under the Data Flag Summary, which are
+    described below, include samples from **BOTH THE REFERENCE
+    (HISTORICAL) AND ANALYSIS PERIODS**, so the sample counts in these
+    individual tabs may differ from what is shown in the Data Flag
+    Summary tab.
+    -   Sampling Method Summary --- table of sample counts (by WY) of
+        sampling method, sampler type, and bedload method (if
+        applicable). Possible parameter codes are defined at the top of
+        the table or provided through a link to additional sampling
+        codes, following the header.
+    -   Bag Sampler IE Check --- table of samples that were flagged as
+        missing intake efficiency test parameters when a bag sampler was
+        used (required as of June 2013 per OSW Memo 2013.03).
+    -   Sample/Result Comments & Missing Result Check --- table of
+        samples that had sample or analytical result comments and/or
+        were missing laboratory analytical results. Sample and result
+        comments are reported to identify a possible cause for missing
+        analytical results.
+    -   Streamflow Check --- table of samples that were missing
+        discharge metadata.
+    -   Metadata Check --- table of samples that were missing required
+        sample metadata, such as sample purpose, sampler type, sampling
+        method, and type of associated QA with sample (if applicable).
+        Includes tests in NWIS 20.xx level checks.
+    -   Sample Purpose Check --- table of samples with a sample purpose
+        code that differs from the code most commonly used at a site.
+        There are certainly valid reasons for this, but this table just
+        serves as a reminder to check that sample purposes are generally
+        correct.
+    -   Sampler Type Check --- table of samples with a sampler type code
+        that differs from the code most commonly used at a site. Flags
+        if sampler is used 3 or fewer times. There are certainly valid
+        reasons for this, but this table just serves as a check for
+        possible typos during metadata entry.
+    -   Sediment Mass Check --- table of samples with sediment mass less
+        than 2 milligrams. Sediment mass is a new piece of data
+        (pcode 91157) reported by USGS sediment laboratories.
+        Understanding of sediment mass in samples will inform project
+        chiefs regarding uncertainties in analytical results associated
+        with limited sample mass and may help determine whether more
+        sample volume is needed in the future to reduce those
+        uncertainties. A flag threshold of 2 milligrams is currently
+        used in this table. Project chiefs should discuss mass results
+        with their laboratory chief.
+    -   Unpaired-TSS Samples --- table of samples that have a result for
+        TSS but do not have a corresponding sample result for SSC. SSC
+        analysis is required for all samples analyzed for TSS, per OSW
+        memo 01.03.
+    -   EWI/EDI Verticals Check --- table of EDI and EWI samples that
+        were collected with a number of verticals outside the
+        recommendations in Edwards and Glysson (1998), which state
+        between 4 and 9 verticals for an EDI sample and between 10 and
+        20 verticals for an EWI sample). There could be valid reasons
+        for deviation (such as for sampling in small streams).
+    -   DQI Status Summary --- summary table of samples organized by
+        parameter code and water year, with the corresponding number of
+        samples with data quality indicator codes of A, historical data;
+        S, provisional; I, awaiting review; R, reviewed and approved; Q,
+        reviewed and rejected; P, proprietary and not reviewed; O,
+        proprietary, reviewed and approved; X, proprietary, reviewed and
+        rejected; and U, research or unapproved method or laboratory.
+        This is helpful for determining how many samples are awaiting
+        review and approval or rejection. DQI codes not present in a
+        dataset will not be shown in the table.
+    -   QAQC Check --- table of samples that were coded as
+        suspended-sediment concentration (SSC), bedload, or bedload mass
+        but were stored in the QA database. Note: most QA/QC samples for
+        sediment are NOT stored in the QA database because they are
+        considered environmental samples. Storage of sediment replicates
+        is coded by default in SedLOGIN in the main environmental
+        database. This is a check to see if any sediment samples have
+        been entered (manually or otherwise) into the QA database. There
+        may be a valid reason for storing a sediment sample in the QA
+        database.
 
 #### Plots
 
-1.  Click on the Plots tab drop-down menu to view time series plots, scatter plots, and box plots. Note: if data are not available to populate a specific plot, the plot will be blank, or an error message will be displayed stating "no dataâ€.
-2.  The time series plots display SSC, sand/silt break (% smaller than 0.0625 mm), suspended sediment load (SSL), bedload, bedload mass, and TSS (if available) by date.
-3.  The scatter plots display SSC, sand/silt break, and bedload by discharge; SSC by turbidity, TSS by discharge, and TSS by SSC (if available)
-4.  The box plots display standard USGS box plots of: TSS and SSC (side by side for comparison of data distributions), SSC alone, and TSS alone (if available).
+1.  Click on the Plots tab drop-down menu to view time series plots,
+    scatter plots, and box plots. Note: if data are not available to
+    populate a specific plot, the plot will be blank, or an error
+    message will be displayed stating "no dataâ€.
+2.  The time series plots display SSC, sand/silt break (% smaller than
+    0.0625 mm), suspended sediment load (SSL), bedload, bedload mass,
+    and TSS (if available) by date.
+3.  The scatter plots display SSC, sand/silt break, and bedload by
+    discharge; SSC by turbidity, TSS by discharge, and TSS by SSC (if
+    available)
+4.  The box plots display standard USGS box plots of: TSS and SSC (side
+    by side for comparison of data distributions), SSC alone, and TSS
+    alone (if available).
 
 #### Box Coeff Data Pull
 
-1.  Click on the Box Coeff Data Pull tab to calculate box coefficients if your siteâ€™s datasets include any point, grab, or autosample data to determine representativeness of the sample location relative to the cross section. This routine pulls possible pairs of point/grab/autosample samples and comparison cross section (EDI/EWI) samples in the analysis period and calculates the ratio of the results (aka box coefficients). The box coefficient is calculated as: Cross section SSC / non-cross section or point SSC. This information can be used to assess the representativeness of the point/grab/autosample sample location and to determine whether these ratios are consistent or vary over the analysis period.
-2.  Enter the search interval in hours in the field on the left. The search interval is the greatest time difference considered when pairing between the point/grab/autosample sample time and the comparison cross section (EDI/EWI) sample time. If a search interval is entered that is too short for what is typical at the site, no sample pair results will be returned. Unless you are very familiar with the typical sample time difference for the site, you may want to start with a wide search interval (e.g. 3 hrs) at first, then narrow down as needed.
-3.  Possible parameter codes for sampling method are already populated in the non-cross section/point sample and cross section sample fields. Hovering the mouse over the codes will bring up a box with sampling method definitions. If needed, sampling method codes can be removed from the retrieval by clicking on the code and hitting the delete button. Codes can be re-inserted by clicking in the vector field and selecting the method code that was deleted.
+1.  Click on the Box Coeff Data Pull tab to calculate box coefficients
+    if your siteâ€™s datasets include any point, grab, or autosample
+    data to determine representativeness of the sample location relative
+    to the cross section. This routine pulls possible pairs of
+    point/grab/autosample samples and comparison cross section (EDI/EWI)
+    samples in the analysis period and calculates the ratio of the
+    results (aka box coefficients). The box coefficient is calculated
+    as: Cross section SSC / non-cross section or point SSC. This
+    information can be used to assess the representativeness of the
+    point/grab/autosample sample location and to determine whether these
+    ratios are consistent or vary over the analysis period.
+2.  Enter the search interval in hours in the field on the left. The
+    search interval is the greatest time difference considered when
+    pairing between the point/grab/autosample sample time and the
+    comparison cross section (EDI/EWI) sample time. If a search interval
+    is entered that is too short for what is typical at the site, no
+    sample pair results will be returned. Unless you are very familiar
+    with the typical sample time difference for the site, you may want
+    to start with a wide search interval (e.g. 3 hrs) at first, then
+    narrow down as needed.
+3.  Possible parameter codes for sampling method are already populated
+    in the non-cross section/point sample and cross section sample
+    fields. Hovering the mouse over the codes will bring up a box with
+    sampling method definitions. If needed, sampling method codes can be
+    removed from the retrieval by clicking on the code and hitting the
+    delete button. Codes can be re-inserted by clicking in the vector
+    field and selecting the method code that was deleted.
 4.  When ready, click Get Box Coeff! to run the routine.
-5.  The plot on the right displays a scatter plot of the non-cross section (point/grab/autosample; X axis) result versus the cross section result (Y axis)
-6.  Double clicking on any point on the graph will cause the sample results to display in the table immediately below the plot. The calculated box coefficient and discharge also are displayed in this table.
-7.  Dragging a rectangle around any point on the graph will cause the sample results to display in the second table below the plot. The calculated box coefficient and discharge also are displayed in this table.
-8.  All possible pairs of non-cross section and cross section samples are shown in the table at the bottom. The calculated box coefficient and discharge also are displayed here.
-9.  Removing a specific pair of non-cross section and cross section samples, or multiple pairs, is done by selecting the corresponding record(s) in the table and then clicking Remove selected samples! towards the top right section of the tab. If Remove selected samples! is clicked without any records selected, the program will crash.
-10. To restore all sample pairs, re-click Get Box Coef! and all samples meeting the search criterion will be added back to the table and plot.
+5.  The plot on the right displays a scatter plot of the non-cross
+    section (point/grab/autosample; X axis) result versus the cross
+    section result (Y axis)
+6.  Double clicking on any point on the graph will cause the sample
+    results to display in the table immediately below the plot. The
+    calculated box coefficient and discharge also are displayed in this
+    table.
+7.  Dragging a rectangle around any point on the graph will cause the
+    sample results to display in the second table below the plot. The
+    calculated box coefficient and discharge also are displayed in this
+    table.
+8.  All possible pairs of non-cross section and cross section samples
+    are shown in the table at the bottom. The calculated box coefficient
+    and discharge also are displayed here.
+9.  Removing a specific pair of non-cross section and cross section
+    samples, or multiple pairs, is done by selecting the corresponding
+    record(s) in the table and then clicking Remove selected samples!
+    towards the top right section of the tab. If Remove selected
+    samples! is clicked without any records selected, the program will
+    crash.
+10. To restore all sample pairs, re-click Get Box Coef! and all samples
+    meeting the search criterion will be added back to the table and
+    plot.
 
 #### Box Coeff Explorer
 
-1.  Click on the Box Coeff Explorer tab. This tab allows further exploration of box coefficients where non-cross section and cross section sample pairs are available for assessing the representativeness of point/grab/autosampler sample locations.
-2.  The plot on upper right is static and displays a scatter plot of the non-cross section SSC (X axis) versus the cross-section SSC (Y axis). Sample pairs are shown as red dots. The best-fit (regression) line of all sample pairs is shown as a red line. The corresponding 95th confidence intervals (shown as gray shading) also are shown on the plot based on available sample pairs in the selected analysis period. Samples collected during the reference (historical) period and any removed samples from the analysis period are shown as black dots. The 1:1 line (box coefficient of 1) can also be plotted on the upper plot by clicking the circle next to 1:1 radio button below the dropdown menus on left.
-3.  The plot on lower right is customizable. Variables to plot on the X and Y axes can be selected in the dropdown menus at left. In particular, it may be useful to plot box coefficients by sample date and streamflow to see whether box coefficients are consistent or vary over seasons or streamflow.
+1.  Click on the Box Coeff Explorer tab. This tab allows further
+    exploration of box coefficients where non-cross section and cross
+    section sample pairs are available for assessing the
+    representativeness of point/grab/autosampler sample locations.
+2.  The plot on upper right is static and displays a scatter plot of the
+    non-cross section SSC (X axis) versus the cross-section SSC (Y
+    axis). Sample pairs are shown as red dots. The best-fit (regression)
+    line of all sample pairs is shown as a red line. The corresponding
+    95th confidence intervals (shown as gray shading) also are shown on
+    the plot based on available sample pairs in the selected analysis
+    period. Samples collected during the reference (historical) period
+    and any removed samples from the analysis period are shown as black
+    dots. The 1:1 line (box coefficient of 1) can also be plotted on the
+    upper plot by clicking the circle next to 1:1 radio button below the
+    dropdown menus on left.
+3.  The plot on lower right is customizable. Variables to plot on the X
+    and Y axes can be selected in the dropdown menus at left. In
+    particular, it may be useful to plot box coefficients by sample date
+    and streamflow to see whether box coefficients are consistent or
+    vary over seasons or streamflow.
 
 Science-Center Review Module
 ----------------------------
 
 #### Reviewer Input and Summary
 
-1.  Enter the following information in the fields on the left of the screen:
+1.  Enter the following information in the fields on the left of the
+    screen:
     -   ODBC database connection name (e.g., NWISCO, NWISID, etc)
     -   Database number for environmental samples
     -   Database number for QA samples
     -   Two-letter state code (e.g., CO, ID, etc)
     -   Starting date for the period of review (YYYY/MM/DD)
-    -   Ending date for the period of review (YYYY/MM/DD). The review period most likely will correspond with one or more water years, but any dates can be selected.
+    -   Ending date for the period of review (YYYY/MM/DD). The review
+        period most likely will correspond with one or more water years,
+        but any dates can be selected.
 2.  Once these fields are populated, click "Review data!â€.
-3.  A table that summarizes the number of samples analyzed for SSC, sand/silt break (% smaller than 0.0625 mm), TSS, and bedload for each site in the database will be generated for the review period. If multiple water years exist within the review period, the results are organized by water year.
+3.  A table that summarizes the number of samples analyzed for SSC,
+    sand/silt break (% smaller than 0.0625 mm), TSS, and bedload for
+    each site in the database will be generated for the review period.
+    If multiple water years exist within the review period, the results
+    are organized by water year.
 
 #### Map of Active Sediment Sites
 
-1.  Click on this tab to display active sediment sites in the area (state, WSC) being reviewed.
+1.  Click on this tab to display active sediment sites in the area
+    (state, WSC) being reviewed.
 2.  Select the parameter of interest from the dropdown menu on the left.
 3.  Click Map sites!
-4.  Active sediment sites with selected parameter data are shown as orange dots on the map on the right. If no data are available for the selected parameter, the map will be blank.
-5.  Zoom in/out on the map using the + and --- buttons in the upper left corner of the map (the mouse scroll wheel can also be used).
-6.  The table below the map displays the sample counts analyzed for SSC, sand/silt break, TSS, and bedload by site and water year (a repeat of the table shown on the Reviewer Input and Summary tab).
+4.  Active sediment sites with selected parameter data are shown as
+    orange dots on the map on the right. If no data are available for
+    the selected parameter, the map will be blank.
+5.  Zoom in/out on the map using the + and --- buttons in the upper left
+    corner of the map (the mouse scroll wheel can also be used).
+6.  The table below the map displays the sample counts analyzed for SSC,
+    sand/silt break, TSS, and bedload by site and water year (a repeat
+    of the table shown on the Reviewer Input and Summary tab).
 
 #### Map Search of Sites by PCode
 
-1.  Click on this tab to display a map of active sediment sites in the area (state, WSC) being reviewed, but in this case the point displayed indicate locations where a particular data type (parameter code) was collected. The size of the point or marker is customizable.
-2.  Type the value of the parameter code of interest (e.g. 80154 for SSC, mg/L) in the field at upper left. A hyperlink to parameter codes is provided.
-3.  Identify the desired metric for sizing the point or marker displayed on the map (by count or number of samples, mean, median, min, or max).
-4.  Identify the scaling factor for the point or marker size. Hovering the mouse over this box will bring up additional guidance: values less than zero decrease symbol size; values greater than zero increase symbol size. Experiment with different scaling factors to optimize the map as desired.
+1.  Click on this tab to display a map of active sediment sites in the
+    area (state, WSC) being reviewed, but in this case the point
+    displayed indicate locations where a particular data type (parameter
+    code) was collected. The size of the point or marker is
+    customizable.
+2.  Type the value of the parameter code of interest (e.g. 80154 for
+    SSC, mg/L) in the field at upper left. A hyperlink to parameter
+    codes is provided.
+3.  Identify the desired metric for sizing the point or marker displayed
+    on the map (by count or number of samples, mean, median, min, or
+    max).
+4.  Identify the scaling factor for the point or marker size. Hovering
+    the mouse over this box will bring up additional guidance: values
+    less than zero decrease symbol size; values greater than zero
+    increase symbol size. Experiment with different scaling factors to
+    optimize the map as desired.
 5.  Click Map pcode sites!
-6.  The map will dynamically update as metrics and scaling factors are changed, without having to reclick Map pcode sites!
-7.  The table below the map displays summary statistics by site for the selected parameter code. This table contains site latitude and longitude so may be useful for downloading from SedReview for upload into a GIS application for further mapping.
+6.  The map will dynamically update as metrics and scaling factors are
+    changed, without having to reclick Map pcode sites!
+7.  The table below the map displays summary statistics by site for the
+    selected parameter code. This table contains site latitude and
+    longitude so may be useful for downloading from SedReview for upload
+    into a GIS application for further mapping.
 
 #### Data Flags and Summary
 
-1.  Click on the Data Flags and Summary tab. A number of different summaries and data quality checks are available through this tab drop-down.
-    -   Bag sampler IE check --- table of sample counts by site that were flagged as missing intake efficiency test parameters when a bag sampler was used (required as of June 2013 per OSW Memo 2013.03).
-    -   Streamflow check --- table of sample counts by site that were missing discharge metadata.
-    -   QAQC check --- table of sample counts by site that were coded as suspended-sediment concentration (SSC), bedload, or bedload mass but were stored in the QA database. Note: most QA/QC samples for sediment are NOT stored in the QA database because they are considered environmental samples. Storage of sediment replicates is coded by default in SedLOGIN in the main environmental database. This is just a check to see if any sediment samples have been entered (manually or otherwise) into the QA database. There may be a valid reason for storing a sediment sample in the QA database.
-    -   Sediment mass check --- table of sample counts by site with sediment mass less than 2 milligrams. Sediment mass is a new piece of data (pcode 91157) reported by USGS sediment laboratories. Understanding of sediment mass in samples will inform managers and project chiefs regarding uncertainties in analytical results associated with limited sample mass and may help determine whether more sample volume is needed in the future to reduce those uncertainties. A flag threshold of 2 milligrams is currently used in this table. Managers and project chiefs should discuss mass results with their laboratory chief.
-    -   Unpaired-TSS sample check --- table of sample counts by site that have a result for TSS but do not have a corresponding sample result for SSC. SSC analysis is required for all samples analyzed for TSS, per OSW memo 01.03.
-    -   EWI/EDI verticals check --- table of EDI and EWI sample counts by site that were either missing the metadata for number of verticals or were collected with a number of verticals outside the recommendations in Edwards and Glysson (1998), which state between 4 and 9 verticals for an EDI sample and between 10 and 20 verticals for an EWI sample). There could be valid reasons for deviation (such as for sampling in small streams).
-    -   Sampling method summary --- table of sample counts by site and water year of sampling method, sampler type, and bedload method (if applicable). Possible parameter codes are defined at the top of the table.
-    -   DQI status summary --- summary table of sample counts by site organized by parameter code and water year, with the corresponding number of samples with data quality indicator codes of A, historical data; S, provisional; I, awaiting review; R, reviewed and approved; Q, reviewed and rejected; P, proprietary and not reviewed; O, proprietary, reviewed and approved; X, proprietary, reviewed and rejected; and U, research or unapproved method or laboratory. This is helpful for determining how many samples are awaiting review and approval or rejection. DQI codes not present in a dataset will not be shown in the table.
+1.  Click on the Data Flags and Summary tab. A number of different
+    summaries and data quality checks are available through this tab
+    drop-down.
+    -   Bag sampler IE check --- table of sample counts by site that
+        were flagged as missing intake efficiency test parameters when a
+        bag sampler was used (required as of June 2013 per OSW Memo
+        2013.03).
+    -   Streamflow check --- table of sample counts by site that were
+        missing discharge metadata.
+    -   QAQC check --- table of sample counts by site that were coded as
+        suspended-sediment concentration (SSC), bedload, or bedload mass
+        but were stored in the QA database. Note: most QA/QC samples for
+        sediment are NOT stored in the QA database because they are
+        considered environmental samples. Storage of sediment replicates
+        is coded by default in SedLOGIN in the main environmental
+        database. This is just a check to see if any sediment samples
+        have been entered (manually or otherwise) into the QA database.
+        There may be a valid reason for storing a sediment sample in the
+        QA database.
+    -   Sediment mass check --- table of sample counts by site with
+        sediment mass less than 2 milligrams. Sediment mass is a new
+        piece of data (pcode 91157) reported by USGS sediment
+        laboratories. Understanding of sediment mass in samples will
+        inform managers and project chiefs regarding uncertainties in
+        analytical results associated with limited sample mass and may
+        help determine whether more sample volume is needed in the
+        future to reduce those uncertainties. A flag threshold of 2
+        milligrams is currently used in this table. Managers and project
+        chiefs should discuss mass results with their laboratory chief.
+    -   Unpaired-TSS sample check --- table of sample counts by site
+        that have a result for TSS but do not have a corresponding
+        sample result for SSC. SSC analysis is required for all samples
+        analyzed for TSS, per OSW memo 01.03.
+    -   EWI/EDI verticals check --- table of EDI and EWI sample counts
+        by site that were either missing the metadata for number of
+        verticals or were collected with a number of verticals outside
+        the recommendations in Edwards and Glysson (1998), which state
+        between 4 and 9 verticals for an EDI sample and between 10 and
+        20 verticals for an EWI sample). There could be valid reasons
+        for deviation (such as for sampling in small streams).
+    -   Sampling method summary --- table of sample counts by site and
+        water year of sampling method, sampler type, and bedload method
+        (if applicable). Possible parameter codes are defined at the top
+        of the table.
+    -   DQI status summary --- summary table of sample counts by site
+        organized by parameter code and water year, with the
+        corresponding number of samples with data quality indicator
+        codes of A, historical data; S, provisional; I, awaiting review;
+        R, reviewed and approved; Q, reviewed and rejected; P,
+        proprietary and not reviewed; O, proprietary, reviewed and
+        approved; X, proprietary, reviewed and rejected; and U, research
+        or unapproved method or laboratory. This is helpful for
+        determining how many samples are awaiting review and approval or
+        rejection. DQI codes not present in a dataset will not be shown
+        in the table.
 
 #### Summary Box Coeff
 
-1.  Click the Summary of Box Coef tab to view a table of non-cross section (point/grab/autosample) sample and comparison cross section (EDI/EWI) sample pairs. The information displayed can be used to assess whether WSC personnel are collecting the data needed to determine the representativeness of a point/grab/autosample sample location.
-2.  Enter the search interval in hours in the field on the left. The search interval is the greatest time difference considered when pairing between the point/grab/autosample sample time and the comparison cross section (EDI/EWI) sample time. If a search interval is entered that is too short for what is typical at the site, no sample pair results will be returned. You may want to start with a wide search interval (e.g. 3 hrs) at first, then narrow down as needed.
-3.  Click Pull Summary! The data table, organized by site and WY, will be populated below the search interval box. Note that all sitesâ€™ results are presented here, even if no non-cross section samples were collected. Look for sites that have non-cross section samples with no corresponding cross section samples and "0â€ for number of pairs (numPairs), which could indicate that steps are not being taken to assess the representativeness of point/grab/autosample sample locations.
+1.  Click the Summary of Box Coef tab to view a table of non-cross
+    section (point/grab/autosample) sample and comparison cross section
+    (EDI/EWI) sample pairs. The information displayed can be used to
+    assess whether WSC personnel are collecting the data needed to
+    determine the representativeness of a point/grab/autosample sample
+    location.
+2.  Enter the search interval in hours in the field on the left. The
+    search interval is the greatest time difference considered when
+    pairing between the point/grab/autosample sample time and the
+    comparison cross section (EDI/EWI) sample time. If a search interval
+    is entered that is too short for what is typical at the site, no
+    sample pair results will be returned. You may want to start with a
+    wide search interval (e.g. 3 hrs) at first, then narrow down as
+    needed.
+3.  Click Pull Summary! The data table, organized by site and WY, will
+    be populated below the search interval box. Note that all sitesâ€™
+    results are presented here, even if no non-cross section samples
+    were collected. Look for sites that have non-cross section samples
+    with no corresponding cross section samples and "0â€ for number of
+    pairs (numPairs), which could indicate that steps are not being
+    taken to assess the representativeness of point/grab/autosample
+    sample locations.
 
-Again, you can right click your mouse outside of the plots or user inputs on any screen, and select Save As an html file to preserve the last state of the SedReview session. Only tabs, tables, and plots that were populated as part of the session will be preserved.
+Again, you can right click your mouse outside of the plots or user
+inputs on any screen, and select Save As an html file to preserve the
+last state of the SedReview session. Only tabs, tables, and plots that
+were populated as part of the session will be preserved.
 
 Known Issues
 ------------
@@ -304,29 +652,49 @@ Known Issues
 </tbody>
 </table>
 
-Also see: [SedReview GitHub Issues Page](https://github.com/USGS-R/sedReview/issues)
+Also see: [SedReview GitHub Issues
+Page](https://github.com/USGS-R/sedReview/issues)
 
 Planned Enhancements (FY19 and beyond)
 --------------------------------------
 
-1.  Entries for ODBC database, database numbers to carry over between the Site-Level Assessment and Science-Center Review Modules; also to be autosaved for subsequent uses.
-2.  More functionality for clicking on points in plots and displaying information. Also ability to select/deselect individual samples to plot.
-3.  Ability to produce qwbatch files to change DQI codes or to insert missing metadata en masse (functionality may have to wait until conversion from QWDATA to AQ SAMPLES).
-4.  More functionality on outlier plots; incorporation of other ways of identifying a point as an outlier.
-5.  Incorporate a mergeQ routine (which has been developed but is not fully functional) which retrieves the nearest instantaneous discharge value to the sample time and allows calculation of loads for plots. Want to allow user to batch load the matched discharge value for all samples missing this metadata.
-6.  Overall error trapping and improvement in feedback to user when data are not available or are potentially erroneous.
+1.  Entries for ODBC database, database numbers to carry over between
+    the Site-Level Assessment and Science-Center Review Modules; also to
+    be autosaved for subsequent uses.
+2.  More functionality for clicking on points in plots and displaying
+    information. Also ability to select/deselect individual samples to
+    plot.
+3.  Ability to produce qwbatch files to change DQI codes or to insert
+    missing metadata en masse (functionality may have to wait until
+    conversion from QWDATA to AQ SAMPLES).
+4.  More functionality on outlier plots; incorporation of other ways of
+    identifying a point as an outlier.
+5.  Incorporate a mergeQ routine (which has been developed but is not
+    fully functional) which retrieves the nearest instantaneous
+    discharge value to the sample time and allows calculation of loads
+    for plots. Want to allow user to batch load the matched discharge
+    value for all samples missing this metadata.
+6.  Overall error trapping and improvement in feedback to user when data
+    are not available or are potentially erroneous.
 7.  Allow log scales on some plots.
-8.  Improvements overall on plots: plot scaling, zooming, inclusion of other parameters, etc.
+8.  Improvements overall on plots: plot scaling, zooming, inclusion of
+    other parameters, etc.
 9.  Include a 1:1 line on the Box Coeff Data Pull tab plot.
 10. Improved data retrieval speeds, where possible.
-11. Include a flag when sediment mass is less than 20 mg, possibly 10 mg.
-12. Include plots of sample grain size distribution and calculation of metrics such as D20, D50, D80, etc.
+11. Include a flag when sediment mass is less than 20 mg, possibly 10
+    mg.
+12. Include plots of sample grain size distribution and calculation of
+    metrics such as D20, D50, D80, etc.
 13. Include checks on transit rates, where data are available.
 14. Include comparisons between A and B passes (sediment replicates).
-15. Include more checks on mandatory metadata, particularly for bedload samples.
+15. Include more checks on mandatory metadata, particularly for bedload
+    samples.
 
 #### Any Questions or Enhancement Requests?
 
-Contact the SedReview development team: Colin Penn (<cpenn@usgs.gov>), Cory Williams (<cawillia@usgs.gov>), and Molly Wood (<mswood@usgs.gov>),
-or
-Submit an Issue on the [SedReview GitHub Issues Page](https://github.com/USGS-R/sedReview/issues)
+Contact the SedReview development team: Colin Penn (<cpenn@usgs.gov>),
+Cory Williams (<cawillia@usgs.gov>), and Molly Wood
+(<mswood@usgs.gov>),  
+or  
+Submit an Issue on the [SedReview GitHub Issues
+Page](https://github.com/USGS-R/sedReview/issues)
