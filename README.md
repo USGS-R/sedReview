@@ -31,9 +31,10 @@ devtools::install_github(repo = "USGS-R/sedReview")
 sedReview::SedReviewGUI()
 ```
 or  
-Download and Install Standalone GUI App from:   [ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/](ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/)
+Download and Install Standalone GUI App from:  
+[ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/](ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/)
 
-[SedReview GUI User Manual](inst/shiny/SedReviewGUI/www/sedReview_manual.md)
+[SedReview GUI User Manual (better version launched from within GUI)](inst/shiny/SedReviewGUI/www/sedReview_manual.md)
 
 ## Disclaimer
 [Disclaimer](DISCLAIMER.md)

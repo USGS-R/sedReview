@@ -5,7 +5,8 @@ output:
   html_document:
     toc: true # table of content true
     toc_depth: 4
-  md_document:
+  github_document:
+    html_preview: false
     toc: true # table of content true
     toc_depth: 4    
 ---
