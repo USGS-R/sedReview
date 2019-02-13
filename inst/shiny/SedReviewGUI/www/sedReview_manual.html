@@ -252,11 +252,12 @@ A new dialogue will appear. Click the dropdown box next to “TNS Service Name�
 </div>
 <div id="installing-and-opening-sedreview" class="section level2">
 <h2>Installing and Opening SedReview</h2>
+<p><strong>Prior to installation it is recommended that you set your default browser to Google Chrome. SedReview has not been tested on other browsers</strong></p>
 <ol style="list-style-type: decimal">
 <li>Download the install file from <a href="ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/" class="uri">ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/</a> and double click to install the program. You should not need administrator privileges to install the file.</li>
-<li>Save the program where desired (e.g. user/Documents/SedReview or C:/ drive)</li>
-<li>When installed, navigate to the location where installed and double click the “runSedReviewGUI” file. You can create a shortcut to the program on your start menu or desktop for future access.</li>
-<li>The program will open a Windows console (do not close this when working in SedReview!) and then will launch SedReview in an internet browser window.</li>
+<li>Save the program where desired (e.g. user/Documents/SedReview or C:/ drive). It is recommended that you choose the options to also install a desktop shortcut and start menu folder for launching the program.</li>
+<li>When installed, double click the desktop icon, navigate to the SedReview start menu folder, or navigate to the location where installed and double click the “runSedReviewGUI.bat” file.</li>
+<li>The program will open a Windows console (do not close this when working in SedReview!) and then will launch SedReview in an internet browser window. You can resize the GUI within the browser window using the CTRL + or CTRL - .</li>
 <li>Navigate between the two modules by clicking the desired module tab at the top of the screen, and then navigating between tabs (located below the Module informational header near the top of the screen). Tabs are activated by clicking on the blue text heading or drop-down menu icon.</li>
 </ol>
 </div>
@@ -346,12 +347,12 @@ A new dialogue will appear. Click the dropdown box next to “TNS Service Name�
 <h4>Data Flags and Summary</h4>
 <ol style="list-style-type: decimal">
 <li>Click on the Data Flags and Summary tab. A number of different summaries and data quality checks are available through this tab.</li>
-<li>The Data Flag Summary table displays any sample <strong>DURING THE ANALYSIS PERIOD</strong> that had a “flagâ€ for one of the data quality checks. The data quality checks are described at the top of the table and repeated here:
+<li>The Data Flag Summary table displays any sample <strong>DURING THE ANALYSIS PERIOD</strong> that had a “flag” for one of the data quality checks. The data quality checks are described at the top of the table and repeated here:
 <ul>
 <li>bagIEFlags: Tests whether required intake efficiency test parameters are reported when bag samplers are used (required as of June 2013 per OSW Memo 2013.03). Flags if missing.</li>
 <li>CommentNoResultFlags: Returns a table with sample or analytical result comments and tests whether an analytical result is missing for a sample.</li>
 <li>Qflags: Tests whether some measure of discharge is provided as metadata for a sample. Flags if missing.</li>
-<li>metaDataFlags: Tests whether samples are missing required sample metadata, such as sample purpose, sampler type, sampling method, and type of associated QA with sample (if applicable). Includes tests in NWIS 20.xx level checks. For more information, see: link to NWIS 20.xx level checks available on the tab: “Data Flags and Summary &gt; Metadata checkâ€ in the dropdown menu.</li>
+<li>metaDataFlags: Tests whether samples are missing required sample metadata, such as sample purpose, sampler type, sampling method, and type of associated QA with sample (if applicable). Includes tests in NWIS 20.xx level checks. For more information, see: link to NWIS 20.xx level checks available on the tab: “Data Flags and Summary &gt; Metadata check” in the dropdown menu.</li>
 <li>samplePurpFlags: Tests whether a sample purpose code (71999) differs from other samples collected at site (there are certainly valid reasons for this, but just provides a reminder to check that these are correct.</li>
 <li>samplerTypeFlags: Tests whether a sampler type code (84164) differs from others reported. Flags if sampler type code is used 3 or fewer times (again, there are valid reasons for this, so just a check).</li>
 <li>sedMassFlags: Tests whether a sample has a sediment mass less than 2 milligrams. Flags if so. (Note: this is a new piece of metadata (pcode 91157) reported by USGS sediment laboratories so will not be available for historical data).</li>
@@ -379,7 +380,7 @@ A new dialogue will appear. Click the dropdown box next to “TNS Service Name�
 <div id="plots" class="section level4">
 <h4>Plots</h4>
 <ol style="list-style-type: decimal">
-<li>Click on the Plots tab drop-down menu to view time series plots, scatter plots, and box plots. Note: if data are not available to populate a specific plot, the plot will be blank, or an error message will be displayed stating “no dataâ€.</li>
+<li>Click on the Plots tab drop-down menu to view time series plots, scatter plots, and box plots. Note: if data are not available to populate a specific plot, the plot will be blank, or an error message will be displayed stating “no data”.</li>
 <li>The time series plots display SSC, sand/silt break (% smaller than 0.0625 mm), suspended sediment load (SSL), bedload, bedload mass, and TSS (if available) by date.</li>
 <li>The scatter plots display SSC, sand/silt break, and bedload by discharge; SSC by turbidity, TSS by discharge, and TSS by SSC (if available)</li>
 <li>The box plots display standard USGS box plots of: TSS and SSC (side by side for comparison of data distributions), SSC alone, and TSS alone (if available).</li>
@@ -388,7 +389,7 @@ A new dialogue will appear. Click the dropdown box next to “TNS Service Name�
 <div id="box-coeff-data-pull" class="section level4">
 <h4>Box Coeff Data Pull</h4>
 <ol style="list-style-type: decimal">
-<li>Click on the Box Coeff Data Pull tab to calculate box coefficients if your siteâ€™s datasets include any point, grab, or autosample data to determine representativeness of the sample location relative to the cross section. This routine pulls possible pairs of point/grab/autosample samples and comparison cross section (EDI/EWI) samples in the analysis period and calculates the ratio of the results (aka box coefficients). The box coefficient is calculated as: Cross section SSC / non-cross section or point SSC. This information can be used to assess the representativeness of the point/grab/autosample sample location and to determine whether these ratios are consistent or vary over the analysis period.</li>
+<li>Click on the Box Coeff Data Pull tab to calculate box coefficients if your site’s datasets include any point, grab, or autosample data to determine representativeness of the sample location relative to the cross section. This routine pulls possible pairs of point/grab/autosample samples and comparison cross section (EDI/EWI) samples in the analysis period and calculates the ratio of the results (aka box coefficients). The box coefficient is calculated as: Cross section SSC / non-cross section or point SSC. This information can be used to assess the representativeness of the point/grab/autosample sample location and to determine whether these ratios are consistent or vary over the analysis period.</li>
 <li>Enter the search interval in hours in the field on the left. The search interval is the greatest time difference considered when pairing between the point/grab/autosample sample time and the comparison cross section (EDI/EWI) sample time. If a search interval is entered that is too short for what is typical at the site, no sample pair results will be returned. Unless you are very familiar with the typical sample time difference for the site, you may want to start with a wide search interval (e.g. 3 hrs) at first, then narrow down as needed.</li>
 <li>Possible parameter codes for sampling method are already populated in the non-cross section/point sample and cross section sample fields. Hovering the mouse over the codes will bring up a box with sampling method definitions. If needed, sampling method codes can be removed from the retrieval by clicking on the code and hitting the delete button. Codes can be re-inserted by clicking in the vector field and selecting the method code that was deleted.</li>
 <li>When ready, click Get Box Coeff! to run the routine.</li>
@@ -423,7 +424,7 @@ A new dialogue will appear. Click the dropdown box next to “TNS Service Name�
 <li>Starting date for the period of review (YYYY/MM/DD)</li>
 <li>Ending date for the period of review (YYYY/MM/DD). The review period most likely will correspond with one or more water years, but any dates can be selected.</li>
 </ul></li>
-<li>Once these fields are populated, click “Review data!â€.</li>
+<li>Once these fields are populated, click “Review data!”.</li>
 <li>A table that summarizes the number of samples analyzed for SSC, sand/silt break (% smaller than 0.0625 mm), TSS, and bedload for each site in the database will be generated for the review period. If multiple water years exist within the review period, the results are organized by water year.</li>
 </ol>
 </div>
@@ -471,7 +472,7 @@ A new dialogue will appear. Click the dropdown box next to “TNS Service Name�
 <ol style="list-style-type: decimal">
 <li>Click the Summary of Box Coef tab to view a table of non-cross section (point/grab/autosample) sample and comparison cross section (EDI/EWI) sample pairs. The information displayed can be used to assess whether WSC personnel are collecting the data needed to determine the representativeness of a point/grab/autosample sample location.</li>
 <li>Enter the search interval in hours in the field on the left. The search interval is the greatest time difference considered when pairing between the point/grab/autosample sample time and the comparison cross section (EDI/EWI) sample time. If a search interval is entered that is too short for what is typical at the site, no sample pair results will be returned. You may want to start with a wide search interval (e.g. 3 hrs) at first, then narrow down as needed.</li>
-<li>Click Pull Summary! The data table, organized by site and WY, will be populated below the search interval box. Note that all sitesâ€™ results are presented here, even if no non-cross section samples were collected. Look for sites that have non-cross section samples with no corresponding cross section samples and “0â€ for number of pairs (numPairs), which could indicate that steps are not being taken to assess the representativeness of point/grab/autosample sample locations.</li>
+<li>Click Pull Summary! The data table, organized by site and WY, will be populated below the search interval box. Note that all sites’ results are presented here, even if no non-cross section samples were collected. Look for sites that have non-cross section samples with no corresponding cross section samples and “0” for number of pairs (numPairs), which could indicate that steps are not being taken to assess the representativeness of point/grab/autosample sample locations.</li>
 </ol>
 <p>Again, you can right click your mouse outside of the plots or user inputs on any screen, and select Save As an html file to preserve the last state of the SedReview session. Only tabs, tables, and plots that were populated as part of the session will be preserved.</p>
 </div>
@@ -549,7 +550,7 @@ A new dialogue will appear. Click the dropdown box next to “TNS Service Name�
 </ol>
 <div id="any-questions-or-enhancement-requests" class="section level4">
 <h4>Any Questions or Enhancement Requests?</h4>
-<p>Contact the SedReview development team: Colin Penn (<a href="mailto:cpenn@usgs.gov">cpenn@usgs.gov</a>), Cory Williams (<a href="mailto:cawillia@usgs.gov">cawillia@usgs.gov</a>), and Molly Wood (<a href="mailto:mswood@usgs.gov">mswood@usgs.gov</a>),<br />
+<p>Contact the SedReview development team: GS-W SedReview Help (<a href="mailto:gs-w_sedreview_help@usgs.gov">gs-w_sedreview_help@usgs.gov</a>)<br />
 or<br />
 Submit an Issue on the <a href="https://github.com/USGS-R/sedReview/issues">SedReview GitHub Issues Page</a></p>
 </div>

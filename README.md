@@ -15,12 +15,13 @@ This package is considered a 'support' package. For more information, see:
 Users are encouraged to post any bugs or comments for additional functionality on the issues page at:
 [sedReview Issues](https://github.com/USGS-R/sedReview/issues) 
 
-You may also contact the maintainer at cpenn@usgs.gov
+You may also contact the developers at GS-W SedReview Help (gs-w_sedreview_help@usgs.gov)
 
 ## Description
 This package facilitates data review and exploration of discrete sediment data. Data is imported with user-specified options for single or multiple sites and parameter codes using an ODBC connection to the user's local NWIS server. A graphical user interface is in development 
 
-## Installation
+## Installation  
+**The GUI requires that Google Chrome be set as your default web browser.**
 ### R package
 ```R
 install.packages("devtools")

@@ -55,23 +55,25 @@ On 32bit Windows 7 and 8, run "C:/Windows/System32/odbcad32.exe".
 On 64bit Windows 10, in a Windows explorer window, paste "Control Panel/All Control Panel Items/Administrative Tools" and select "ODBC Data Sources (32-bit)."
 
 In the User DSN tab, if you do not see a connection with the same name as your NWIS server of interest, you must add a new connection. Click "Add" on the right.
-![](inst/shiny/SedReviewGUI/www/ODBC_UserDSN.png)
+![](ODBC_UserDSN.png)
 
 **Step 2**
 Scroll down until you see a driver named "Oracle in OraClient11g\_home1" and click "Finish". ***IF YOU DO NOT SEE THE ABOVE DRIVER LISTED, IT IS NOT INSTALLED AND YOU WILL NEED ASSISTANCE FROM AN IT SPECIALIST TO INSTALL IT, THE LINK TO GUIDANCE IS PROVIDED BELOW***
-![](inst/shiny/SedReviewGUI/www/ODBC_CreateUserDSN.png)
+![](ODBC_CreateUserDSN.png)
 
 **Step 3**
 A new dialogue will appear. Click the dropdown box next to "TNS Service Name" and select the NWIS server you would like to connect to. After selecting the server, type in the server name into the "Data Source Name" text box at the top. ***DO NOT ENTER A USER ID, LEAVE THIS FIELD BLANK.*** You are finished, click OK to close the dialogue and then click OK in the main ODBC Data Source Administrator application to close the application.
-![](inst/shiny/SedReviewGUI/www/ODBC_SelectDSN.png)
+![](ODBC_SelectDSN.png)
 
 Installing and Opening SedReview
 --------------------------------
 
+**Prior to installation it is recommended that you set your default browser to Google Chrome. SedReview has not been tested on other browsers**
+
 1.  Download the install file from <ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/> and double click to install the program. You should not need administrator privileges to install the file.
-2.  Save the program where desired (e.g. user/Documents/SedReview or C:/ drive)
-3.  When installed, navigate to the location where installed and double click the "runSedReviewGUI" file. You can create a shortcut to the program on your start menu or desktop for future access.
-4.  The program will open a Windows console (do not close this when working in SedReview!) and then will launch SedReview in an internet browser window.
+2.  Save the program where desired (e.g. user/Documents/SedReview or C:/ drive). It is recommended that you choose the options to also install a desktop shortcut and start menu folder for launching the program.
+3.  When installed, double click the desktop icon, navigate to the SedReview start menu folder, or navigate to the location where installed and double click the "runSedReviewGUI.bat" file.
+4.  The program will open a Windows console (do not close this when working in SedReview!) and then will launch SedReview in an internet browser window. You can resize the GUI within the browser window using the CTRL + or CTRL - .
 5.  Navigate between the two modules by clicking the desired module tab at the top of the screen, and then navigating between tabs (located below the Module informational header near the top of the screen). Tabs are activated by clicking on the blue text heading or drop-down menu icon.
 
 Site-Level Assessment Module
@@ -147,11 +149,11 @@ Site-Level Assessment Module
 #### Data Flags and Summary
 
 1.  Click on the Data Flags and Summary tab. A number of different summaries and data quality checks are available through this tab.
-2.  The Data Flag Summary table displays any sample **DURING THE ANALYSIS PERIOD** that had a "flagâ€ for one of the data quality checks. The data quality checks are described at the top of the table and repeated here:
+2.  The Data Flag Summary table displays any sample **DURING THE ANALYSIS PERIOD** that had a "flag" for one of the data quality checks. The data quality checks are described at the top of the table and repeated here:
     -   bagIEFlags: Tests whether required intake efficiency test parameters are reported when bag samplers are used (required as of June 2013 per OSW Memo 2013.03). Flags if missing.
     -   CommentNoResultFlags: Returns a table with sample or analytical result comments and tests whether an analytical result is missing for a sample.
     -   Qflags: Tests whether some measure of discharge is provided as metadata for a sample. Flags if missing.
-    -   metaDataFlags: Tests whether samples are missing required sample metadata, such as sample purpose, sampler type, sampling method, and type of associated QA with sample (if applicable). Includes tests in NWIS 20.xx level checks. For more information, see: link to NWIS 20.xx level checks available on the tab: "Data Flags and Summary &gt; Metadata checkâ€ in the dropdown menu.
+    -   metaDataFlags: Tests whether samples are missing required sample metadata, such as sample purpose, sampler type, sampling method, and type of associated QA with sample (if applicable). Includes tests in NWIS 20.xx level checks. For more information, see: link to NWIS 20.xx level checks available on the tab: "Data Flags and Summary &gt; Metadata check" in the dropdown menu.
     -   samplePurpFlags: Tests whether a sample purpose code (71999) differs from other samples collected at site (there are certainly valid reasons for this, but just provides a reminder to check that these are correct.
     -   samplerTypeFlags: Tests whether a sampler type code (84164) differs from others reported. Flags if sampler type code is used 3 or fewer times (again, there are valid reasons for this, so just a check).
     -   sedMassFlags: Tests whether a sample has a sediment mass less than 2 milligrams. Flags if so. (Note: this is a new piece of metadata (pcode 91157) reported by USGS sediment laboratories so will not be available for historical data).
@@ -174,14 +176,14 @@ Site-Level Assessment Module
 
 #### Plots
 
-1.  Click on the Plots tab drop-down menu to view time series plots, scatter plots, and box plots. Note: if data are not available to populate a specific plot, the plot will be blank, or an error message will be displayed stating "no dataâ€.
+1.  Click on the Plots tab drop-down menu to view time series plots, scatter plots, and box plots. Note: if data are not available to populate a specific plot, the plot will be blank, or an error message will be displayed stating "no data".
 2.  The time series plots display SSC, sand/silt break (% smaller than 0.0625 mm), suspended sediment load (SSL), bedload, bedload mass, and TSS (if available) by date.
 3.  The scatter plots display SSC, sand/silt break, and bedload by discharge; SSC by turbidity, TSS by discharge, and TSS by SSC (if available)
 4.  The box plots display standard USGS box plots of: TSS and SSC (side by side for comparison of data distributions), SSC alone, and TSS alone (if available).
 
 #### Box Coeff Data Pull
 
-1.  Click on the Box Coeff Data Pull tab to calculate box coefficients if your siteâ€™s datasets include any point, grab, or autosample data to determine representativeness of the sample location relative to the cross section. This routine pulls possible pairs of point/grab/autosample samples and comparison cross section (EDI/EWI) samples in the analysis period and calculates the ratio of the results (aka box coefficients). The box coefficient is calculated as: Cross section SSC / non-cross section or point SSC. This information can be used to assess the representativeness of the point/grab/autosample sample location and to determine whether these ratios are consistent or vary over the analysis period.
+1.  Click on the Box Coeff Data Pull tab to calculate box coefficients if your site's datasets include any point, grab, or autosample data to determine representativeness of the sample location relative to the cross section. This routine pulls possible pairs of point/grab/autosample samples and comparison cross section (EDI/EWI) samples in the analysis period and calculates the ratio of the results (aka box coefficients). The box coefficient is calculated as: Cross section SSC / non-cross section or point SSC. This information can be used to assess the representativeness of the point/grab/autosample sample location and to determine whether these ratios are consistent or vary over the analysis period.
 2.  Enter the search interval in hours in the field on the left. The search interval is the greatest time difference considered when pairing between the point/grab/autosample sample time and the comparison cross section (EDI/EWI) sample time. If a search interval is entered that is too short for what is typical at the site, no sample pair results will be returned. Unless you are very familiar with the typical sample time difference for the site, you may want to start with a wide search interval (e.g. 3 hrs) at first, then narrow down as needed.
 3.  Possible parameter codes for sampling method are already populated in the non-cross section/point sample and cross section sample fields. Hovering the mouse over the codes will bring up a box with sampling method definitions. If needed, sampling method codes can be removed from the retrieval by clicking on the code and hitting the delete button. Codes can be re-inserted by clicking in the vector field and selecting the method code that was deleted.
 4.  When ready, click Get Box Coeff! to run the routine.
@@ -210,7 +212,7 @@ Science-Center Review Module
     -   Two-letter state code (e.g., CO, ID, etc)
     -   Starting date for the period of review (YYYY/MM/DD)
     -   Ending date for the period of review (YYYY/MM/DD). The review period most likely will correspond with one or more water years, but any dates can be selected.
-2.  Once these fields are populated, click "Review data!â€.
+2.  Once these fields are populated, click "Review data!".
 3.  A table that summarizes the number of samples analyzed for SSC, sand/silt break (% smaller than 0.0625 mm), TSS, and bedload for each site in the database will be generated for the review period. If multiple water years exist within the review period, the results are organized by water year.
 
 #### Map of Active Sediment Sites
@@ -248,7 +250,7 @@ Science-Center Review Module
 
 1.  Click the Summary of Box Coef tab to view a table of non-cross section (point/grab/autosample) sample and comparison cross section (EDI/EWI) sample pairs. The information displayed can be used to assess whether WSC personnel are collecting the data needed to determine the representativeness of a point/grab/autosample sample location.
 2.  Enter the search interval in hours in the field on the left. The search interval is the greatest time difference considered when pairing between the point/grab/autosample sample time and the comparison cross section (EDI/EWI) sample time. If a search interval is entered that is too short for what is typical at the site, no sample pair results will be returned. You may want to start with a wide search interval (e.g. 3 hrs) at first, then narrow down as needed.
-3.  Click Pull Summary! The data table, organized by site and WY, will be populated below the search interval box. Note that all sitesâ€™ results are presented here, even if no non-cross section samples were collected. Look for sites that have non-cross section samples with no corresponding cross section samples and "0â€ for number of pairs (numPairs), which could indicate that steps are not being taken to assess the representativeness of point/grab/autosample sample locations.
+3.  Click Pull Summary! The data table, organized by site and WY, will be populated below the search interval box. Note that all sites' results are presented here, even if no non-cross section samples were collected. Look for sites that have non-cross section samples with no corresponding cross section samples and "0" for number of pairs (numPairs), which could indicate that steps are not being taken to assess the representativeness of point/grab/autosample sample locations.
 
 Again, you can right click your mouse outside of the plots or user inputs on any screen, and select Save As an html file to preserve the last state of the SedReview session. Only tabs, tables, and plots that were populated as part of the session will be preserved.
 
@@ -327,6 +329,6 @@ Planned Enhancements (FY19 and beyond)
 
 #### Any Questions or Enhancement Requests?
 
-Contact the SedReview development team: Colin Penn (<cpenn@usgs.gov>), Cory Williams (<cawillia@usgs.gov>), and Molly Wood (<mswood@usgs.gov>),
+Contact the SedReview development team: GS-W SedReview Help (<gs-w_sedreview_help@usgs.gov>)
 or
 Submit an Issue on the [SedReview GitHub Issues Page](https://github.com/USGS-R/sedReview/issues)
