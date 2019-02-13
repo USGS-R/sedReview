@@ -1,6 +1,6 @@
 ---
 title: "SedReview GUI v1.0 User Guide"
-date: "February 7, 2019"
+date: "February 13, 2019"
 output:
   html_document:
     toc: true # table of content true

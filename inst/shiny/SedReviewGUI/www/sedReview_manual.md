@@ -1,6 +1,6 @@
 SedReview GUI v1.0 User Guide
 ================
-February 7, 2019
+February 13, 2019
 
 -   [Introduction](#introduction)
 -   [Before Running SedReview: Setting up ODBC Connection to NWIS](#before-running-sedreview-setting-up-odbc-connection-to-nwis)
@@ -55,15 +55,15 @@ On 32bit Windows 7 and 8, run "C:/Windows/System32/odbcad32.exe".
 On 64bit Windows 10, in a Windows explorer window, paste "Control Panel/All Control Panel Items/Administrative Tools" and select "ODBC Data Sources (32-bit)."
 
 In the User DSN tab, if you do not see a connection with the same name as your NWIS server of interest, you must add a new connection. Click "Add" on the right.
-![](ODBC_UserDSN.png)
+![](inst/shiny/SedReviewGUI/www/ODBC_UserDSN.png)
 
 **Step 2**
 Scroll down until you see a driver named "Oracle in OraClient11g\_home1" and click "Finish". ***IF YOU DO NOT SEE THE ABOVE DRIVER LISTED, IT IS NOT INSTALLED AND YOU WILL NEED ASSISTANCE FROM AN IT SPECIALIST TO INSTALL IT, THE LINK TO GUIDANCE IS PROVIDED BELOW***
-![](ODBC_CreateUserDSN.png)
+![](inst/shiny/SedReviewGUI/www/ODBC_CreateUserDSN.png)
 
 **Step 3**
 A new dialogue will appear. Click the dropdown box next to "TNS Service Name" and select the NWIS server you would like to connect to. After selecting the server, type in the server name into the "Data Source Name" text box at the top. ***DO NOT ENTER A USER ID, LEAVE THIS FIELD BLANK.*** You are finished, click OK to close the dialogue and then click OK in the main ODBC Data Source Administrator application to close the application.
-![](ODBC_SelectDSN.png)
+![](inst/shiny/SedReviewGUI/www/ODBC_SelectDSN.png)
 
 Installing and Opening SedReview
 --------------------------------
