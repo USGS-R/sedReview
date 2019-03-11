@@ -33,7 +33,7 @@ sedReview::SedReviewGUI()
 ```
 or  
 Download and Install Standalone GUI App from:  
-[Available to USGS personnel through ScienceBase](insert link when available)
+[Available to USGS personnel through ScienceBase](https://www.sciencebase.gov/catalog/item/5c867842e4b09388244b3cb3)
 
 [SedReview GUI User Manual (better version launched from within GUI)](inst/shiny/SedReviewGUI/www/sedReview_manual.md)
 
