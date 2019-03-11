@@ -33,7 +33,7 @@ sedReview::SedReviewGUI()
 ```
 or  
 Download and Install Standalone GUI App from:  
-[ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/](ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/)
+[Available to USGS personnel through ScienceBase](insert link when available)
 
 [SedReview GUI User Manual (better version launched from within GUI)](inst/shiny/SedReviewGUI/www/sedReview_manual.md)
 
