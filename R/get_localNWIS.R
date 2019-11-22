@@ -584,31 +584,13 @@ get_localNWIS <- function(DSN,
   }
   
   ##Format date times to local sample collection timezone
+  #copy UTC time to UTC time before converting to use for specific joins/situations
+  #make SAMPLE_START_DT_UTC
+  longTable$SAMPLE_START_DT_UTC <- longTable$SAMPLE_START_DT
   #SAMPLE_START_DT
   longTable$SAMPLE_START_DT <- convertTime(datetime = longTable$SAMPLE_START_DT,
                                            timezone = longTable$SAMPLE_START_TZ_CD,
                                            daylight = longTable$SAMPLE_START_LOCAL_TM_FG)
-  
-  
-  #RESULT_CR
-  longTable$RESULT_CR <- convertTime(datetime = longTable$RESULT_CR,
-                                     timezone = longTable$SAMPLE_START_TZ_CD,
-                                     daylight = longTable$SAMPLE_START_LOCAL_TM_FG)
-  
-  
-  #RESULT_MD
-  longTable$RESULT_MD <- convertTime(datetime = longTable$RESULT_MD,
-                                     timezone = longTable$SAMPLE_START_TZ_CD,
-                                     daylight = longTable$SAMPLE_START_LOCAL_TM_FG)
-  #SAMPLE_CR
-  longTable$SAMPLE_CR <- convertTime(datetime = longTable$SAMPLE_CR,
-                                     timezone = longTable$SAMPLE_START_TZ_CD,
-                                     daylight = longTable$SAMPLE_START_LOCAL_TM_FG)
-  
-  #SAMPLE_MD
-  longTable$SAMPLE_MD <- convertTime(datetime = longTable$SAMPLE_MD,
-                                     timezone = longTable$SAMPLE_START_TZ_CD,
-                                     daylight = longTable$SAMPLE_START_LOCAL_TM_FG)
   
   #SAMPLE_END_DT
   longTable$SAMPLE_END_DT <- convertTime(datetime = longTable$SAMPLE_END_DT,
@@ -658,7 +640,7 @@ get_localNWIS <- function(DSN,
                            "HYD_COND_CD","SAMP_TYPE_CD","HYD_EVENT_CD",
                            "AQFR_CD","TU_ID","BODY_PART_ID",
                            "COLL_ENT_CD","SIDNO_PARTY_CD",
-                           "HUC_CD","SITE_TP_CD", "SAMPLE_MONTH","DOY", "WY")]
+                           "HUC_CD","SITE_TP_CD", "SAMPLE_START_DT_UTC","SAMPLE_MONTH","DOY", "WY")]
   
   ### Calculate SSL 80155 according to NWIS algorithm
   existingSSL <- longTable$UID[longTable$PARM_CD == '80155']
@@ -680,7 +662,26 @@ get_localNWIS <- function(DSN,
       SSL$PARM_DS <- 'Suspended sediment discharge, short tons per day'
       SSL$Val_qual <- paste(SSL$RESULT_VA,SSL$REMARK_CD, sep = " ")
       SSL$Val_qual <- gsub("Sample","",SSL$Val_qual)
-      SSL <- SSL[,1:79]
+      SSL <- SSL[c("UID","RECORD_NO" ,"SITE_NO","STATION_NM","SAMPLE_START_DT","SAMPLE_END_DT","MEDIUM_CD","PROJECT_CD",
+                   "PARM_CD","PARM_NM","METH_CD","RESULT_VA","REMARK_CD","VAL_QUAL_CD","RPT_LEV_VA","DQI_CD", 
+                   "DEC_LAT_VA","DEC_LONG_VA",
+                   "SAMPLE_CM_TX","SAMPLE_CM_CR","SAMPLE_CM_CN","SAMPLE_CM_MD","SAMPLE_CM_MN",
+                   "RESULT_CM_TX","RESULT_CM_CR","RESULT_CM_CN","RESULT_CM_MD","RESULT_CM_MN",
+                   "SAMPLE_CR","SAMPLE_CN","SAMPLE_MD","SAMPLE_MN",
+                   "RESULT_CR","RESULT_CN","RESULT_MD","RESULT_MN",
+                   "PREP_DT","ANL_DT","LAB_NO","PREP_SET_NO","ANL_SET_NO","ANL_ENT_CD","LAB_STD_DEV_VA" ,"LAB_STD_DEV_SG",
+                   "RESULT_SG","RESULT_RD","RPT_LEV_SG","RPT_LEV_CD","NULL_VAL_QUAL_CD",  
+                   "SAMPLE_CM_TP",
+                   "RESULT_CM_TP",
+                   "VAL_QUAL_NU","Val_qual","PARM_SEQ_GRP_CD","PARM_DS",
+                   "PARM_SEQ_NU","AGENCY_CD",
+                   "SAMPLE_START_SG","SAMPLE_START_TZ_CD",
+                   "SAMPLE_START_LOCAL_TM_FG","SAMPLE_END_SG","SAMPLE_END_TZ_CD",
+                   "SAMPLE_END_LOCAL_TM_FG","SAMPLE_ID","TM_DATUM_RLBLTY_CD","ANL_STAT_CD",
+                   "HYD_COND_CD","SAMP_TYPE_CD","HYD_EVENT_CD",
+                   "AQFR_CD","TU_ID","BODY_PART_ID",
+                   "COLL_ENT_CD","SIDNO_PARTY_CD",
+                   "HUC_CD","SITE_TP_CD", "SAMPLE_START_DT_UTC","SAMPLE_MONTH","DOY", "WY")]
       longTable <- rbind(longTable, SSL)
     }
     
