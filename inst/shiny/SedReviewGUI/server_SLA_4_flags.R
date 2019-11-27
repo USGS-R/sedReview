@@ -80,11 +80,7 @@ noResult <- eventReactive(input$dataPull, {
   
 })
 
-outlier <- reactive({
-  
-  find_outliers(siteData(), site_no = input$varSite, lowThreshold = as.numeric(input$percentileLow), highThreshold = as.numeric(input$percentileHigh))
-  
-})
+
 
 
 output$flagtablesum <- DT::renderDataTable(

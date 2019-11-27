@@ -1,5 +1,9 @@
 #### Site-Level Assessment: Outlier explorer ####
 
+outlier <- reactive({
+  find_outliers(siteData(), site_no = input$varSite, lowThreshold = as.numeric(input$percentile), highThreshold = (1-as.numeric(input$percentile)))
+})
+
 #join flag table eith SiteData Table for plotting ????????????????????????????
 
 JoinTable <- eventReactive(input$dataPull, {
@@ -36,61 +40,44 @@ JoinTable2 <- reactive({
 
 
 ##############################################
-# autofillXplot2<-eventReactive(input$dataPull, {
-#   colnames(JoinTable(), do.NULL = FALSE)
-# })
-
 JoinTableSelect <- reactive({
   select(JoinTable2(), c("RECORD_NO", "SITE_NO", "STATION_NM", "SAMPLE_START_DT", "TurbFNU", "SC", "Qcfs", "SSC", "SandSilt","Bedload", "TSS")) #, "Turbidity..Form.Neph",
 })
 
 OutlierData <- reactive({
-  left_join (JoinTableSelect(), outlier())
+  left_join(JoinTableSelect(), outlier())
 })
 
-
-# Plotting routine
-
-
-
-# Outlier Plot ################################
-
-# x2 <- reactive({
-#   OutlierData()[,as.numeric(input$varx2)]
-# })
-# y2 <- reactive({
-#   OutlierData()[,as.numeric(input$vary2)]
-# })
-
+# Outlier Plot
 OutlierData2<-reactive({
   dfplot2<-OutlierData()
   dfplot2$xplot2<- OutlierData()[,as.numeric(input$varx2)]
   dfplot2$yplot2<- OutlierData()[,as.numeric(input$vary2)]
   return(dfplot2)
 })
-
-output$plot2 <- renderPlot({
-  ggplot(data = OutlierData2(), aes(x=xplot2, y=yplot2)) + geom_point() + gghighlight((yplot2) > (quantile(yplot2, as.numeric(input$percentileHigh), na.rm = TRUE)), use_direct_label = input$outlierlabel, label_key = RECORD_NO) +
-    xlab("X-axis Variable") +
-    ylab("Y-axis Variable")
-  
+OutlierDataLOW <- reactive({
+  df <- OutlierData2()[OutlierData2()$yplot2 < quantile(OutlierData2()$yplot2, as.numeric(input$percentile), na.rm = TRUE),]
+  return(df)
 })
-
-output$plot3 <- renderPlot({
-  ggplot(data= OutlierData2(), aes(x=xplot2, y=yplot2)) + geom_point() + gghighlight((yplot2) < (quantile(yplot2, as.numeric(input$percentileLow), na.rm = TRUE)), use_direct_label = input$outlierlabel, label_key = RECORD_NO) +
-    xlab("X-axis Variable") +
-    ylab("Y-axis Variable")
+OutlierDataHI <- reactive({
+  df <- OutlierData2()[OutlierData2()$yplot2 > quantile(OutlierData2()$yplot2, (1-as.numeric(input$percentile)), na.rm = TRUE),]
+  return(df)
 })
-
-# output$plot2info <-renderPrint({
-#   nearPoints(OutlierData(), input$plot2_dblclick, threshold = 10, maxpoints = 5, addDist = TRUE, allRows = TRUE)
-# })
+output$outlierPlot <- renderPlotly({
+  ggplotly(
+    ggplot(data = OutlierData2()) +
+      geom_point(aes(x=xplot2, y=yplot2), color = 'grey') +
+      geom_point(data = OutlierDataLOW(), 
+                 aes(x=xplot2, y=yplot2), color = 'red', size = 3) +
+      geom_point(data = OutlierDataHI(), 
+                 aes(x=xplot2, y=yplot2), color = 'red', size = 3) +
+      xlab(names(OutlierData()[as.numeric(input$varx2)])) +
+      ylab(names(OutlierData()[as.numeric(input$vary2)]))
+  )
+})
 
 # Outlier Table info and Table
 
-# output$header <- renderText({
-#   summary(x2())
-# })
 output$outlierTable <- DT::renderDataTable(
   datatable({OutlierData()},
             extensions = 'Buttons', 

@@ -4,22 +4,30 @@ tabsetPanel(
   tabPanel(title = "User Input and Summary",
            sidebarLayout(
              sidebarPanel(
-               textInput(inputId = "DBName", label = "Please enter your ODBC Database connection name", value = "NWISCO"),
-               textInput(inputId = "env.db", label = "Please enter your database number of environmental samples", value = "01"),
-               textInput(inputId = "qa.db", label = "Please enter your database number of QA samples", value = "02"),
-               textInput(inputId = "varSite", label = "Please enter your 8- or 15-digit USGS station ID", value = "385626107212000"),
-               textInput(inputId = "beginDT", label = "Please enter starting date for reference period", value = "2012/10/01"),
-               textInput(inputId = "analysisBeginDT", label = "Please enter starting date for analysis period", value = "2016/10/01"),
-               bsTooltip("beginDT", "Reference period - Period of historical data. Sample results during the reference period will be shown on plots for comparison with sample results during the analysis period.", "right","hover", options = list(container = "body")),
-               bsTooltip("analysisBeginDT", "Analysis period - Period of interest for the site level assessment. Sample results from the analysis period will be shown on summary stat, sample count, and data flag tables as well as in plots.", "right","hover", options = list(container = "body")),
-               textInput(inputId = "endDT", label = "Please enter ending date for reference and analysis periods", value = "2017/09/30"),
-               selectInput(inputId = "tz", label = "Please select local time zone", list( "GMT", "America/New_York", "America/Chicago","America/Denver", "America/Phoenix", "America/Los_Angeles", "America/Anchorage", "America/Adak", "Pacific/Honolulu")),
+               textInput(inputId = "DBName", label = "Please enter your ODBC Database connection name", value = "NWISCO"),#placeholder = "NWISCO"),
+               textInput(inputId = "env.db", label = "Please enter your database number of environmental samples", value = "01"),#, placeholder = "01"),
+               textInput(inputId = "qa.db", label = "Please enter your database number of QA samples", value = "02"),#, placeholder = "02"),
+               textInput(inputId = "varSite", label = "Please enter your 8- or 15-digit USGS station ID", value = "07106500"),#placeholder = "385626107212000"),
+               textInput(inputId = "beginDT", label = "Please enter starting date for reference period", value = "2012/10/01"),#placeholder = "YYYY/MM/DD"),
+               textInput(inputId = "analysisBeginDT", label = "Please enter starting date for analysis period", value = "2015/10/01"),#placeholder = "YYYY/MM/DD"),
+               bsTooltip("beginDT", "Reference period - Period of historical data. Sample results during the reference period will be shown on plots 
+                         for comparison with sample results during the analysis period.", 
+                         "right","hover", options = list(container = "body")),
+               bsTooltip("analysisBeginDT", "Analysis period - Period of interest for the site level assessment. Sample results from the analysis 
+                         period will be shown on summary stat, sample count, and data flag tables as well as in plots.", 
+                         "right","hover", options = list(container = "body")),
+               textInput(inputId = "endDT", label = "Please enter ending date for reference and analysis periods", value = "2018/10/01"),#placeholder = "YYYY/MM/DD"),
+               selectInput(inputId = "tz", label = "Please select local time zone", 
+                           list( "GMT", "America/New_York", "America/Chicago","America/Denver", "America/Phoenix", 
+                                 "America/Los_Angeles", "America/Anchorage", "America/Adak", "Pacific/Honolulu")),
                actionButton(inputId = "dataPull", label = "Get data!")
              ),
              
              mainPanel(
                h4("Summary Stats", align="center"), 
-               helpText("Data available for download using NWIS interface, below:"), helpText( a("NWIS link", target= "_blank", href= "https://nwis.waterdata.usgs.gov/nwis/qwdata?search_criteria=search_site_no&submitted_form=introduction")),
+               helpText("Data available for download using NWIS interface, below:"), 
+               helpText( a("NWIS link", target= "_blank", 
+                           href= "https://nwis.waterdata.usgs.gov/nwis/qwdata?search_criteria=search_site_no&submitted_form=introduction")),
                withSpinner(DT::dataTableOutput("sumtable"))
              )
            )
@@ -39,20 +47,22 @@ tabsetPanel(
                #selectInput(inputId = "varx2", label = "Please select X variable from the dataset", choices=autofillXplot2),
                selectInput(inputId = "varx2", label = "Please select X variable from the dataset", choices=c("Streamflow" = 7, "Date-Time" = 4, "Turbidity_FNU" = 5, "Specific conductance" = 6, "Suspended Sediment Concentration" = 8)),
                selectInput(inputId = "vary2", label = "Please select Y variable from the dataset", choices=c("Suspended Sediment Concentration" = 8, "Sand/Silt-break percent finer" = 9, "Bedload" = 10)), #, "Total Suspended Solids" = 11
-               selectInput(inputId = "percentileHigh", label = "Please select 'greater than' percentile for outlier", choices=c("0.99", "0.95", "0.90", "0.85", "0.80")),
-               selectInput(inputId = "percentileLow", label = "Please select 'less than' percentile for outlier", choices=c("0.01", "0.05", "0.10", "0.15", "0.20")),
+               selectInput(inputId = "percentile", label = "Please select percentile for outlier", 
+                           choices=c("+/-  1%"=0.01, 
+                                     "+/-  5%"=0.05, 
+                                     "+/- 10%"=0.10, 
+                                     "+/- 15%"=0.15, 
+                                     "+/- 20%"=0.20)),
                checkboxInput(inputId = "outlierlabel", label = "Add label to plot: RECORD_NO (labels are record#_database#).", value = FALSE)
              ),
              
              mainPanel(
                #h4("Regression Fit, Y-intercept as zero", align="center"),
                #verbatimTextOutput("model"),
-               h3("Outlier Plots", align="center"),
-               h5("These plots show potential outliers in the analysis period. Currently, outliers are defined as values above and below the selected percentiles for the y-axis variables."),
-               h4("Outlier greater than threshold", align="center"),
-               withSpinner(plotOutput("plot2", dblclick = "plot2_dblclick", height = 250)),
-               h4("Outlier less than threshold", align="center"),
-               withSpinner(plotOutput("plot3", dblclick = "plot2_dblclick", height = 250)),
+               h3("Outlier Plot", align="center"),
+               h5("This plot shows potential outliers in the analysis period. 
+                  Currently, outliers are defined as values above and below the selected percentile for the y-axis variables."),
+               withSpinner(plotlyOutput("outlierPlot", height = 500)),
                
                # verbatimTextOutput("plot2info"),
                # verbatimTextOutput("header"),

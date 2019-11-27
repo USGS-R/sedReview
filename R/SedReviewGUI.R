@@ -18,6 +18,7 @@
 #' @import dataRetrieval
 #' @import leaflet
 #' @import shinycssloaders
+#' @import plotly
 SedReviewGUI <- function() {
   appDir <- system.file("shiny","SedReviewGUI",package = "sedReview")
   if (appDir == "") {
