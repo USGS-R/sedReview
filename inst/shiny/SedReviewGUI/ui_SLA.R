@@ -42,11 +42,20 @@ tabsetPanel(
   tabPanel(title = "Outlier Explorer",
            sidebarLayout(
              sidebarPanel(
-               #numericInput(inputId = "searchInterval", label = "Please enter your search interval in hrs", value = "0.50"),
-               # actionButton(inputId = "outlierPull", label = "Plot Data!"),
-               #selectInput(inputId = "varx2", label = "Please select X variable from the dataset", choices=autofillXplot2),
-               selectInput(inputId = "varx2", label = "Please select X variable from the dataset", choices=c("Streamflow" = 7, "Date-Time" = 4, "Turbidity_FNU" = 5, "Specific conductance" = 6, "Suspended Sediment Concentration" = 8)),
-               selectInput(inputId = "vary2", label = "Please select Y variable from the dataset", choices=c("Suspended Sediment Concentration" = 8, "Sand/Silt-break percent finer" = 9, "Bedload" = 10)), #, "Total Suspended Solids" = 11
+               selectInput(inputId = "varxOut", label = "Please select X variable from the dataset", 
+                           choices=c("Streamflow" = "Qcfs", 
+                                     "Date-Time" = "SAMPLE_START_DT", 
+                                     "Turbidity_FNU" = "TurbFNU", 
+                                     "Specific conductance" = "SC", 
+                                     "Suspended Sediment Concentration" = "SSC")),
+               selectInput(inputId = "varyOut", label = "Please select Y variable from the dataset", 
+                           choices=c("Suspended Sediment Concentration" = "SSC",
+                                     "Suspended Sediment Load" = "SSL",
+                                     "Bed Sediment LOI" = "bedSedLOI",
+                                     "Suspended Sediment LOI" = "susSedLOI",
+                                     "Sand/Silt-break percent smaller than 0.0625mm" = "SandSilt", 
+                                     "Bedload" = "Bedload", 
+                                     "Total Suspended Solids" = "TSS")), 
                selectInput(inputId = "percentile", label = "Please select percentile for outlier", 
                            choices=c("+/-  1%"=0.01, 
                                      "+/-  5%"=0.05, 
@@ -57,20 +66,14 @@ tabsetPanel(
              ),
              
              mainPanel(
-               #h4("Regression Fit, Y-intercept as zero", align="center"),
-               #verbatimTextOutput("model"),
                h3("Outlier Plot", align="center"),
-               h5("This plot shows potential outliers in the analysis period. 
+               h5("This plot shows potential outliers in the analysis period (rejected samples already removed). 
                   Currently, outliers are defined as values above and below the selected percentile for the y-axis variables."),
                withSpinner(plotlyOutput("outlierPlot", height = 500)),
                
-               # verbatimTextOutput("plot2info"),
-               # verbatimTextOutput("header"),
-               
-               #h4("Plot info", align="center"),
-               #verbatimTextOutput("info"),
                h4("Outlier Table", align="center"),
-               helpText("Tests whether sample results are outliers. Flags if an outlier. Currently looks at SSC, SSL, bedload loss on ignition, suspended sediment loss on ignition, and sand/silt break."),
+               helpText("Tests whether sample results are potential outliers from the range of measured values. 
+                        Flags an outlier if outside the percentile listed. Currently looks at SSC, SSL, bedload loss on ignition, suspended sediment loss on ignition, and sand/silt break."),
                withSpinner(DT::dataTableOutput("outlierTable"))
              )
            )

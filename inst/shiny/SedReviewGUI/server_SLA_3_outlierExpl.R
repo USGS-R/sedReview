@@ -1,58 +1,71 @@
 #### Site-Level Assessment: Outlier explorer ####
 
 outlier <- reactive({
-  find_outliers(siteData(), site_no = input$varSite, lowThreshold = as.numeric(input$percentile), highThreshold = (1-as.numeric(input$percentile)))
+  outliers <<- NULL
+  outliers <<- find_outliers(siteData, site_no = input$varSite, 
+                             lowThreshold = as.numeric(input$percentile), 
+                             highThreshold = (1-as.numeric(input$percentile)))
+  importInfo$outlierPercentile <<- input$percentile
+  return(outliers)
 })
 
-#join flag table eith SiteData Table for plotting ????????????????????????????
 
-JoinTable <- eventReactive(input$dataPull, {
-  make_wideTable(siteData())
+siteData_wide <- eventReactive(input$dataPull, {
+  siteData_nonRej <- siteData[!(siteData$DQI_CD %in% c("X","Q")),]
+  make_wideTable(siteData_nonRej)
 })
 
-######### Make placeholder columns ###########
+######### Make GUI displayed table ###########
 
-JoinTable2 <- reactive({
-  J2 <-JoinTable()
-  if(length(J2$Turbidity..Form.Neph != 0)) {J2$TurbFNU <- as.numeric(J2$Turbidity..Form.Neph)}
-  else{J2$TurbFNU <- NA}
+OutlierData <- reactive({
+  OutWide <-siteData_wide()
+  if(length(OutWide$Discharge..instant. != 0)) {OutWide$Qcfs <- as.numeric(OutWide$Discharge..instant.)}
+  else{OutWide$Qcfs <- NA}  
   
-  if(length(J2$Specific.cond.at.25C != 0)) {J2$SC <- as.numeric(J2$Specific.cond.at.25C)}
-  else{J2$SC <- NA}
+  if(length(OutWide$Turbidity..Form.Neph != 0)) {OutWide$TurbFNU <- as.numeric(OutWide$Turbidity..Form.Neph)}
+  else{OutWide$TurbFNU <- NA}
   
-  if(length(J2$Discharge..instant. != 0)) {J2$Qcfs <- as.numeric(J2$Discharge..instant.)}
-  else{J2$Qcfs <- NA}
+  if(length(OutWide$Specific.cond.at.25C != 0)) {OutWide$SC <- as.numeric(OutWide$Specific.cond.at.25C)}
+  else{OutWide$SC <- NA}
   
-  if(length(J2$Suspnd.sedmnt.conc != 0)) {J2$SSC <- as.numeric(J2$Suspnd.sedmnt.conc)}
-  else{J2$SSC <- NA}
+  if(length(OutWide$Suspnd.sedmnt.conc != 0)) {OutWide$SSC <- as.numeric(OutWide$Suspnd.sedmnt.conc)}
+  else{OutWide$SSC <- NA}
   
-  if(length(J2$Sus.sed..0.0625mm.sd != 0)) {J2$SandSilt <- as.numeric(J2$Sus.sed..0.0625mm.sd)}
-  else{J2$SandSilt <- NA}
+  if(length(OutWide$Suspnd.sedmnt.disch != 0)) {OutWide$SSL <- as.numeric(OutWide$Suspnd.sedmnt.disch)}
+  else{OutWide$SSL <- NA}
   
-  if(length(J2$Bedload.sediment != 0)) {J2$Bedload <- as.numeric(J2$Bedload.sediment)}
-  else{J2$Bedload <- NA}
+  if(length(OutWide$Loss.on.ignition..bs != 0)) {OutWide$bedSedLOI <- as.numeric(OutWide$Loss.on.ignition..bs)}
+  else{OutWide$bedSedLOI <- NA}
   
-  if(length(J2$Suspended.solids != 0)) {J2$TSS <- as.numeric(J2$Suspended.solids)}
-  else{J2$TSS <- NA}
+  if(length(OutWide$LOI.of.susp..solids != 0)) {OutWide$susSedLOI <- as.numeric(OutWide$LOI.of.susp..solids)}
+  else{OutWide$susSedLOI <- NA}
   
-  return(J2)
+  if(length(OutWide$Sus.sed..0.0625mm.sd != 0)) {OutWide$SandSilt <- as.numeric(OutWide$Sus.sed..0.0625mm.sd)}
+  else{OutWide$SandSilt <- NA}
+  
+  if(length(OutWide$Bedload.sediment != 0)) {OutWide$Bedload <- as.numeric(OutWide$Bedload.sediment)}
+  else{OutWide$Bedload <- NA}
+  
+  if(length(OutWide$Suspended.solids != 0)) {OutWide$TSS <- as.numeric(OutWide$Suspended.solids)}
+  else{OutWide$TSS <- NA}
+  
+  OutWide <- OutWide[,c("RECORD_NO", "SITE_NO", "STATION_NM", "SAMPLE_START_DT", 
+                        "Qcfs", "TurbFNU", "SC", "SSC", "SSL",
+                        "bedSedLOI", "susSedLOI",
+                        "SandSilt","Bedload", "TSS")]
+  OutWide <- dplyr::left_join(OutWide, dplyr::select(outlier(), RECORD_NO, SITE_NO, STATION_NM, SAMPLE_START_DT, dplyr::contains('flag')),
+                         by = c("RECORD_NO", "SITE_NO", "STATION_NM", "SAMPLE_START_DT"))
+  
+  return(OutWide)
 })
 
 
 ##############################################
-JoinTableSelect <- reactive({
-  select(JoinTable2(), c("RECORD_NO", "SITE_NO", "STATION_NM", "SAMPLE_START_DT", "TurbFNU", "SC", "Qcfs", "SSC", "SandSilt","Bedload", "TSS")) #, "Turbidity..Form.Neph",
-})
-
-OutlierData <- reactive({
-  left_join(JoinTableSelect(), outlier())
-})
-
 # Outlier Plot
 OutlierData2<-reactive({
   dfplot2<-OutlierData()
-  dfplot2$xplot2<- OutlierData()[,as.numeric(input$varx2)]
-  dfplot2$yplot2<- OutlierData()[,as.numeric(input$vary2)]
+  dfplot2$xplot2<- OutlierData()[,as.character(input$varxOut)]
+  dfplot2$yplot2<- OutlierData()[,as.character(input$varyOut)]
   return(dfplot2)
 })
 OutlierDataLOW <- reactive({
@@ -64,16 +77,30 @@ OutlierDataHI <- reactive({
   return(df)
 })
 output$outlierPlot <- renderPlotly({
-  ggplotly(
-    ggplot(data = OutlierData2()) +
-      geom_point(aes(x=xplot2, y=yplot2), color = 'grey') +
-      geom_point(data = OutlierDataLOW(), 
-                 aes(x=xplot2, y=yplot2), color = 'red', size = 3) +
-      geom_point(data = OutlierDataHI(), 
-                 aes(x=xplot2, y=yplot2), color = 'red', size = 3) +
-      xlab(names(OutlierData()[as.numeric(input$varx2)])) +
-      ylab(names(OutlierData()[as.numeric(input$vary2)]))
-  )
+  p <- ggplot(data = OutlierData2()) +
+    geom_point(aes(x=xplot2, y=yplot2,
+                   text = paste0("X: ", xplot2,"\n",
+                                 "Y: ", yplot2,"\n",
+                                 "RECORD_NO: ",RECORD_NO)), color = 'grey') +
+    geom_point(data = OutlierDataLOW(), 
+               aes(x=xplot2, y=yplot2,
+                   text = paste0("X: ", xplot2,"\n",
+                                 "Y: ", yplot2,"\n",
+                                 "RECORD_NO: ",RECORD_NO)), color = 'red', size = 3) +
+    geom_point(data = OutlierDataHI(), 
+               aes(x=xplot2, y=yplot2,
+                   text = paste0("X: ", xplot2,"\n",
+                                 "Y: ", yplot2,"\n",
+                                 "RECORD_NO: ",RECORD_NO)), color = 'red', size = 3) +
+    xlab(as.character(input$varxOut)) +
+    ylab(as.character(input$varyOut))
+  if(input$outlierlabel == TRUE){
+    p <- p +
+      geom_text(data = OutlierDataLOW(), aes(x = xplot2, y = yplot2, label = RECORD_NO, text = NULL)) +
+      geom_text(data = OutlierDataHI(), aes(x = xplot2, y = yplot2, label = RECORD_NO, text = NULL))
+  }
+  p <- ggplotly(p, tooltip = "text")
+  return(p)
 })
 
 # Outlier Table info and Table
