@@ -3,59 +3,59 @@
 # Time Series plots
 sedTS <- eventReactive(input$dataPull, {
   
-  plot_sedTS(siteData())
+  plot_sedTS(siteData)
   
 })
 
-output$TSplot1 <- renderPlot(sedTS()$SSC)
+output$TSplot1 <- renderPlotly(sedTS()$SSC)
 
-output$TSplot2 <- renderPlot(sedTS()$ssbreak)
+output$TSplot2 <- renderPlotly(sedTS()$ssbreak)
 
-output$TSplot3 <- renderPlot(sedTS()$SSL)
+output$TSplot3 <- renderPlotly(sedTS()$SSL)
 
-output$TSplot4 <- renderPlot(sedTS()$bedload)
+output$TSplot4 <- renderPlotly(sedTS()$bedload)
 
-output$TSplot5 <- renderPlot(sedTS()$bedmass)
+output$TSplot5 <- renderPlotly(sedTS()$bedmass)
 
-output$TSplot6 <- renderPlot(sedTS()$TSS)
+output$TSplot6 <- renderPlotly(sedTS()$TSS)
 
 # Scatter Plot
 sedFlow <- eventReactive(input$dataPull, {
   
-  plot_sedFlow(siteData())
+  plot_sedFlow(siteData)
   
 })
 
 turbSSC <- eventReactive(input$dataPull, {
   
-  plot_turbSSC(siteData())
+  plot_turbSSC(siteData)
   
 })
 
 SSCTSS <- eventReactive(input$dataPull, {
   
-  plot_SSCTSS(siteData())
+  plot_SSCTSS(siteData)
   
 })
 
-output$Splot1 <- renderPlot(sedFlow()$SSC)
+output$Splot1 <- renderPlotly(sedFlow()$SSC)
 
-output$Splot2 <- renderPlot(sedFlow()$ssbreak)
+output$Splot2 <- renderPlotly(sedFlow()$ssbreak)
 
-output$Splot3 <- renderPlot(sedFlow()$bedload)
+output$Splot3 <- renderPlotly(sedFlow()$bedload)
 
-output$Splot4 <- renderPlot(turbSSC()) #check with Colin about update call
+output$Splot4 <- renderPlotly(turbSSC()) #check with Colin about update call
 
-output$Splot5 <- renderPlot(sedFlow()$TSS)
+output$Splot5 <- renderPlotly(sedFlow()$TSS)
 
-output$Splot6 <- renderPlot(SSCTSS()$scatter)
+output$Splot6 <- renderPlotly(SSCTSS()$scatter)
 
 
 # Boxplot
 
 ssctss <- eventReactive(input$dataPull, {
   
-  plot_SSCTSS(siteData())
+  plot_SSCTSS(siteData)
   
 })
 

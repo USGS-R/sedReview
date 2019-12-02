@@ -7,7 +7,7 @@ tabsetPanel(
                textInput(inputId = "DBName", label = "Please enter your ODBC Database connection name", value = "NWISCO"),#placeholder = "NWISCO"),
                textInput(inputId = "env.db", label = "Please enter your database number of environmental samples", value = "01"),#, placeholder = "01"),
                textInput(inputId = "qa.db", label = "Please enter your database number of QA samples", value = "02"),#, placeholder = "02"),
-               textInput(inputId = "varSite", label = "Please enter your 8- or 15-digit USGS station ID", value = "07106500"),#placeholder = "385626107212000"),
+               textInput(inputId = "varSite", label = "Please enter your 8- or 15-digit USGS station ID", value = "07104905"),#placeholder = "385626107212000"),
                textInput(inputId = "beginDT", label = "Please enter starting date for reference period", value = "2012/10/01"),#placeholder = "YYYY/MM/DD"),
                textInput(inputId = "analysisBeginDT", label = "Please enter starting date for analysis period", value = "2015/10/01"),#placeholder = "YYYY/MM/DD"),
                bsTooltip("beginDT", "Reference period - Period of historical data. Sample results during the reference period will be shown on plots 
@@ -188,70 +188,82 @@ tabsetPanel(
   navbarMenu("Plots",
              
              tabPanel(title = "Time Series Plots",
-                      h4("Time series plot of SSC (80154)", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("TSplot1", height = 400)),
-                      
-                      h4("Time series plot of sand/silt break (70331)", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("TSplot2", height = 400)),
-                      
-                      h4("Time series plot of SSL (80155)", align="center"),
-                      helpText("Samples without an accompanying discharge will not appear in this plot"),
-                      withSpinner(plotOutput("TSplot3", height = 250)),
-                      
-                      h4("Time series plot of bedload (80225)", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("TSplot4", height = 250)),
-                      
-                      h4("Time series plot of bedload mass (91145)", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("TSplot5", height = 250)),
-                      
-                      h4("Time series plot of total suspended solids (00530)", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("TSplot6", height = 250))
-                      
+                      fluidRow(
+                        column(width = 6,
+                               h4("Time series plot of SSC (80154)", align="center"),
+                               withSpinner(plotlyOutput("TSplot1", height = 400))
+                        ),
+                        column(width = 6,
+                               h4("Time series plot of SSL (80155). Samples without an accompanying discharge will not appear in this plot", align="center"),
+                               withSpinner(plotlyOutput("TSplot3", height = 400))
+                        )
+                      ),
+                      fluidRow(
+                        column(width = 6,
+                               h4("Time series plot of sand/silt break (70331)", align="center"),
+                               withSpinner(plotlyOutput("TSplot2", height = 400))
+                        ),
+                        column(width = 6,
+                               h4("Time series plot of total suspended solids (00530)", align="center"),
+                               withSpinner(plotlyOutput("TSplot6", height = 400))
+                        )
+                      ),
+                      fluidRow(
+                        column(width = 6,
+                               h4("Time series plot of bedload (80225)", align="center"),
+                               withSpinner(plotlyOutput("TSplot4", height = 400))
+                        ),
+                        column(width = 6,
+                               h4("Time series plot of bedload mass (91145)", align="center"),
+                               withSpinner(plotlyOutput("TSplot5", height = 400))
+                        )
+                      )
              ),
              
              tabPanel(title = "Scatter Plots",
-                      h4("Scatter plot of SSC (80154) by discharge (00060, 00061, 30208, or 30209) - if more than one discharge parameter is available, plot by default 00060 or 00061", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("Splot1", height = 400)),
-                      
-                      h4("Scatter plot of sand/silt break (70331) by discharge", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("Splot2", height = 400)),
-                      
-                      h4("Scatter plot of bedload (80225) by discharge", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("Splot3", height = 400)),
-                      
-                      h4("Scatter plot of SSC (80154) by turbidity (00076, 61028, 63675, 63676, 63677, 63679, 63680, 63681, 63682, 63683, 63684, 72188, 72208, 72209, 72213, 82079, OR 99872, whatever is available).", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("Splot4", height = 400)),
-                      
-                      h4("Scatter plot of total suspended solids (00530) by discharge", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("Splot5", height = 400)),
-                      
-                      h4("Scatter plot of total suspended solids (00530) by SSC (80154)", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("Splot6", height = 400))
+                      fluidRow(
+                        column(width = 6,
+                               h4("Scatter plot of SSC (80154) by discharge (00060, 00061, 30208, or 30209)", align="center"),
+                               withSpinner(plotlyOutput("Splot1", height = 400))
+                        ),
+                        column(width = 6,
+                               h4("Scatter plot of total suspended solids (00530) by discharge", align="center"),
+                               withSpinner(plotlyOutput("Splot5", height = 400))
+                        )
+                      ),
+                      fluidRow(
+                        column(width = 6,
+                               h4("Scatter plot of SSC (80154) by turbidity (00076, 61028, 63675, 63676, 63677, 63679, 63680, 63681, 63682, 63683, 63684, 72188, 72208, 72209, 72213, 82079, OR 99872, whatever is available).", align="center"),
+                               withSpinner(plotlyOutput("Splot4", height = 400))
+                        ),
+                        column(width = 6,
+                               h4("Scatter plot of total suspended solids (00530) by SSC (80154)", align="center"),
+                               withSpinner(plotlyOutput("Splot6", height = 400)))
+                      ),
+                      fluidRow(
+                        column(width = 6,
+                               h4("Scatter plot of sand/silt break (70331) by discharge", align="center"),
+                               withSpinner(plotlyOutput("Splot2", height = 400))
+                        ),
+                        column(width = 6,h4("Scatter plot of bedload (80225) by discharge", align="center"),
+                               withSpinner(plotlyOutput("Splot3", height = 400))
+                        )
+                      )
              ),
              
              tabPanel(title = "Box Plots",
-                      h4("Boxplots of TSS (00530) and SSC (80154)", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("Bplot1", height = 250)),
-                      
-                      h4("Boxplots of SSC (80154)", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("Bplot2", height = 250)),
-                      
-                      h4("Boxplots of TSS (00530)", align="center"),
-                      #helpText("# For more information on NWIS 20.xx level checks, see http://internal.cida.usgs.gov/NAWQA/data_checks/docs/files/check10-sql.html"),
-                      withSpinner(plotOutput("Bplot3", height = 250))
+                      h4("Boxplots of TSS (00530) and SSC (80154)", align="left"),
+                      withSpinner(plotOutput("Bplot1", height = 800, width = 800)),
+                      fluidRow(
+                        column(width = 4,
+                               h4("Boxplot of SSC (80154)", align="center"),
+                               withSpinner(plotOutput("Bplot2", height = 800))
+                        ),
+                        column(width = 4,
+                               h4("Boxplot of TSS (00530)", align="center"),
+                               withSpinner(plotOutput("Bplot3", height = 800))
+                        )
+                      )
              )
   ),
   
