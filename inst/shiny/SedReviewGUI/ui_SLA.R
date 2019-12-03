@@ -273,23 +273,24 @@ tabsetPanel(
            sidebarLayout(
              sidebarPanel(
                numericInput(inputId = "searchInterval", label = "Please enter your search interval in hrs", value = "0.50", step = 0.25),
-               selectInput(inputId = "methods_NX", label = "Please enter Vector of Sampling Method for non-cross section/point samples", choices = c(30,40,50,55,70,100,900,920,940,4033,4080, "missing"), multiple = TRUE, selected = c(30,40,50,55,70,100,900,920,940,4033,4080)),
-               selectInput(inputId = "methods_X", label = "Please enter Vector of Sampling Method for cross section samples", choices = c(10,15,20), multiple = TRUE, selected = c(10,15,20)),
+               selectInput(inputId = "methods_NX", label = "Please select Sampling Method(s) for non-cross section/point samples", choices = c(30,40,50,55,70,100,900,920,940,4033,4080, "missing"), multiple = TRUE, selected = c(30,40,50,55,70,100,900,920,940,4033,4080)),
+               selectInput(inputId = "methods_X", label = "Please select Sampling Method(s) for cross section samples", choices = c(10,15,20), multiple = TRUE, selected = c(10,15,20)),
                actionButton(inputId = "boxPull", label = "Get Box Coeff!"),
                actionButton(inputId = "delete_rows", label = "Remove selected samples!"),
-               bsTooltip("methods_NX", "30 (single vertical), 40 (multiple verticals), 50 (point sample), 55 (composite - multiple point samples), 60 (weighted bottle), 70 (grab sample - dip), 100 (Van Dorn), 900 (SS pumping), 920 (SS BSV DI att), 930 (SS partial depth), 940 (SS partial width), 4033 (suction lift peristaltic), 4080 (peristaltic pump).", "right","hover", options = list(container = "body")),
-               bsTooltip("methods_X", "10 (EWI), 15 (multiple verticals non-isokinetic EWT), or 20 (EDI).", "right","hover", options = list(container = "body"))
+               bsTooltip("methods_NX", "30 (single vertical),<br>40 (multiple verticals),<br>50 (point sample),<br>55 (composite - multiple point samples),<br>60 (weighted bottle),<br>70 (grab sample - dip),<br>100 (Van Dorn),<br>900 (SS pumping),<br>920 (SS BSV DI att),<br>930 (SS partial depth),<br>940 (SS partial width),<br>4033 (suction lift peristaltic),<br>4080 (peristaltic pump).", "right","hover", options = list(container = "body")),
+               bsTooltip("methods_X", "10 (EWI),<br>15 (multiple verticals non-isokinetic EWT), or<br>20 (EDI).", "right","hover", options = list(container = "body")),
+               bsTooltip("delete_rows", "Select row(s) from the Box Coefficient table to remove.<br>Note: this will reset the plot with points removed.<br>To reset table and/or plot, re-hit 'Get Box Coeff!' button.") # THIS DOES NOT DO ANYTHING_ MOVE TO ABOVE TABLE
                
              ),
              
              mainPanel(
                h4("Sample Pairs Box Coeff Table for the Analysis Period", align="center"),
-               plotOutput("DelBoxPlot", brush ="bx_plot_brush", dblclick = "bx_plot_dblclick", height = 400),
-               helpText("Point selection information (double, left-click):", align="center"),
-               verbatimTextOutput("bx_datadblclickinfo"),
-               helpText("Point selection information (left-click, and drag rectangle):", align="center"),
-               verbatimTextOutput("bx_datadblbrushinfo"),
-               withSpinner(DT::dataTableOutput("mytable"))
+               plotlyOutput("DelBoxPlot", height = 400),
+               # helpText("Point selection information (double, left-click):", align="center"),
+               # verbatimTextOutput("bx_datadblclickinfo"),
+               # helpText("Point selection information (left-click, and drag rectangle):", align="center"),
+               # verbatimTextOutput("bx_datadblbrushinfo"),
+               withSpinner(DT::dataTableOutput("boxtable"))
                
              )
            )
@@ -300,16 +301,16 @@ tabsetPanel(
              sidebarPanel(
                selectInput(inputId = "varx", label = "Please select X variable from the dataset", choices=c("Streamflow" = 6, "Sample Date" = 7, "SSC xsection" = 3, "SSC nonXS" = 1)), #"RESULT_VA_nonXS", "method_nonXS", "RESULT_VA_xsection", "method_xsection",  "calc_box_coef", "QW_flow_cfs_xsection", "SAMPLE_START_DT_xsection"
                selectInput(inputId = "vary", label = "Please select Y variable from the dataset", choices=c("BoxCoef" = 5, "SSC xsection" = 3, "SSC nonXS" = 1)),
-               radioButtons(inputId = "abline", label = "Add a 1:1 line to plot:", c("None" = "", "1:1" = "1"))
-             ),
+               radioButtons(inputId = "abline", label = "Add a 1:1 line to plot:", c("None" = "", "1:1" = "1")),
+               width = 2),
              
              mainPanel(
                h4("Box Coefficient Plot with Best-Fit Line", align="center"),
                helpText("Best-fit line (shown as red line) and 95th confidence-interval (shown as grey shading) shown in plot based on samples retained from within the analysis period (shown as red dots)."),
                helpText("Reference period samples and 'removed' samples from analysis period (shown as black dots)."),
-               h6("Regression Fit, with Y-intercept set to zero", align="center"),
-               verbatimTextOutput("model"),
-               withSpinner(plotOutput("plot1b", height = 250)),
+               h5("Regression Fit, with Y-intercept set to zero", align="center"),
+               h5(verbatimTextOutput("model")),
+               withSpinner(plotlyOutput("plot1_static", height = 400)),
                
                # h4("double-Click info", align="center"),
                # verbatimTextOutput("bxe_datadblclickinfo"),
@@ -321,7 +322,7 @@ tabsetPanel(
                h4("Exploratory Scatter Plot", align="center"),
                helpText("Samples retained from within the analysis period (shown as red dots) and samples from the reference period samples and 'removed' samples from analysis period (shown as black dots)."),
                
-               withSpinner(plotOutput("plot1", height = 250))
+               withSpinner(plotlyOutput("plot1", height = 400))
                
              )
            )

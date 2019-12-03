@@ -27,56 +27,7 @@
 # output$boxtable <- DT::renderDataTable({
 #   boxcoefdisplay()
 #   })
-############### Delete Row in table and Plot for Box Coeff Data Pull
 
-serverTable <- reactiveValues(bx_data = NULL)
-
-observeEvent(input$boxPull, {
-  serverTable$bx_data <- boxcoeftrim()[, c("RESULT_VA_nonXS", "method_nonXS", "RESULT_VA_xsection", "method_xsection",  "calc_box_coef", "QW_flow_cfs_xsection", "SAMPLE_START_DT_xsection")] #need to add the rest that are needed and to change the plot number for Explorer in the input area - done
-})
-
-output$bx_datadblclickinfo <- renderPrint({
-  nearPoints(serverTable$bx_data, input$bx_plot_dblclick, allRows = FALSE)
-})
-
-output$bx_datadblbrushinfo <- renderPrint({
-  brushedPoints(serverTable$bx_data, input$bx_plot_brush)
-})
-
-output$mytable <- DT::renderDataTable(
-  datatable(serverTable$bx_data,
-            extensions = 'Buttons', 
-            rownames = FALSE,
-            options = list(dom = 'Bfrtip',
-                           buttons = 
-                             list('colvis', list(
-                               extend = 'collection',
-                               buttons = list(list(extend ='csv',
-                                                   filename = 'BoxCoeffTable'),
-                                              list(extend ='excel',
-                                                   filename = 'BoxCoeffTable'),
-                                              list(extend ='pdf',
-                                                   pageSize = 'A4',
-                                                   orientation = 'landscape',
-                                                   filename = 'BoxCoeffTable')),
-                               text = 'Download'
-                             )),
-                           scrollX = TRUE,
-                           scrollY = "600px",
-                           order = list(list(6, 'asc')),
-                           pageLength = nrow(serverTable$bx_data),
-                           selection = 'single')
-            
-  ))
-
-observeEvent(input$delete_rows, {
-  temp_bx <- serverTable$bx_data[-input$mytable_rows_selected,]
-  serverTable$bx_data <- temp_bx
-})
-
-output$DelBoxPlot <- renderPlot({
-  ggplot() + geom_point(data = serverTable$bx_data, aes(RESULT_VA_nonXS, RESULT_VA_xsection), color = "red", size = 2) ####need to remove the column callout and add variables - done
-})
 
 ####### Help text in Site-Level Assessment
 output$site <- renderText({
@@ -91,7 +42,54 @@ output$site2 <- renderText({
 })
 
 ####### Regression line
+boxlm <- reactive({
+  boxlinreg <<- NULL
+  boxlinreg <<- lm(X.sect.SSC ~ 0 + NonXS.Pt.SSC, data = serverTable$bx_data)
+  return(boxlinreg)
+})
+
 output$model <- renderText({
-  c("Site:", input$varSite, " Box Coeff",round(coef(lm(RESULT_VA_xsection~ 0+ RESULT_VA_nonXS, boxcoeftrim())), 2), "  Adjusted R^2:",round(summary(lm(RESULT_VA_xsection~ 0+ RESULT_VA_nonXS, boxcoeftrim()))$adj.r.squared, 3), "    Analysis Period:", input$analysisBeginDT, "-", input$endDT, "(", input$tz, ")" )
+  c("Site:", input$varSite, " Box Coeff:",round(summary(boxlm())$coefficients[1], 2), "  Adjusted R^2:", round(summary(boxlm())$adj.r.squared, 3), "    Analysis Period:", input$analysisBeginDT, "-", input$endDT, "(", input$tz, ")" )
   
 })
+
+x <- reactive({
+  boxcoef()[,as.numeric(input$varx)]
+})
+y <- reactive({
+  boxcoef()[,as.numeric(input$vary)]
+})
+
+x1 <- reactive({
+  serverTable$bx_data[,as.numeric(input$varx)]
+})
+y1 <- reactive({
+  serverTable$bx_data[,as.numeric(input$vary)]
+})
+s <- reactive({
+  as.numeric(input$abline)
+})
+
+output$plot1_static <- renderPlotly({
+  ggplotly(
+    ggplot() + 
+      geom_point(data = boxcoef(), aes(x = RESULT_VA_nonXS, y = RESULT_VA_xsection), color = "black", size = 2) +
+      geom_point(data = serverTable$bx_data, aes(NonXS.Pt.SSC, X.sect.SSC), color = "red", size = 2) +
+      geom_smooth(data = serverTable$bx_data, aes(NonXS.Pt.SSC, X.sect.SSC), method = lm, formula = y ~ 0 + x, fullrange = TRUE, color = "red", se = TRUE) +
+      geom_abline(slope = s(), intercept = 0, col = "black", lty = 2) +
+      xlab("Non-Cross Section/Point Sample SSC, mg/L") +
+      ylab("Cross Section Sample SSC, mg/L")
+  )
+})
+
+
+output$plot1 <- renderPlotly({
+  ggplotly(
+    ggplot() + 
+      geom_point(data = boxcoef(), aes(x(), y()), color = "black", size = 2) +
+      geom_point(data = serverTable$bx_data, aes(x1(), y1()), color = "red", size = 2) +
+      xlab(names(serverTable$bx_data[as.numeric(input$varx)])) +
+      ylab(names(serverTable$bx_data[as.numeric(input$vary)]))
+  )
+})
+

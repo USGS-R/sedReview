@@ -1,58 +1,108 @@
 #### Site-Level Assessment: Box Coefficient data pull ####
 
 # match cross section and point samples by time Box Coeff
-boxcoef <- eventReactive(input$boxPull, {
-  raw.boxcoef <- find_boxcoef(siteData(), site_no = input$varSite, timediff = input$searchInterval, methods_NX = as.array(input$methods_NX), methods_X = as.array(input$methods_X))
-  # raw.boxcoef$BoxCoef <- round((raw.boxcoef$RESULT_VA_xsection/raw.boxcoef$RESULT_VA_nonXS), 2)
-  # raw.boxcoef$Date <- as.character(raw.boxcoef$SAMPLE_START_DT_xsection)
-  raw.boxcoef1 <- raw.boxcoef[, c("RESULT_VA_nonXS", "method_nonXS", "RESULT_VA_xsection", "method_xsection",  "calc_box_coef", "QW_flow_cfs_xsection", "SAMPLE_START_DT_xsection")]
-  return(raw.boxcoef1)
-})
+boxcoef <- eventReactive(input$boxPull,
+                         {
+                           boxcoef.all <<- NULL
+                           boxcoef.all <<- find_boxcoef(siteData, 
+                                                       site_no = input$varSite, 
+                                                       timediff = input$searchInterval, 
+                                                       methods_NX = as.array(input$methods_NX), 
+                                                       methods_X = as.array(input$methods_X))
+                           boxcoef.all <<- boxcoef.all[, c("RESULT_VA_nonXS", 
+                                                           "method_nonXS", 
+                                                           "RESULT_VA_xsection", 
+                                                           "method_xsection",  
+                                                           "calc_box_coef", 
+                                                           "QW_flow_cfs_xsection", 
+                                                           "SAMPLE_START_DT_xsection")]
+                           
+                           return(boxcoef.all)
+                         })
 
-boxcoeftrim <- eventReactive(input$boxPull, {
-  raw.boxcoef2 <- boxcoef()
-  boxcoeftrim <- filter(raw.boxcoef2,SAMPLE_START_DT_xsection > as.POSIXct(input$analysisBeginDT, tz = input$tz))
-  return(boxcoeftrim)
-})
+boxcoeftrim <- eventReactive(input$boxPull,
+                             {
+                               boxcoef.trim <<- NULL
+                               boxcoef.trim <<- boxcoef()
+                               boxcoef.trim <<- filter(boxcoef.trim,
+                                                     SAMPLE_START_DT_xsection > as.POSIXct(input$analysisBeginDT, tz = input$tz))
+                               return(boxcoef.trim)
+                             })
 
-# boxcoefdisplay <- eventReactive(input$boxPull, {
-#   raw.boxcoef3 <- boxcoeftrim()
-#   boxcoefdisplay <- select(raw.boxcoef3, c(Site = SITE_NO, Date, BoxCoef , SSC_xsect = RESULT_VA_xsection, SSC_point = RESULT_VA_nonXS, streamflow = QW_flow_cfs_xsection))
-#   return(boxcoefdisplay)
+
+serverTable <- reactiveValues(bx_data = NULL)
+
+observeEvent(input$boxPull, 
+             {
+               serverTable$bx_data <- boxcoeftrim()[, c("RESULT_VA_nonXS", 
+                                                        "method_nonXS", 
+                                                        "RESULT_VA_xsection", 
+                                                        "method_xsection",  
+                                                        "calc_box_coef", 
+                                                        "QW_flow_cfs_xsection", 
+                                                        "SAMPLE_START_DT_xsection")]
+               names(serverTable$bx_data) <- c("NonXS.Pt.SSC",
+                                               "NonXS.Pt.method",
+                                               "X.sect.SSC",
+                                               "X.sect.method",
+                                               "calc.box.coef",
+                                               "X.sect.Q.cfs",
+                                               "SAMPLE_START_DT.X.sect")
+             })
+
+# output$bx_datadblclickinfo <- renderPrint({
+#   nearPoints(serverTable$bx_data, input$bx_plot_dblclick, allRows = FALSE)
+# })
+# 
+# output$bx_datadblbrushinfo <- renderPrint({
+#   brushedPoints(serverTable$bx_data, input$bx_plot_brush)
 # })
 
-x <- reactive({
-  boxcoef()[,as.numeric(input$varx)]
-})
-y <- reactive({
-  boxcoef()[,as.numeric(input$vary)]
+output$boxtable <- DT::renderDataTable(
+  datatable(serverTable$bx_data,
+            extensions = 'Buttons', 
+            rownames = FALSE,
+            options = list(dom = 'Bfrtip',
+                           buttons = 
+                             list('colvis', list(
+                               extend = 'collection',
+                               buttons = list(list(extend ='csv',
+                                                   filename = 'BoxCoeffTable'),
+                                              list(extend ='excel',
+                                                   filename = 'BoxCoeffTable'),
+                                              list(extend ='pdf',
+                                                   pageSize = 'A4',
+                                                   orientation = 'landscape',
+                                                   filename = 'BoxCoeffTable')),
+                               text = 'Download'
+                             )),
+                           scrollX = TRUE,
+                           scrollY = "600px",
+                           order = list(list(0, 'asc')),
+                           pageLength = nrow(serverTable$bx_data),
+                           selection = 'single')
+            
+  ))
+
+observeEvent(input$delete_rows, {
+  temp_bx <- serverTable$bx_data[-input$boxtable_rows_selected,]
+  serverTable$bx_data <- temp_bx
+  boxcoef.trim <<- serverTable$bx_data
+  names(boxcoef.trim) <<- names(boxcoef.all)
 })
 
-x1 <- reactive({
-  serverTable$bx_data[,as.numeric(input$varx)]
-})
-y1 <- reactive({
-  serverTable$bx_data[,as.numeric(input$vary)]
-})
-s <- reactive({
-  as.numeric(input$abline)
-})
-output$plot1 <- renderPlot({
-  ggplot() + geom_point(data = boxcoef(), aes(x(), y()), color = "black", size = 2) +
-    geom_point(data = serverTable$bx_data, aes(x1(), y1()), color = "red", size = 2) +
-    # geom_smooth(data = serverTable$bx_data, aes(x1(), y1()), method = lm, formula = y ~ 0 + x, fullrange = TRUE, color = "red", se = TRUE) +
-    # geom_abline(slope = s(), intercept = 0, col = "black", lty = 2) +
-    xlab("X-axis Variable") +
-    ylab("Y-axis Variable")
-  
-})
+output$DelBoxPlot <- renderPlotly(
+  {
+    tryCatch({
+      ggplotly(
+        ggplot() + 
+          geom_point(data = serverTable$bx_data, aes(NonXS.Pt.SSC, X.sect.SSC), color = "red", size = 2) +
+          xlab("Non-Cross Section/Point sample SSC, mg/L") +
+          ylab("Cross Section sample SSC, mg/L") 
+      )
+    }, error = function(e){
+      return(message(simpleError("Generate Box Coefficient Pairs plot and table with time interval and method criteria on the left")))
+    })
+    
+  })
 
-output$plot1b <- renderPlot({
-  ggplot() + geom_point(data = boxcoef(), aes(x = RESULT_VA_nonXS, y = RESULT_VA_xsection), color = "black", size = 2) +
-    geom_point(data = serverTable$bx_data, aes(RESULT_VA_nonXS, RESULT_VA_xsection), color = "red", size = 2) +
-    geom_smooth(data = serverTable$bx_data, aes(RESULT_VA_nonXS, RESULT_VA_xsection), method = lm, formula = y ~ 0 + x, fullrange = TRUE, color = "red", se = TRUE) +
-    geom_abline(slope = s(), intercept = 0, col = "black", lty = 2) +
-    xlab("Non-Cross Section SSC, mg/L") +
-    ylab("Cross Section SSC, mg/L")
-  
-})
