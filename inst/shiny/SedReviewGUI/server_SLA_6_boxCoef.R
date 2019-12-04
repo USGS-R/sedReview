@@ -91,12 +91,16 @@ observeEvent(input$delete_rows, {
   names(boxcoef.trim) <<- names(boxcoef.all)
 })
 
+s1 <- reactive({
+  as.numeric(input$abline2)
+})
 output$DelBoxPlot <- renderPlotly(
   {
     tryCatch({
       ggplotly(
         ggplot() + 
           geom_point(data = serverTable$bx_data, aes(NonXS.Pt.SSC, X.sect.SSC), color = "red", size = 2) +
+          geom_abline(slope = s1(), intercept = 0, col = "black", lty = 2) +
           xlab("Non-Cross Section/Point sample SSC, mg/L") +
           ylab("Cross Section sample SSC, mg/L") 
       )

@@ -283,17 +283,14 @@ tabsetPanel(
                actionButton(inputId = "delete_rows", label = "Remove selected samples!"),
                bsTooltip("methods_NX", "30 (single vertical),<br>40 (multiple verticals),<br>50 (point sample),<br>55 (composite - multiple point samples),<br>60 (weighted bottle),<br>70 (grab sample - dip),<br>100 (Van Dorn),<br>900 (SS pumping),<br>920 (SS BSV DI att),<br>930 (SS partial depth),<br>940 (SS partial width),<br>4033 (suction lift peristaltic),<br>4080 (peristaltic pump).", "right","hover", options = list(container = "body")),
                bsTooltip("methods_X", "10 (EWI),<br>15 (multiple verticals non-isokinetic EWT), or<br>20 (EDI).", "right","hover", options = list(container = "body")),
-               bsTooltip("delete_rows", "Select row(s) from the Box Coefficient table to remove.<br>Note: this will reset the plot with points removed.<br>To reset table and/or plot, re-hit 'Get Box Coeff!' button.") # THIS DOES NOT DO ANYTHING_ MOVE TO ABOVE TABLE
-               
+               br(), radioButtons(inputId = "abline2", label = "Add a 1:1 line to plot:", c("None" = "", "1:1" = "1"))
              ),
              
              mainPanel(
                h4("Sample Pairs Box Coeff Table for the Analysis Period", align="center"),
                plotlyOutput("DelBoxPlot", height = 400),
-               # helpText("Point selection information (double, left-click):", align="center"),
-               # verbatimTextOutput("bx_datadblclickinfo"),
-               # helpText("Point selection information (left-click, and drag rectangle):", align="center"),
-               # verbatimTextOutput("bx_datadblbrushinfo"),
+               h5("Select row(s) from the Box Coefficient table to remove."),
+               h5("Note: this will reset the plot with points removed. To reset table and/or plot, re-hit 'Get Box Coeff!' button."),
                withSpinner(DT::dataTableOutput("boxtable"))
                
              )
