@@ -5,14 +5,15 @@ tabsetPanel(
   tabPanel(title = "Reviewer Input and Summary",
            sidebarLayout(
              sidebarPanel(
-               textInput(inputId = "DBName2", label = "Please enter your ODBC Database connection Name", value = "NWISCO"),
-               textInput(inputId = "env.db2", label = "Please enter your database number of environmental samples", value = "01"),
-               textInput(inputId = "qa.db2", label = "Please enter your database number of QA samples", value = "02"),
-               textInput(inputId = "StateCd", label = "Please enter your State Code", placeholder = "CO"),
-               #textInput(inputId = "beginDT2", label = "Please enter starting date for reference period", value = "2012/10/01"),
-               textInput(inputId = "reviewBeginDT", label = "Please enter starting date for review period", value = "2016/10/01"),
-               textInput(inputId = "reviewEndDT", label = "Please enter ending date for review period", value = "2017/09/30"),
-               #selectInput(inputId = "tz2", label = "Please select local time zone", list( "GMT", "America/New_York", "America/Chicago","America/Denver", "America/Phoenix", "America/Los_Angeles", "America/Anchorage", "America/Adak", "Pacific/Honolulu")),
+               actionButton(inputId = "loadDBinfo", label = "Load previously saved NWIS DB info"),
+               actionButton(inputId = "loadDB_SLA", label = "Load DB Info from SLA Module"),br(),
+               actionButton(inputId = "saveDBinfo", label = "Save NWIS DB info (must enter values in top 3 boxes first)"),br(),br(),
+               textInput(inputId = "DBName2", label = "Please enter your ODBC Database connection Name", placeholder =  "NWISCO"),
+               textInput(inputId = "env.db2", label = "Please enter your database number of environmental samples", placeholder = "01"),
+               textInput(inputId = "qa.db2", label = "Please enter your database number of QA samples", placeholder = "02"),
+               textInput(inputId = "StateCd2", label = "Please enter your State Code", placeholder = "CO"),
+               textInput(inputId = "reviewBeginDT", label = "Please enter starting date for review period", placeholder = "YYYY/MM/DD"),
+               textInput(inputId = "reviewEndDT", label = "Please enter ending date for review period", placeholder = "YYYY/MM/DD"),
                actionButton(inputId = "reviewPull", label = "Review data!")
                
              ),

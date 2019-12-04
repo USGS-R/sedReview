@@ -1,5 +1,26 @@
 #### Science-Center Review: Data import and summary ####
-
+# Load DB info from SLA module
+observeEvent(input$loadDB_SLA, {
+  updateTextInput(session, inputId = "DBName2", value = input$DBName)
+  updateTextInput(session, inputId = "env.db2", value = input$env.db)
+  updateTextInput(session, inputId = "qa.db2", value = input$qa.db)
+})
+# Save/load database info
+observeEvent(input$loadDBinfo2,{
+  appDir <- system.file("shiny", "SedReviewGUI",package = "sedReview")
+  DBInfo2 <- readRDS(file = paste0(appDir,"/DBinfo2.RDS"))
+  updateTextInput(session, inputId = "DBName2", value = DBInfo2$DSN)
+  updateTextInput(session, inputId = "env.db2", value = DBInfo2$env.db)
+  updateTextInput(session, inputId = "qa.db2", value = DBInfo2$qa.db)
+})
+observeEvent(input$saveDBinfo2,{
+  DBInfo2 <- list()
+  DBInfo2$DSN <- input$DBName2
+  DBInfo2$env.db <- input$env.db2          
+  DBInfo2$qa.db <- input$qa.db2
+  appDir <- system.file("shiny", "SedReviewGUI",package = "sedReview")
+  saveRDS(DBInfo, file = paste0(appDir,"/DBinfo2.RDS"))
+})
 # Center-level data summary pull routine  
 CenterReviewData <- eventReactive(input$reviewPull, {
   # import data for your site using get_localNwis.
@@ -39,11 +60,11 @@ output$centerSumtable <- DT::renderDataTable(
   ))
 
 SCLsiteData <- eventReactive(input$reviewPull, {
-  get_localNWIS(DSN = input$DBName2,            # Colorado NWIS server 
+  get_localNWIS(DSN = input$DBName2,            
                 env.db = input$env.db2,
                 qa.db = input$qa.db2,
                 STAIDS = CenterReviewData()$SITE_NO,             
-                begin.date = input$reviewBeginDT, # WY 2016-2017
+                begin.date = input$reviewBeginDT, 
                 end.date = input$reviewEndDT,
                 approval = "All")
 })

@@ -4,23 +4,27 @@ tabsetPanel(
   tabPanel(title = "User Input and Summary",
            sidebarLayout(
              sidebarPanel(
-               textInput(inputId = "DBName", label = "Please enter your ODBC Database connection name", value = "NWISCO"),#placeholder = "NWISCO"),
-               textInput(inputId = "env.db", label = "Please enter your database number of environmental samples", value = "01"),#, placeholder = "01"),
-               textInput(inputId = "qa.db", label = "Please enter your database number of QA samples", value = "02"),#, placeholder = "02"),
-               textInput(inputId = "varSite", label = "Please enter your 8- or 15-digit USGS station ID", value = "07104905"),#placeholder = "385626107212000"),
-               textInput(inputId = "beginDT", label = "Please enter starting date for reference period", value = "2012/10/01"),#placeholder = "YYYY/MM/DD"),
-               textInput(inputId = "analysisBeginDT", label = "Please enter starting date for analysis period", value = "2015/10/01"),#placeholder = "YYYY/MM/DD"),
+               actionButton(inputId = "loadDBinfo", label = "Load previously saved NWIS DB info"),
+               actionButton(inputId = "loadDB_SCR", label = "Load DB Info from SCR Module"),br(),
+               actionButton(inputId = "saveDBinfo", label = "Save NWIS DB info (must enter values in top 3 boxes first)"),br(),br(),
+               textInput(inputId = "DBName", label = "Please enter your ODBC Database connection name", placeholder = "NWISCO"),
+               textInput(inputId = "env.db", label = "Please enter your database number of environmental samples", placeholder = "01"),
+               textInput(inputId = "qa.db", label = "Please enter your database number of QA samples", placeholder = "02"),
+               textInput(inputId = "varSite", label = "Please enter your 8- or 15-digit USGS station ID", placeholder = "385626107212000"),
+               textInput(inputId = "beginDT", label = "Please enter starting date for reference period", placeholder = "YYYY/MM/DD"),
+               textInput(inputId = "analysisBeginDT", label = "Please enter starting date for analysis period", placeholder = "YYYY/MM/DD"),
                bsTooltip("beginDT", "Reference period - Period of historical data. Sample results during the reference period will be shown on plots 
                          for comparison with sample results during the analysis period.", 
                          "right","hover", options = list(container = "body")),
                bsTooltip("analysisBeginDT", "Analysis period - Period of interest for the site level assessment. Sample results from the analysis 
                          period will be shown on summary stat, sample count, and data flag tables as well as in plots.", 
                          "right","hover", options = list(container = "body")),
-               textInput(inputId = "endDT", label = "Please enter ending date for reference and analysis periods", value = "2018/10/01"),#placeholder = "YYYY/MM/DD"),
+               textInput(inputId = "endDT", label = "Please enter ending date for reference and analysis periods", placeholder = "YYYY/MM/DD"),
                selectInput(inputId = "tz", label = "Please select local time zone", 
                            list( "GMT", "America/New_York", "America/Chicago","America/Denver", "America/Phoenix", 
                                  "America/Los_Angeles", "America/Anchorage", "America/Adak", "Pacific/Honolulu")),
-               actionButton(inputId = "dataPull", label = "Get data!")
+               actionButton(inputId = "dataPull", label = "Get data!"), br()
+               
              ),
              
              mainPanel(
