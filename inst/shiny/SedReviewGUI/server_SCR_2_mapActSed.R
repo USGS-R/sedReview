@@ -1,12 +1,12 @@
 #### Science-Center Review: Map of active sediment sites ####
 
 StateSites <- eventReactive(input$mapPlot, {
-  readNWISsite(CenterReviewData()$SITE_NO)
+  readNWISsite(SitesCount$SITE_NO)
 })
 
 
 ActiveSedSites <- eventReactive(input$mapPlot, {
-  left_join(CenterReviewData(), unique(select(StateSites(), c(site_no, station_nm, dec_lat_va, dec_long_va, alt_va))), by = c("SITE_NO" = "site_no"))
+  left_join(SitesCount, unique(select(StateSites(), c(site_no, station_nm, dec_lat_va, dec_long_va, alt_va))), by = c("SITE_NO" = "site_no"))
 })
 
 MapActiveSites <- reactive({

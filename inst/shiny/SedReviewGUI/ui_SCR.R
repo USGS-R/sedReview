@@ -5,13 +5,13 @@ tabsetPanel(
   tabPanel(title = "Reviewer Input and Summary",
            sidebarLayout(
              sidebarPanel(
-               actionButton(inputId = "loadDBinfo", label = "Load previously saved NWIS DB info"),
+               actionButton(inputId = "loadDBinfo2", label = "Load previously saved NWIS DB info"),
                actionButton(inputId = "loadDB_SLA", label = "Load DB Info from SLA Module"),br(),
-               actionButton(inputId = "saveDBinfo", label = "Save NWIS DB info (must enter values in top 3 boxes first)"),br(),br(),
+               actionButton(inputId = "saveDBinfo2", label = "Save NWIS DB info (must enter values in top 3 boxes first)"),br(),br(),
                textInput(inputId = "DBName2", label = "Please enter your ODBC Database connection Name", placeholder =  "NWISCO"),
                textInput(inputId = "env.db2", label = "Please enter your database number of environmental samples", placeholder = "01"),
                textInput(inputId = "qa.db2", label = "Please enter your database number of QA samples", placeholder = "02"),
-               textInput(inputId = "StateCd2", label = "Please enter your State Code", placeholder = "CO"),
+               textInput(inputId = "StateCd", label = "Please enter your State Code", placeholder = "CO"),
                textInput(inputId = "reviewBeginDT", label = "Please enter starting date for review period", placeholder = "YYYY/MM/DD"),
                textInput(inputId = "reviewEndDT", label = "Please enter ending date for review period", placeholder = "YYYY/MM/DD"),
                actionButton(inputId = "reviewPull", label = "Review data!")

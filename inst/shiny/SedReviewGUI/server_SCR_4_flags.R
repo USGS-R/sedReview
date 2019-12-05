@@ -2,67 +2,67 @@
 
 SCLbagIE <- eventReactive(input$reviewPull, {
   
-  check_bagIE(SCLsiteData(), reviewSummary = TRUE)
+  check_bagIE(siteData_SCR, reviewSummary = TRUE)
   
 })
 
 SCLhasQ <- eventReactive(input$reviewPull, {
   
-  check_Q(SCLsiteData(), reviewSummary = TRUE)
+  check_Q(siteData_SCR, reviewSummary = TRUE)
   
 })
 
 # SCLmetaData <- eventReactive(input$reviewPull, {
 # 
-#   check_metaData(SCLsiteData(), reviewSummary = TRUE)
+#   check_metaData(siteData_SCR, reviewSummary = TRUE)
 # 
 # })
 
 SCLqaqc <- eventReactive(input$reviewPull, {
   
-  check_qaqcDB(SCLsiteData(), as.character(input$qa.db2), reviewSummary = TRUE)
+  check_qaqcDB(siteData_SCR, as.character(input$qa.db2), reviewSummary = TRUE)
   
 })
 
 # SCLpurp <- eventReactive(input$reviewPull, {
 # 
-#   check_samplePurp(SCLsiteData(), reviewSummary = TRUE)
+#   check_samplePurp(siteData_SCR, reviewSummary = TRUE)
 # 
 # })
 # 
 # SCLsampler <- eventReactive(input$reviewPull, {
 # 
-#   check_samplerType(SCLsiteData(), reviewSummary = TRUE)
+#   check_samplerType(siteData_SCR, reviewSummary = TRUE)
 # 
 # })
 
 SCLsedMass <- eventReactive(input$reviewPull, {
   
-  check_sedMass(SCLsiteData(), reviewSummary = TRUE)
+  check_sedMass(siteData_SCR, reviewSummary = TRUE)
   
 })
 
 SCLunpairedTSS <- eventReactive(input$reviewPull, {
   
-  check_tss(SCLsiteData(), reviewSummary = TRUE)
+  check_tss(siteData_SCR, reviewSummary = TRUE)
   
 })
 
 SCLverticals <- eventReactive(input$reviewPull, {
   
-  check_verticals(SCLsiteData(), reviewSummary = TRUE)
+  check_verticals(siteData_SCR, reviewSummary = TRUE)
   
 })
 
 SCLmethods <- eventReactive(input$reviewPull, {
   
-  count_methodsBySite(SCLsiteData())
+  count_methodsBySite(siteData_SCR)
   
 })
 
 SCLstatus <- eventReactive(input$reviewPull, {
   
-  count_sampleStatus(SCLsiteData())
+  count_sampleStatus(siteData_SCR)
   
 })
 

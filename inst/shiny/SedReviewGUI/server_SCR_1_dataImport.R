@@ -19,22 +19,20 @@ observeEvent(input$saveDBinfo2,{
   DBInfo2$env.db <- input$env.db2          
   DBInfo2$qa.db <- input$qa.db2
   appDir <- system.file("shiny", "SedReviewGUI",package = "sedReview")
-  saveRDS(DBInfo, file = paste0(appDir,"/DBinfo2.RDS"))
+  saveRDS(DBInfo2, file = paste0(appDir,"/DBinfo2.RDS"))
 })
 # Center-level data summary pull routine  
-CenterReviewData <- eventReactive(input$reviewPull, {
-  # import data for your site using get_localNwis.
-  SitesCount <- count_activeSed(DSN = input$DBName2,            # NWIS server
-                                env.db = input$env.db2,           # environmental database number
-                                begin.date = input$reviewBeginDT, 
-                                end.date = input$reviewEndDT)
-  SitesCount$SITE_NO <- trimws(SitesCount$SITE_NO)
-  SitesCount$SITE_NO_STATION_NM <- paste0(SitesCount$SITE_NO, " - ", SitesCount$STATION_NM)
-  return(SitesCount)
-})
-
-output$centerSumtable <- DT::renderDataTable(
-  datatable({CenterReviewData()[, -c(8)]}, 
+observeEvent(input$reviewPull, {
+  SitesCount <<- NULL
+  SitesCount <<- count_activeSed(DSN = input$DBName2,            
+                                 env.db = input$env.db2,           
+                                 begin.date = input$reviewBeginDT, 
+                                 end.date = input$reviewEndDT)
+  SitesCount$SITE_NO <<- trimws(SitesCount$SITE_NO)
+  SitesCount$SITE_NO_STATION_NM <<- paste0(SitesCount$SITE_NO, " - ", SitesCount$STATION_NM)
+  
+  output$centerSumtable <- DT::renderDataTable(
+  datatable({SitesCount[, -c(8)]}, 
             extensions = 'Buttons', 
             rownames = FALSE,
             options = list(dom = 'Bfrtip',
@@ -54,17 +52,21 @@ output$centerSumtable <- DT::renderDataTable(
                            scrollX = TRUE,
                            scrollY = "600px",
                            order = list(list(4, 'desc'), list(2, 'asc')),
-                           pageLength = nrow({CenterReviewData()}),
+                           pageLength = nrow({SitesCount}),
                            selection = 'single')
             
   ))
+})
 
-SCLsiteData <- eventReactive(input$reviewPull, {
-  get_localNWIS(DSN = input$DBName2,            
-                env.db = input$env.db2,
-                qa.db = input$qa.db2,
-                STAIDS = CenterReviewData()$SITE_NO,             
-                begin.date = input$reviewBeginDT, 
-                end.date = input$reviewEndDT,
-                approval = "All")
+
+
+observeEvent(input$reviewPull, {
+  siteData_SCR <<- NULL
+  siteData_SCR <<- get_localNWIS(DSN = input$DBName2,            
+                                 env.db = input$env.db2,
+                                 qa.db = input$qa.db2,
+                                 STAIDS = SitesCount$SITE_NO,             
+                                 begin.date = input$reviewBeginDT, 
+                                 end.date = input$reviewEndDT,
+                                 approval = "All")
 })

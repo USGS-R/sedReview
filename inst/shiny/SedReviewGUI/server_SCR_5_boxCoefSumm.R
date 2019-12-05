@@ -1,7 +1,7 @@
 #### Science-Center Review: box coefficient summary ####
 
 SCLBoxCoeff<- eventReactive(input$reviewLoad, {
-  summary_boxcoef(SCLsiteData(), timediff = input$searchInterval2)
+  summary_boxcoef(siteData_SCR, timediff = input$searchInterval2)
   
 })
 
