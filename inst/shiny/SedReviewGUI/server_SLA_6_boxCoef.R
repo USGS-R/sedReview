@@ -1,14 +1,14 @@
 #### Site-Level Assessment: Box Coefficient data pull ####
 
 # match cross section and point samples by time Box Coeff
-boxcoef <- eventReactive(input$boxPull,
+boxcoef <- eventReactive(list(input$boxPull, input$loadRData),
                          {
                            boxcoef.all <<- NULL
                            boxcoef.all <<- find_boxcoef(siteData, 
-                                                       site_no = input$varSite, 
-                                                       timediff = input$searchInterval, 
-                                                       methods_NX = as.array(input$methods_NX), 
-                                                       methods_X = as.array(input$methods_X))
+                                                        site_no = input$varSite, 
+                                                        timediff = input$searchInterval, 
+                                                        methods_NX = as.array(input$methods_NX), 
+                                                        methods_X = as.array(input$methods_X))
                            boxcoef.all <<- boxcoef.all[, c("RESULT_VA_nonXS", 
                                                            "method_nonXS", 
                                                            "RESULT_VA_xsection", 
@@ -20,12 +20,12 @@ boxcoef <- eventReactive(input$boxPull,
                            return(boxcoef.all)
                          })
 
-boxcoeftrim <- eventReactive(input$boxPull,
+boxcoeftrim <- eventReactive(list(input$boxPull),
                              {
                                boxcoef.trim <<- NULL
                                boxcoef.trim <<- boxcoef()
                                boxcoef.trim <<- filter(boxcoef.trim,
-                                                     SAMPLE_START_DT_xsection > as.POSIXct(input$analysisBeginDT, tz = input$tz))
+                                                       SAMPLE_START_DT_xsection > as.POSIXct(input$analysisBeginDT, tz = input$tz))
                                return(boxcoef.trim)
                              })
 

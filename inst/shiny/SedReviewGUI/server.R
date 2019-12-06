@@ -30,6 +30,133 @@ server <- function(input, output, session) {
   source("server_SCR_5_boxCoefSumm.R", local = TRUE)$value
   
 
+  #### SedReview Save/Load Session Data ####
+  # save all current data
+  observeEvent(input$savePrep,{
+    sessionvalues <<- lapply(reactiveValuesToList(input), unclass)
+    if(!is.null(sessionvalues)){
+      output$saveInfo <- renderText({c("Session Prepared. OK to save.")})
+    }else{output$saveInfo <- renderText({c("ERROR collecting user inputs. Please report issue.")})}
+  })
+  
+  output$saveRData <- downloadHandler(
+    filename = function() {paste0("SedReview_",Sys.time(),".rda")},
+    content = function(file) {
+    save.image(file = file)
+    }
+  )
+  observeEvent(input$loadRData, {
+    loadRDataFile <- input$loadRDataFile
+    load(loadRDataFile$datapath,envir = .GlobalEnv)
+    # load session info to app and re-render tables/plots
+    # SLA
+    ## Data Import
+    updateTextInput(session, inputId = "DBName", value = sessionvalues$DBName)
+    updateTextInput(session, inputId = "env.db", value = sessionvalues$env.db)
+    updateTextInput(session, inputId = "qa.db", value = sessionvalues$qa.db)
+    updateTextInput(session, inputId = "varSite", value = sessionvalues$varSite)
+    updateTextInput(session, inputId = "beginDT", value = sessionvalues$beginDT)
+    updateTextInput(session, inputId = "analysisBeginDT", value = sessionvalues$analysisBeginDT)
+    updateTextInput(session, inputId = "endDT", value = sessionvalues$endDT)
+    updateSelectInput(session, inputId = "tz", selected = sessionvalues$tz)
+    output$sumtable <- DT::renderDataTable(
+      datatable({sumStats},
+                extensions = 'Buttons', 
+                rownames = FALSE,
+                options = list(dom = 'Bfrtip',
+                               buttons = 
+                                 list('colvis', list(
+                                   extend = 'collection',
+                                   buttons = list(list(extend ='csv',
+                                                       filename = 'SiteSummaryTable'),
+                                                  list(extend ='excel',
+                                                       filename = 'SiteSummaryTable'),
+                                                  list(extend ='pdf',
+                                                       pageSize = 'A3',
+                                                       orientation = 'landscape',
+                                                       filename = 'SiteSummaryTable')),
+                                   text = 'Download'
+                                 )),
+                               scrollX = TRUE,
+                               scrollY = "600px",
+                               order = list(list(4, 'desc'), list(2, 'asc')),
+                               pageLength = nrow({sumStats}),
+                               selection = 'single')
+                
+      ))
+    ## Rejected Data
+    output$rejectedtable <- DT::renderDataTable(
+      datatable({rejectedData[, -c(1, 3, 6:7, 11, 15, 17:35, 43:47, 49:52, 54:56, 58:65, 70:72, 74:79)]},
+                extensions = 'Buttons', 
+                rownames = FALSE,
+                options = list(dom = 'Bfrtip',
+                               buttons = 
+                                 list('colvis', list(
+                                   extend = 'collection',
+                                   buttons = list(list(extend ='csv',
+                                                       filename = 'rejectedDataTable'),
+                                                  list(extend ='excel',
+                                                       filename = 'rejectedDataTable'),
+                                                  list(extend ='pdf',
+                                                       pageSize = 'A1',
+                                                       orientation = 'landscape',
+                                                       filename = 'rejectedDataTable')),
+                                   text = 'Download'
+                                 )),
+                               scrollX = TRUE,
+                               scrollY = "600px",
+                               order = list(list(1, 'asc')),
+                               pageLength = nrow({rejectedData}),
+                               selection = 'single')
+                
+      ))
+    
+    ## Outlier Explorer
+    updateSelectInput(session, inputId = "varxOut", selected = sessionvalues$varxOut)
+    updateSelectInput(session, inputId = "varyOut", selected = sessionvalues$varyOut)
+    updateSelectInput(session, inputId = "percentile", selected = sessionvalues$percentile)
+    
+    ## Flags - plots will populate on load session, no text options to update in this module tab
+    
+    ## Box Coef data pull
+    updateNumericInput(session, inputId = "searchInterval", value = sessionvalues$searchInterval)
+    updateSelectInput(session, inputId = "methods_NX", selected = sessionvalues$methods_NX)
+    updateSelectInput(session, inputId = "methods_X", selected = sessionvalues$methods_X)
+    updateRadioButtons(session, inputId = "abline2", selected = sessionvalues$abline2)
+    
+    if(exists("boxcoef.trim")){
+      serverTable$bx_data <- boxcoef.trim[, c("RESULT_VA_nonXS", 
+                                              "method_nonXS", 
+                                              "RESULT_VA_xsection", 
+                                              "method_xsection",  
+                                              "calc_box_coef", 
+                                              "QW_flow_cfs_xsection", 
+                                              "SAMPLE_START_DT_xsection")]
+      names(serverTable$bx_data) <- c("NonXS.Pt.SSC",
+                                      "NonXS.Pt.method",
+                                      "X.sect.SSC",
+                                      "X.sect.method",
+                                      "calc.box.coef",
+                                      "X.sect.Q.cfs",
+                                      "SAMPLE_START_DT.X.sect")
+    }
+    
+    
+    
+    
+    if(!is.null(sessionvalues)){
+      output$loadInfo <- renderText({c("Session Loaded.")})
+    }else{output$saveInfo <- renderText({c("ERROR loading. Please report issue.")})}
+  })
+  
+
+  
+
+  
+  
+  
+  
+  
   # Merge streamflow from unit values
   # Build q dataset, reformat flow as numberic, format column names
   discharge <- eventReactive(input$qPull, {  

@@ -1,11 +1,7 @@
 #### Site-Level Assessment: Plots ####
 
 # Time Series plots
-sedTS <- eventReactive(input$dataPull, {
-  
-  plot_sedTS(siteData)
-  
-})
+sedTS <- eventReactive(list(input$dataPull, input$loadRData), {plot_sedTS(siteData)})
 
 output$TSplot1 <- renderPlotly(sedTS()$SSC)
 
@@ -20,23 +16,11 @@ output$TSplot5 <- renderPlotly(sedTS()$bedmass)
 output$TSplot6 <- renderPlotly(sedTS()$TSS)
 
 # Scatter Plot
-sedFlow <- eventReactive(input$dataPull, {
-  
-  plot_sedFlow(siteData)
-  
-})
+sedFlow <- eventReactive(list(input$dataPull, input$loadRData), {plot_sedFlow(siteData)})
 
-turbSSC <- eventReactive(input$dataPull, {
-  
-  plot_turbSSC(siteData)
-  
-})
+turbSSC <- eventReactive(list(input$dataPull, input$loadRData), {plot_turbSSC(siteData)})
 
-SSCTSS <- eventReactive(input$dataPull, {
-  
-  plot_SSCTSS(siteData)
-  
-})
+SSCTSS <- eventReactive(list(input$dataPull, input$loadRData), {plot_SSCTSS(siteData)})
 
 output$Splot1 <- renderPlotly(sedFlow()$SSC)
 
@@ -44,7 +28,7 @@ output$Splot2 <- renderPlotly(sedFlow()$ssbreak)
 
 output$Splot3 <- renderPlotly(sedFlow()$bedload)
 
-output$Splot4 <- renderPlotly(turbSSC()) #check with Colin about update call
+output$Splot4 <- renderPlotly(turbSSC()) 
 
 output$Splot5 <- renderPlotly(sedFlow()$TSS)
 
@@ -52,12 +36,7 @@ output$Splot6 <- renderPlotly(SSCTSS()$scatter)
 
 
 # Boxplot
-
-ssctss <- eventReactive(input$dataPull, {
-  
-  plot_SSCTSS(siteData)
-  
-})
+ssctss <- eventReactive(list(input$dataPull, input$loadRData), {plot_SSCTSS(siteData)})
 
 output$Bplot1 <- renderPlot(ssctss()$combined)
 

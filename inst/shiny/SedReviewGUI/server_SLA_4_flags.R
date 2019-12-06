@@ -2,85 +2,33 @@
 
 
 # Flagging routine
-checkAll <- eventReactive(input$dataPull, {
-  
+checkAll <- eventReactive(list(input$dataPull, input$loadRData), {
   check_all(subset.data.frame(siteData, SAMPLE_START_DT>=as.POSIXct(input$analysisBeginDT, tz = input$tz)), qa.db = as.character(input$qa.db), returnAllTables = FALSE)
-  
 })
 
-bagIE <- eventReactive(input$dataPull, {
-  
-  check_bagIE(siteData)
-  
-})
+bagIE <- eventReactive(list(input$dataPull, input$loadRData), {check_bagIE(siteData)})
 
-hasQ <- eventReactive(input$dataPull, {
-  
-  check_Q(siteData)
-  
-})
+hasQ <- eventReactive(list(input$dataPull, input$loadRData), {check_Q(siteData)})
 
-metaData <- eventReactive(input$dataPull, {
-  
-  check_metaData(siteData)
-  
-})
+metaData <- eventReactive(list(input$dataPull, input$loadRData), {check_metaData(siteData)})
 
-qaqc <- eventReactive(input$dataPull, {
-  
-  check_qaqcDB(siteData, as.character(input$qa.db))
-  
-})
+qaqc <- eventReactive(list(input$dataPull, input$loadRData), {check_qaqcDB(siteData, as.character(input$qa.db))})
 
-purp <- eventReactive(input$dataPull, {
-  
-  check_samplePurp(siteData)
-  
-})
+purp <- eventReactive(list(input$dataPull, input$loadRData), {check_samplePurp(siteData)})
 
-sampler <- eventReactive(input$dataPull, {
-  
-  check_samplerType(siteData)
-  
-})
+sampler <- eventReactive(list(input$dataPull, input$loadRData), {check_samplerType(siteData)})
 
-sedMass <- eventReactive(input$dataPull, {
-  
-  check_sedMass(siteData)
-  
-})
+sedMass <- eventReactive(list(input$dataPull, input$loadRData), {check_sedMass(siteData)})
 
-unpairedTSS <- eventReactive(input$dataPull, {
-  
-  check_tss(siteData)
-  
-})
+unpairedTSS <- eventReactive(list(input$dataPull, input$loadRData), {check_tss(siteData)})
 
-verticals <- eventReactive(input$dataPull, {
-  
-  check_verticals(siteData)
-  
-})
+verticals <- eventReactive(list(input$dataPull, input$loadRData), {check_verticals(siteData)})
 
-methods <- eventReactive(input$dataPull, {
-  
-  count_methodsBySite(siteData)
-  
-})
+methods <- eventReactive(list(input$dataPull, input$loadRData), {count_methodsBySite(siteData)})
 
-status <- eventReactive(input$dataPull, {
-  
-  count_sampleStatus(siteData)
-  
-})
+status <- eventReactive(list(input$dataPull, input$loadRData), {count_sampleStatus(siteData)})
 
-noResult <- eventReactive(input$dataPull, {
-  
-  check_commentsNoResult (siteData)
-  
-})
-
-
+noResult <- eventReactive(list(input$dataPull, input$loadRData), {check_commentsNoResult (siteData)})
 
 
 output$flagtablesum <- DT::renderDataTable(

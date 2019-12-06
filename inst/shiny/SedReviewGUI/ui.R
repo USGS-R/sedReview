@@ -14,5 +14,17 @@ ui <- navbarPage(
            source("ui_SLA.R", local = TRUE)$value),
   
   tabPanel("Science-Center Review Module", helpText(h4(verbatimTextOutput("site2"))),
-           source("ui_SCR.R", local = TRUE)$value)
+           source("ui_SCR.R", local = TRUE)$value),
+  
+  tabPanel("Save/Load SedReview Session Data",
+           h1("Save all current work in SedReview Session to R data file."),
+           actionButton(inputId = "savePrep", label = "Push to prepare data"),
+           helpText(h3(verbatimTextOutput("saveInfo"))),
+           downloadButton('saveRData', 'Save SedReview session'),br(),br(),
+           h1("Load a previous SedReview Session."),
+           fileInput("loadRDataFile",label="Browse to saved R data file",accept=".rda"),
+           actionButton(inputId = "loadRData", "Load SedReview Session"),
+           helpText(h3(verbatimTextOutput("loadInfo")))
+           )
+  
 )

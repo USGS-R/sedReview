@@ -10,7 +10,7 @@ outlier <- reactive({
 })
 
 
-siteData_wide <- eventReactive(input$dataPull, {
+siteData_wide <- eventReactive(list(input$dataPull, input$loadRData), {
   siteData_nonRej <- siteData[!(siteData$DQI_CD %in% c("X","Q")),]
   make_wideTable(siteData_nonRej)
 })

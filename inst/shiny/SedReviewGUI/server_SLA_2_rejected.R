@@ -10,12 +10,12 @@ observeEvent(input$dataPull, {
                                  begin.date = input$analysisBeginDT, # WY 2017
                                  end.date = input$endDT,
                                  approval = "Rejected")
-  rejectedData <- rejectedData[rejectedData$PARM_CD %in% c("80154",
-                                                           "70331",
-                                                           "00530",
-                                                           "80155",
-                                                           "80225",
-                                                           "91145"),]
+  rejectedData <<- rejectedData[rejectedData$PARM_CD %in% c("80154",
+                                                            "70331",
+                                                            "00530",
+                                                            "80155",
+                                                            "80225",
+                                                            "91145"),]
   output$rejectedtable <- DT::renderDataTable(
     datatable({rejectedData[, -c(1, 3, 6:7, 11, 15, 17:35, 43:47, 49:52, 54:56, 58:65, 70:72, 74:79)]},
               extensions = 'Buttons', 
