@@ -1,70 +1,27 @@
 #### Science-Center Review: Data flags summary ####
 
-SCLbagIE <- eventReactive(input$reviewPull, {
-  
-  check_bagIE(siteData_SCR, reviewSummary = TRUE)
-  
-})
+SCLbagIE <- eventReactive(list(input$reviewPull, input$loadRData), {check_bagIE(siteData_SCR, reviewSummary = TRUE)})
 
-SCLhasQ <- eventReactive(input$reviewPull, {
-  
-  check_Q(siteData_SCR, reviewSummary = TRUE)
-  
-})
+SCLhasQ <- eventReactive(list(input$reviewPull, input$loadRData), {check_Q(siteData_SCR, reviewSummary = TRUE)})
 
-# SCLmetaData <- eventReactive(input$reviewPull, {
+# SCLmetaData <- eventReactive(list(input$reviewPull, input$loadRData), {check_metaData(siteData_SCR, reviewSummary = TRUE)})
+
+SCLqaqc <- eventReactive(list(input$reviewPull, input$loadRData), {
+  check_qaqcDB(siteData_SCR, as.character(input$qa.db2), reviewSummary = TRUE)})
+
+# SCLpurp <- eventReactive(list(input$reviewPull, input$loadRData), {check_samplePurp(siteData_SCR, reviewSummary = TRUE)})
 # 
-#   check_metaData(siteData_SCR, reviewSummary = TRUE)
-# 
-# })
+# SCLsampler <- eventReactive(list(input$reviewPull, input$loadRData), {check_samplerType(siteData_SCR, reviewSummary = TRUE)})
 
-SCLqaqc <- eventReactive(input$reviewPull, {
-  
-  check_qaqcDB(siteData_SCR, as.character(input$qa.db2), reviewSummary = TRUE)
-  
-})
+SCLsedMass <- eventReactive(list(input$reviewPull, input$loadRData), {check_sedMass(siteData_SCR, reviewSummary = TRUE)})
 
-# SCLpurp <- eventReactive(input$reviewPull, {
-# 
-#   check_samplePurp(siteData_SCR, reviewSummary = TRUE)
-# 
-# })
-# 
-# SCLsampler <- eventReactive(input$reviewPull, {
-# 
-#   check_samplerType(siteData_SCR, reviewSummary = TRUE)
-# 
-# })
+SCLunpairedTSS <- eventReactive(list(input$reviewPull, input$loadRData), {check_tss(siteData_SCR, reviewSummary = TRUE)})
 
-SCLsedMass <- eventReactive(input$reviewPull, {
-  
-  check_sedMass(siteData_SCR, reviewSummary = TRUE)
-  
-})
+SCLverticals <- eventReactive(list(input$reviewPull, input$loadRData), {check_verticals(siteData_SCR, reviewSummary = TRUE)})
 
-SCLunpairedTSS <- eventReactive(input$reviewPull, {
-  
-  check_tss(siteData_SCR, reviewSummary = TRUE)
-  
-})
+SCLmethods <- eventReactive(list(input$reviewPull, input$loadRData), {count_methodsBySite(siteData_SCR)})
 
-SCLverticals <- eventReactive(input$reviewPull, {
-  
-  check_verticals(siteData_SCR, reviewSummary = TRUE)
-  
-})
-
-SCLmethods <- eventReactive(input$reviewPull, {
-  
-  count_methodsBySite(siteData_SCR)
-  
-})
-
-SCLstatus <- eventReactive(input$reviewPull, {
-  
-  count_sampleStatus(siteData_SCR)
-  
-})
+SCLstatus <- eventReactive(list(input$reviewPull, input$loadRData), {count_sampleStatus(siteData_SCR)})
 
 output$SCLflagtable1 <- DT::renderDataTable(
   datatable({SCLbagIE()},

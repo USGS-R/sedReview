@@ -116,7 +116,8 @@ server <- function(input, output, session) {
     updateSelectInput(session, inputId = "varyOut", selected = sessionvalues$varyOut)
     updateSelectInput(session, inputId = "percentile", selected = sessionvalues$percentile)
     
-    ## Flags - plots will populate on load session, no text options to update in this module tab
+    ## Flags - tables will populate on load session, no text options to update in this module tab
+    ## Plots - plots will populate on load session, no text options to update in this module tab
     
     ## Box Coef data pull
     updateNumericInput(session, inputId = "searchInterval", value = sessionvalues$searchInterval)
@@ -142,8 +143,85 @@ server <- function(input, output, session) {
     }
     
     
+    # SCR
+    ## Data Import
+    updateTextInput(session, inputId = "DBName2", value = sessionvalues$DBName2)
+    updateTextInput(session, inputId = "env.db2", value = sessionvalues$env.db2)
+    updateTextInput(session, inputId = "qa.db2", value = sessionvalues$qa.db2)
+    updateTextInput(session, inputId = "StateCd", value = sessionvalues$StateCd)
+    updateTextInput(session, inputId = "reviewBeginDT", value = sessionvalues$reviewBeginDT)
+    updateTextInput(session, inputId = "reviewEndDT", value = sessionvalues$reviewEndDT)
+    updateTextInput(session, inputId = "endDT", value = sessionvalues$endDT)
+    updateSelectInput(session, inputId = "tz", selected = sessionvalues$tz)
+    output$centerSumtable <- DT::renderDataTable(
+      datatable({SitesCount[, -c(8)]}, 
+                extensions = 'Buttons', 
+                rownames = FALSE,
+                options = list(dom = 'Bfrtip',
+                               buttons = 
+                                 list('colvis', list(
+                                   extend = 'collection',
+                                   buttons = list(list(extend ='csv',
+                                                       filename = 'SCLSummaryTable'),
+                                                  list(extend ='excel',
+                                                       filename = 'SCLSummaryTable'),
+                                                  list(extend ='pdf',
+                                                       pageSize = 'A3',
+                                                       orientation = 'portrait',
+                                                       filename = 'SCLSummaryTable')),
+                                   text = 'Download'
+                                 )),
+                               scrollX = TRUE,
+                               scrollY = "600px",
+                               order = list(list(4, 'desc'), list(2, 'asc')),
+                               pageLength = nrow({SitesCount}),
+                               selection = 'single')
+                
+      ))
+    
+    ## Map of active sed sites
+    updateSelectInput(session, inputId = "mapWhat", sessionvalues$mapWhat)
+    
+    ## Pcode map
+    updateTextInput(session, inputId = "searchWhat", value = sessionvalues$searchWhat)
+    updateSelectInput(session, inputId = "sizeWhat", selected = sessionvalues$sizeWhat)
+    updateSelectInput(session, inputId = "scale", selected = sessionvalues$scale)
+    
+    ## Data flag summary - tables will populate on load session, no text options to update in this module tab
+    
+    ## Box Coef summary
+    updateNumericInput(session, inputId = "searchInterval2", value = sessionvalues$searchInterval2)
+    
+    if(exists("BoxCoeff.summary")){
+      output$SCLBoxCoefftable <- DT::renderDataTable(
+        datatable({BoxCoeff.summary},
+                  extensions = 'Buttons', 
+                  rownames = FALSE,
+                  options = list(dom = 'Bfrtip',
+                                 buttons = 
+                                   list('colvis', list(
+                                     extend = 'collection',
+                                     buttons = list(list(extend ='csv',
+                                                         filename = 'SCLBoxCoeffTable'),
+                                                    list(extend ='excel',
+                                                         filename = 'SCLBoxCoeffTable'),
+                                                    list(extend ='pdf',
+                                                         pageSize = 'A2',
+                                                         orientation = 'portrait',
+                                                         filename = 'SCLBoxCoeffTable')),
+                                     text = 'Download'
+                                   )),
+                                 scrollX = TRUE,
+                                 scrollY = "600px",
+                                 order = list(list(0, 'desc'), list(2, 'asc')),
+                                 pageLength = nrow({BoxCoeff.summary}),
+                                 selection = 'single')
+                  
+        ))
+    }
     
     
+    # Load message
     if(!is.null(sessionvalues)){
       output$loadInfo <- renderText({c("Session Loaded.")})
     }else{output$saveInfo <- renderText({c("ERROR loading. Please report issue.")})}
