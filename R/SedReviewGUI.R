@@ -14,7 +14,6 @@
 #' @import stringr
 #' @import DT
 #' @import broom
-#' @import smwrBase
 #' @import dataRetrieval
 #' @import leaflet
 #' @import shinycssloaders
