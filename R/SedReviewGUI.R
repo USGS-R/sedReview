@@ -4,9 +4,20 @@
 #' SedReviewGUI()
 #' }
 #' @export
-#' @import shiny
 #' @importFrom DT renderDataTable
 #' @importFrom DT dataTableOutput
+#' @import shiny
+#' @import shinyBS
+#' @import ggplot2
+#' @import gghighlight
+#' @import dplyr
+#' @import stringr
+#' @import DT
+#' @import broom
+#' @import dataRetrieval
+#' @import leaflet
+#' @import shinycssloaders
+#' @import plotly
 SedReviewGUI <- function() {
   appDir <- system.file("shiny","SedReviewGUI",package = "sedReview")
   if (appDir == "") {
