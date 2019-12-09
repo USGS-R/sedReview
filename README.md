@@ -1,7 +1,9 @@
-`sedReview`
+`sedReview 1.2 beta version`
 ==========
 # Overview
-Package for USGS discrete sediment data review and box coefficient development. Currently in Beta testing.
+Package for USGS discrete sediment data review and box coefficient development.
+Version 1.0 is released as a tagged release and stand-alone GUI App.
+Version 1.2 beta is currently in testing, available from GitHub.
 
 # Package Status
 |Linux|Windows| Test Coverage | USGS Status |
@@ -18,10 +20,10 @@ Users are encouraged to post any bugs or comments for additional functionality o
 You may also contact the developers at GS-W SedReview Help (gs-w_sedreview_help@usgs.gov)
 
 ## Description
-This package facilitates data review and exploration of discrete sediment data. Data is imported with user-specified options for single or multiple sites and parameter codes using an ODBC connection to the user's local NWIS server. A graphical user interface is in development 
+This package facilitates data review and exploration of discrete sediment data. Data is imported with user-specified options for single or multiple sites and parameter codes using an ODBC connection to the user's local NWIS server. A Shiny application graphical user interface for site-level assessments and science-center reviews displays data tables and plots to aid in the review process. 
 
 ## Installation  
-**The GUI requires that Google Chrome be set as your default web browser.**
+**The GUI requires that Google Chrome or MS Edge be set as your default web browser.**
 ### R package
 ```R
 install.packages("devtools")
@@ -32,7 +34,7 @@ devtools::install_github(repo = "USGS-R/sedReview")
 sedReview::SedReviewGUI()
 ```
 or  
-Download and Install Standalone GUI App from:  
+Download and Install Standalone GUI App from (currently for SedReview version 1.0:  
 [Available to USGS personnel through ScienceBase](https://www.sciencebase.gov/catalog/item/5c867842e4b09388244b3cb3)
 
 [SedReview GUI User Manual (better version launched from within GUI)](inst/shiny/SedReviewGUI/www/sedReview_manual.md)

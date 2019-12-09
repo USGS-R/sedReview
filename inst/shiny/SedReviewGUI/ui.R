@@ -1,5 +1,5 @@
 ui <- navbarPage(
-  titlePanel(title = NULL, windowTitle = "SedReview v1.0"),
+  titlePanel(title = NULL, windowTitle = "SedReview 1.2 beta version"),
   tabPanel(title = img(src="Logo.png", width="60px",height = "20px"),
            h3("Welcome to SedReview v1.0: Discrete sediment data review and exploration toolbox."),
            h4("Please use the 'Site-Level Assessment Module' to review and plot data from a specific site."),
