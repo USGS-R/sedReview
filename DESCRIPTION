@@ -28,7 +28,6 @@ Imports:
     gghighlight,
     stringr,
     broom,
-    smwrBase,
     leaflet
 Suggests:
     xtable,
