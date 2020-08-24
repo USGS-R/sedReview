@@ -4,9 +4,16 @@
 \alias{plot_sedFlow}
 \title{plot_sedFlow. Create plots of sediment vs. discharge for select sediment parameters.}
 \usage{
-plot_sedFlow(x, log.P80154 = FALSE, log.P70331 = FALSE,
-  log.P80225 = FALSE, log.P00530 = FALSE, log.Q = FALSE,
-  siteSelect = NULL, PDFout = NULL)
+plot_sedFlow(
+  x,
+  log.P80154 = FALSE,
+  log.P70331 = FALSE,
+  log.P80225 = FALSE,
+  log.P00530 = FALSE,
+  log.Q = FALSE,
+  siteSelect = NULL,
+  PDFout = NULL
+)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}

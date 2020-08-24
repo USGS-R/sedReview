@@ -4,9 +4,14 @@
 \alias{summary_boxcoef}
 \title{summary_boxcoef. Summarise box coefficient pairs for multiple sites and years utilizing the find_boxcoef function}
 \usage{
-summary_boxcoef(x, timediff = 1, methods_NX = c(30, 40, 50, 55, 70,
-  100, 900, 920, 930, 940, 4033, 4080), methods_X = c(10, 15, 20),
-  includeUV = FALSE, returnAllTables = FALSE)
+summary_boxcoef(
+  x,
+  timediff = 1,
+  methods_NX = c(30, 40, 50, 55, 70, 100, 900, 920, 930, 940, 4033, 4080),
+  methods_X = c(10, 15, 20),
+  includeUV = FALSE,
+  returnAllTables = FALSE
+)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}

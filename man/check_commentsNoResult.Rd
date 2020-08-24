@@ -4,8 +4,10 @@
 \alias{check_commentsNoResult}
 \title{check_commentsNoResult. Review unique sample and result comments, and pcodes with no result reported.}
 \usage{
-check_commentsNoResult(x, pcodes = c("80154", "70331", "00530", "80155",
-  "80225", "91145"))
+check_commentsNoResult(
+  x,
+  pcodes = c("80154", "70331", "00530", "80155", "80225", "91145")
+)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}

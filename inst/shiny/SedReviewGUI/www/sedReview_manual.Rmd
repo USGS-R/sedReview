@@ -14,7 +14,7 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 ## Introduction
-This manual describes use of the SedReview version 1.0. The SedReview R-package allows import of sediment data from the U.S. Geological Survey's National Water Information System utilizing ODBC connections. It allows review of those data using a series of interactive graphical interfaces through a graphical user interface (GUI) and tabular output of data. 
+This manual describes use of the SedReview version 1.2. The SedReview R-package allows import of sediment data from the U.S. Geological Survey's National Water Information System utilizing ODBC connections. It allows review of those data using a series of interactive graphical interfaces through a graphical user interface (GUI) and tabular output of data. 
 
 SedReview has two main modules that are accessed by clicking on either Module tab at the top of the screen:  
 **Site-Level Assessment Module**  
@@ -52,9 +52,9 @@ A new dialogue will appear. Click the dropdown box next to "TNS Service Name" an
 ![](ODBC_SelectDSN.png)
   
 ## Installing and Opening SedReview
-**Prior to installation it is recommended that you set your default browser to Google Chrome. SedReview has not been tested on other browsers**
+**Prior to installation it is recommended that you set your default browser to Google Chrome or MS Edge. SedReview has not been tested on other browsers**
 
-1. Download the install file from [ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/](ftp://ftpint.usgs.gov/private/cr/co/lakewood/SedReview_EXE/) and double click to install the program. You should not need administrator privileges to install the file.
+1. Download the install file from [USGS ScienceBase](https://www.sciencebase.gov/catalog/item/5c867842e4b09388244b3cb3) and double click to install the program. You should not need administrator privileges to install the file.
 2. Save the program where desired (e.g. user/Documents/SedReview or C:/ drive). It is recommended that you choose the options to also install a desktop shortcut and start menu folder for launching the program.
 3. When installed, double click the desktop icon, navigate to the SedReview start menu folder, or navigate to the location where installed and double click the "runSedReviewGUI.bat" file.
 4. The program will open a Windows console (do not close this when working in SedReview!) and then will launch SedReview in an internet browser window. You can resize the GUI within the browser window using the CTRL + or CTRL - .
@@ -71,6 +71,7 @@ A new dialogue will appear. Click the dropdown box next to "TNS Service Name" an
     + Starting date for analysis period. This is the start date for the period with data you want to review for your site.
     + Ending date for reference and analysis periods. This is the last date of the period with data you want to review for your site.
     + Local time zone for site being reviewed.
+    + Use the buttons at the top of this box to 1) Load previously saved database info, 2) Load current session database info that was entered into the Science-Center Review module, or 3) Save the input database info to use again in a future session.
 
 2. Once these fields are populated, click the Get data! button at the bottom.
 3. A table of summary statistics is populated on the right of the screen. 
@@ -148,7 +149,7 @@ A new dialogue will appear. Click the dropdown box next to "TNS Service Name" an
     + Metadata Check --- table of samples that were missing required sample metadata, such as sample purpose, sampler type, sampling method, and type of associated QA with sample (if applicable). Includes tests in NWIS 20.xx level checks.
     + Sample Purpose Check --- table of samples with a sample purpose code that differs from the code most commonly used at a site. There are certainly valid reasons for this, but this table just serves as a reminder to check that sample purposes are generally correct.
     + Sampler Type Check --- table of samples with a sampler type code that differs from the code most commonly used at a site. Flags if sampler is used 3 or fewer times. There are certainly valid reasons for this, but this table just serves as a check for possible typos during metadata entry.
-    + Sediment Mass Check --- table of samples with sediment mass less than 2 milligrams. Sediment mass is a new piece of data (pcode 91157) reported by USGS sediment laboratories. Understanding of sediment mass in samples will inform project chiefs regarding uncertainties in analytical results associated with limited sample mass and may help determine whether more sample volume is needed in the future to reduce those uncertainties. A flag threshold of 2 milligrams is currently used in this table. Project chiefs should discuss mass results with their laboratory chief. 
+    + Sediment Mass Check --- table of samples with **sediment mass less than 2 milligrams**. Sediment mass is a new piece of data (**pcode 91157**) reported by USGS sediment laboratories, see [**WMA Tech Note 41**](https://doimspp.sharepoint.com/sites/usgs-water-mission-area/Lists/news_technote/Flat.aspx?RootFolder=%2Fsites%2Fusgs%2Dwater%2Dmission%2Darea%2FLists%2Fnews%5Ftechnote%2FWMA%20Technical%20Note%20Number%2041%20Availability%20of%20new%20metadata%20for%20sediment%20analyses%20%28sample%20mass%29&FolderCTID=0x01200200501EAAFB86995C4DA98D3E9D5C759CFE) for more information. Understanding of sediment mass in samples will inform project chiefs regarding uncertainties in analytical results associated with limited sample mass and may help determine whether more sample volume is needed in the future to reduce those uncertainties. A flag threshold of 2 milligrams is currently used in this table. Project chiefs should discuss mass results with their laboratory chief. 
     + Unpaired-TSS Samples --- table of samples that have a result for TSS but do not have a corresponding sample result for SSC. SSC analysis is required for all samples analyzed for TSS, per OSW memo 01.03.
     + EWI/EDI Verticals Check --- table of EDI and EWI samples that were collected with a number of verticals outside the recommendations in Edwards and Glysson (1998), which state between 4 and 9 verticals for an EDI sample and between 10 and 20 verticals for an EWI sample). There could be valid reasons for deviation (such as for sampling in small streams). 
     + DQI Status Summary --- summary table of samples organized by parameter code and water year, with the corresponding number of samples with data quality indicator codes of A, historical data; S, provisional; I, awaiting review; R, reviewed and approved; Q, reviewed and rejected; P, proprietary and not reviewed; O, proprietary, reviewed and approved; X, proprietary, reviewed and rejected; and U, research or unapproved method or laboratory. This is helpful for determining how many samples are awaiting review and approval or rejection. DQI codes not present in a dataset will not be shown in the table. 
@@ -186,6 +187,7 @@ A new dialogue will appear. Click the dropdown box next to "TNS Service Name" an
     + Two-letter state code (e.g., CO, ID, etc)
     + Starting date for the period of review (YYYY/MM/DD)
     + Ending date for the period of review (YYYY/MM/DD). The review period most likely will correspond with one or more water years, but any dates can be selected.
+    + Use the buttons at the top of this box to 1) Load previously saved database info, 2) Load current session database info that was entered into the Site-Level Assessment module, or 3) Save the input database info to use again in a future session.
 2. Once these fields are populated, click "Review data!".
 3. A table that summarizes the number of samples analyzed for SSC, sand/silt break (% smaller than 0.0625 mm), TSS, and bedload for each site in the database will be generated for the review period. If multiple water years exist within the review period, the results are organized by water year.
   

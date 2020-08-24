@@ -1,9 +1,8 @@
-`sedReview 1.2 beta version`
+`sedReview 1.2`
 ==========
 # Overview
 Package for USGS discrete sediment data review and box coefficient development.
-Version 1.0 is released as a tagged release and stand-alone GUI App.
-Version 1.2 beta is currently in testing, available from GitHub.
+Version 1.2 is released as a tagged release and stand-alone GUI App.
 
 # Package Status
 |Linux|Windows| Test Coverage | USGS Status |
@@ -26,15 +25,16 @@ This package facilitates data review and exploration of discrete sediment data. 
 **The GUI requires that Google Chrome or MS Edge be set as your default web browser.**
 ### R package
 ```R
-install.packages("devtools")
-devtools::install_github(repo = "USGS-R/sedReview")
+if (!requireNamespace("remotes")) install.packages("remotes")
+remotes::install_github(repo = "USGS-R/sedReview", 
+                        dependencies = TRUE)
 ```
 ### Shiny GUI
 ```R
 sedReview::SedReviewGUI()
 ```
 or  
-Download and Install Standalone GUI App from (currently for SedReview version 1.0:  
+Download and Install Standalone GUI App from (currently for SedReview version 1.2:  
 [Available to USGS personnel through ScienceBase](https://www.sciencebase.gov/catalog/item/5c867842e4b09388244b3cb3)
 
 [SedReview GUI User Manual (better version launched from within GUI)](inst/shiny/SedReviewGUI/www/sedReview_manual.md)

@@ -112,8 +112,9 @@ tabsetPanel(
              # ),
              
              tabPanel(title = "Sediment mass check",
-                      h4("Flag samples with sediment less than 2 milligrams", align="center"),
-                      helpText("Tests whether a sample has a sediment mass less than 2 mg. Flags if so. (Note: as of September 2018, sediment mass data (pcode 91157) are not yet reported by USGS sediment laboratories. Future samples will show in this table if mass is less than 2 mg)"),
+                      h4("Flag samples with Sediment Mass less than 2 milligrams", align="center"),
+                      helpText("Tests whether a sample has a SEDIMENT MASS (p91157) less than 2 mg. Flags if so. (Note: as of September 2018, sediment mass data (pcode 91157) are not yet reported by USGS sediment laboratories. Future samples will show in this table if mass is less than 2 mg, see: ", 
+                               a("WMA Tech Note 41)", target="_blank", href="https://doimspp.sharepoint.com/sites/usgs-water-mission-area/Lists/news_technote/Flat.aspx?RootFolder=%2Fsites%2Fusgs%2Dwater%2Dmission%2Darea%2FLists%2Fnews%5Ftechnote%2FWMA%20Technical%20Note%20Number%2041%20Availability%20of%20new%20metadata%20for%20sediment%20analyses%20%28sample%20mass%29&FolderCTID=0x01200200501EAAFB86995C4DA98D3E9D5C759CFE")),
                       withSpinner(DT::dataTableOutput("SCLflagtable7"))
              ),
              
