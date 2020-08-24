@@ -5,8 +5,7 @@
 \title{check_qaqcDB.
 Check if SSC, bedload, or bedload mass are coded as WSQ and in the QA/QC database}
 \usage{
-check_qaqcDB(x, qa.db = "02", returnAll = FALSE,
-  reviewSummary = FALSE)
+check_qaqcDB(x, qa.db = "02", returnAll = FALSE, reviewSummary = FALSE)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}

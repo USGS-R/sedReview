@@ -5,9 +5,17 @@
 \title{get_localNWIS.  
 Pulls data from NWIS internal servers using ODBC connection and returns a longtable (by result)}
 \usage{
-get_localNWIS(DSN, env.db = "01", qa.db = "02", STAIDS,
-  begin.date = NA, end.date = NA, projectCd = NULL,
-  resultAsText = FALSE, approval = "All")
+get_localNWIS(
+  DSN,
+  env.db = "01",
+  qa.db = "02",
+  STAIDS,
+  begin.date = NA,
+  end.date = NA,
+  projectCd = NULL,
+  resultAsText = FALSE,
+  approval = "All"
+)
 }
 \arguments{
 \item{DSN}{A character string containing the DSN for your local server}

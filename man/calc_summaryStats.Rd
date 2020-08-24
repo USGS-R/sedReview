@@ -4,8 +4,12 @@
 \alias{calc_summaryStats}
 \title{calc_summaryStats. Calculate summary stats and tally non-detections and samples with no result values reported.}
 \usage{
-calc_summaryStats(x, pcodes = c("80154", "70331", "00530", "80155",
-  "80225", "91145"), startMonth = NULL, endMonth = NULL)
+calc_summaryStats(
+  x,
+  pcodes = c("80154", "70331", "00530", "80155", "80225", "91145"),
+  startMonth = NULL,
+  endMonth = NULL
+)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}

@@ -4,8 +4,13 @@
 \alias{plot_turbSSC}
 \title{plot_turbSSC. Create plots of sediment vs. turbidity.}
 \usage{
-plot_turbSSC(x, log.SSC = FALSE, log.turb = FALSE, siteSelect = NULL,
-  PDFout = NULL)
+plot_turbSSC(
+  x,
+  log.SSC = FALSE,
+  log.turb = FALSE,
+  siteSelect = NULL,
+  PDFout = NULL
+)
 }
 \arguments{
 \item{x}{A \code{dataframe} output from \code{get_localNWIS}}
